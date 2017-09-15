@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+
+<head>
+
+<title>Untitled Page</title>
+<script language='javascript'  type="text/javascript" src="com.darkflame.MyApplication.nocache.js"></script>
+<script language="javascript"  type="text/javascript" >
+ var user_data = { 
+		       organisation: "Home", 
+		       username: "Darkflame" 
+		       }
+</script>
+<style type="text/css" media="screen">
+<!--
+ /*
+  This next line magicaly makes IE6 support transparent pngs!
+ */
+img, div, input { behavior: url("iepngfix.htc") }
+
+/* this style needs to be supplied to anything using PNGs */
+
+.pngfix {  behavior: url("iepngfix.htc"); }
+
+#im1    { visibility: visible; position: absolute;}
+#im2    { visibility: visible; position: absolute;}
+#l2   { visibility: visible; position: absolute;  top: 20px; left: 0; width: 100%; z-index: 3; }
+#l1   { visibility: visible; position: absolute;  top: 0; left: 0; width: 100%; height: 100%}
+table.sample  { font-size: smaller;  border: 1px #000000; border-collapse: collapse; border-spacing: 2px }
+table.sample th  { font-size: smaller;  padding: 1px; border: ridge 2px #000000; -moz-border-radius:  }
+table.sample td  { font-size: smaller;  padding: 1px; border: ridge 2px #000000; -moz-border-radius:  }
+.inventory {   background-color: #996650; background-image: url(GameTextures/cclbrownback.jpg) }			
+.picturePopUp {   background-color: yellow; }
+.popup_border { border: ridge thick #999}
+
+.greencolumn
+{background-image: url(GameTextures/greencolumn.png);
+background-repeat: repeat-y;
+background-position:center 0; 
+}
+.greencolumnb
+{background-image: url(GameTextures/greencolumnb.png);
+background-repeat: repeat-y;
+background-position:center center; 
+}
+
+.image80per   { position: absolute;  width: 100%; height: auto }
+.Feedback  { color: #3c9; font-size: larger; background-color: #000 }
+.DefaultTopBar  {   background-image: url(GameTextures/NotepadBackground.jpg)}
+.notepadback  {  background-image: url(GameTextures/NotepadBackground.jpg) }
+
+.strike_blue { background-color: #8691ca }
+.strike_white { background-color: #dff3ff }
+.strike_purple { background-color: #6d6288 }
+
+.ShadowLower  { background-image: url(GameTextures/shadows/Shadow_grad.png); background-repeat: repeat-x }
+.ShadowCorner { background-image: url(GameTextures/shadows/Shadow_grad_corner.png); background-repeat: no-repeat }
+.ShadowLeft  { background-image: url(GameTextures/shadows/Shadow_grad_rot.png); background-repeat: repeat-y }
+.ShadowTopLeft  { background-image: url(GameTextures/shadows/Shadow_grad_topleft.png); background-repeat: no-repeat; background-position: 0 100% }
+.ShadowBottomRight  { background-image: url(GameTextures/shadows/Shadow_grad_bottomright.png); background-repeat: no-repeat; background-position: 0 0% }
+
+
+.chapterlist_tab   { background: #c27676; text-align: left; margin: 3px 3px 3px 0; padding: 5px 10px 5px 0; left: 3px }
+.chapterlist_tab_selected   { background: #800000; text-align: left; margin: 3px 3px 3px 0; padding: 5px 10px 5px 0; left: 3px }
+
+.chapterlist_tab_tr    { background: url(images/corner.png) no-repeat -6px -55px; margin-left: -6px; width: 12px; height: 67px; overflow: hidden }
+  
+.chapterlist_tab_br   { background-image: url(images/corner.png) }
+
+.logo1{  
+    top: 0px;   
+    left: 0px;   
+    background-color: #ffff00;   
+    width: 5px;   
+    height: 25px;}  
+.logo2{top: 0px; left: 400px; background-color: #0000ff; width: 150px; height: 25px;}  
+
+.standard_message    { background-color: #fc9; background-image: url(yellowback.png); background-repeat: repeat; background-position: 0 100%; width: 100%; height: 100% }
+.standard_message_back     { background-color: #fc9; background-image: url(yellowback.png); background-repeat: repeat; background-position: 0 100%; text-align: center }
+.overflowscroll { overflow:scroll }
+
+#layer1    { visibility: visible; position: absolute; top: 4%; left: 10%; width: 80%; height: 84% }
+#layer2           { visibility: visible; position: absolute; right: 0; bottom: 0; width: 30%; height: 18% }
+.gwt-DecoratedTabBar .gwt-TabBarRest {
+}
+.gwt-DecoratedTabBar .gwt-TabBarItem {
+  border-collapse: collapse;
+  margin-left: 6px;
+}
+
+.gwt-DecoratedTabBar .tabTopCenter  { background-image: url(bup.png); padding: 0;  height: 15px; }
+.gwt-DecoratedTabBar .tabTopLeft,
+.gwt-DecoratedTabBar .tabTopRight {
+  padding: 0px;
+  zoom: 1;
+}
+.gwt-DecoratedTabBar .tabTopLeftInner{
+ background-image: url(upleft.png);
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+}
+.gwt-DecoratedTabBar .tabTopRightInner {
+  background-image: url(upright.png);
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+}
+.gwt-DecoratedTabBar .tabMiddleLeft{
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  background-image: url(left.png);
+}
+.gwt-DecoratedTabBar .tabMiddleRight {
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  background-image: url(bright.png);
+}
+.gwt-DecoratedTabBar .tabMiddleLeftInner,
+.gwt-DecoratedTabBar .tabMiddleRightInner {
+  width: 15px;
+  height: 15px;
+}
+.gwt-DecoratedTabBar .tabMiddleCenter {
+  padding: 1px 1px 1px 1px;
+  background-image: url(yellowback.png);
+  cursor: pointer;
+  cursor: hand;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+}
+.gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabTopCenter {
+  background-image: url(bupf.png);
+}
+.gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabMiddleLeft{
+  background-image: url(leftf.png);
+}
+.gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabMiddleRight {
+  background-image: url(brightf.png);
+}
+.gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabMiddleCenter {
+  cursor: default;
+  background: #fbf7e0;
+}
+
+* html .gwt-DecoratedTabBar .tabTopLeftInner {
+  width: 15px;
+  height: 15px;
+  background-image: url(upleft.png);
+}
+
+* html .gwt-DecoratedTabBar .tabTopRightInner {
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  background-image: url(upright.png);
+}
+}
+* html .gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabTopLeftInner {
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  background-image: url(upleftf.png);
+}
+* html .gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabTopRightInner {
+  width: 15px;
+  height: 15px;
+  background-image: url(uprightf.png);
+}
+.gwt-TabPanel {
+}
+.gwt-TabPanelBottom {
+  border-color: #466954;
+  border-style: solid;
+  border-width: 2px 2px 2px;
+  overflow: hidden;
+  padding: 0px;
+  
+  
+}
+.fader { z-index: 1010; background-color: #171d18; width: 100%; height: 100%; filter: alpha(opacity=65); opacity: 0.65}
+.overlay { background-color: #259; filter: alpha(opacity=65); opacity: 0.65 }
+
+.backgroundtexture1 {  background-image: url(GameTextures/backtexture1.jpg); padding: 5px }
+.backgroundtexture2 {  background-image: url(GameTextures/backtexture2.jpg); padding: 5px }
+.backgroundtexture3 {  background-image: url(GameTextures/backtexture3.jpg); padding: 5px }
+
+
+html, body { 
+height: 100%; 
+}
+
+
+</style>
+</head>
+
+<body bgcolor="#171d18">
+	
+<iframe src="javascript:''" id='__gwt_historyFrame' style='position:absolute;width:0;height:0;border:0'></iframe>	
+
+		
+			<div id="layer1">
+				<table class="pngfix" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" height="100%">
+				<tr align="center" valign="middle" height="50">
+					<td width="13%" height="50"></td>
+					<td colspan="2" align="right" valign="middle" height="50"><img src="GameIcons/cctownup.png" alt="" border="0"></td>
+				</tr>
+				<tr align="center" valign="bottom" height="30">
+					<td valign="bottom" bgcolor="#577152" width="13%" height="30" background="ccgreenback.png"></td>
+					<td align="center" valign="middle" height="30" background="ccgreenback.png">
+						<div align="center">
+							<b><i><font size="+2">~ A &nbsp; &nbsp; M e m o r a b l e &nbsp; &nbsp; D a y ~</font></i></b>
+						</div>
+					</td>
+					<td align="center" valign="bottom" bgcolor="#577152" width="20%" height="30" background="ccgreenback.png"></td>
+				</tr>
+				<tr align="right" valign="top">
+					<td valign="top" bgcolor="#715e52" width="13%"  background="ccgreenback.png">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" height="100%" class="greencolumn">
+							<tr>
+								<td align="center" valign="middle" width="100%" class="greencolumnb"><img src="GameIcons/CCladyclock.png" alt="" border="0"></td>
+							</tr>
+							<tr>
+								<td id="Inventory" align="center" valign="middle" width="100%"></td>
+							</tr>
+							<tr>
+								<td align="center" valign="middle" width="100%"></td>
+							</tr>
+							<tr>
+								<td id="Notepad" align="center" valign="middle" width="100%"></td>
+							</tr>
+							<tr>
+								<td align="center" valign="middle" width="100%"></td>
+							</tr>
+							<tr>
+								<td id="ForumLink" align="center" valign="middle" width="100%"></td>
+							</tr>
+							<tr>
+								<td align="center" valign="middle" width="100%"></td>
+							</tr>
+						</table>
+					</td>
+					<td id="bigtextbox" align="right" valign="top" background="yellowback.png">
+						
+					</td>
+					<td  align="left" valign="middle" width="20%" background="cclgreenback.png">
+						<table  width="100%" border="0" cellspacing="2" cellpadding="0" height="75%">
+							<tr height="75%"  >
+								<td id="chapterlist" width="100%" height="75%">   </td>
+							</tr>
+							<tr height="5%" >
+								<td id="musicControll" width="100%" height="5%" background="ccgreenback.png"></td>
+							</tr>
+							<tr height="5%" >
+								<td id="ControllPanel" align="center" width="100%" height="5%" background="ccgreenback.png"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr height="90">
+					<td bgcolor="#715e52" align="center" width="13%" height="90" background="ccgreenback.png"><img src="GameIcons/CCfeetb.png" alt="" border="0"></td>
+					<td>
+					<table  width="100%" border="0" background="ccgreenback.png" cellspacing="2" cellpadding="0" height="100%">
+					   <tr><td id="feedback" colspan="1" valign="bottom" bgcolor="black" height="90"></td></tr>
+					   <tr>
+					   <td id="ansbar" colspan="1" valign="bottom" background="ccgreenback.png" height="10">
+					   </td></tr>
+					</table>
+					</td>
+					<td bgcolor="#715e52" background="ccgreenback.png"></td>
+				</tr>
+				
+				
+			</table>
+			<div id="layer2">
+			<img src="GameIcons/CCsoldier.png" class="pngfix" alt="" height="100%" width="100%" border="0">
+			</div>
+
+		</div>
+		
+	</body>
+
+</html>
+
+
+
+
+

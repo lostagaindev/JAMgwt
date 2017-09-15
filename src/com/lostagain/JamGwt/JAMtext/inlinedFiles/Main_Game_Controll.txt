@@ -1,0 +1,2460 @@
+ Game Controll Starts Here:
+
+Start:
+- EnterAns = setupTitle
+
+ans=: setupTitle
+- HideElement = CloseAllWindowsBox
+- SetLocation = TitleScreen
+- SetStoryPageScrollbars = off
+- NewChapter = "Welcome and FAQ"
+- LoadScene = TitleScreen
+- LoadScene = playersnotes,playersnotes,false
+- LoadScene = BeforeChurch,BeforeChurch,false
+- HideElement = theroom_backbutton 
+
+- CacheAudioTrack = oclickblip.ogg
+- CacheAudioTrack = scenes/titlescreen_startbutton.ogg
+- CacheAudioTrack = interface/generic_interface_click.ogg
+
+
+- HideElement = pscont
+- HideElement = logarrowhistory
+- HideElement = logarrowforward
+- HideElement = logarrowback
+- HideElement = closeallwindowsbox
+- SetVariable = GameProgress,playerintro
+- RemoveClassFromElement = hideyshowinv,hide
+- AddClassToElement = saving,hide
+- RemoveClassFromElement = restoring,hide
+- AddClassToElement = Inventory,hide
+- AddClassToElement = playersnotes,hide
+- AddClassToElement = hints,hide
+- AddClassToElement = storybookonoff,hide
+- AddClassToElement = hideyshowdirec,hide
+- AddClassToElement = help1,hide
+- AddClassToElement = help2,hide
+
+
+//Put all the variables here
+
+- SetVariable = SBC5,0
+- SetVariable = CoinProgress,none
+- SetVariable = DodeProgress,none
+- SetVariable = VeraCandy,none
+- SetVariable = newintro,true
+
+// End of variables
+
+// initial quest status box update
+- RunNamedCommands = <GLOBAL>,updatequest
+
+ans=: easy
+- SetVariable = GameDifficulty,easy
+
+ans=: hard
+- SetVariable = GameDifficulty,hard
+
+
+ans=: savegame
+- SaveGame
+
+ans=: restoregame
+- LoadSceneState
+
+ans=: loadgame
+- ToggleLoadGame
+
+ans=: feedbackboxpoof
+- FadeInElement = hideyshowf,500
+- ShowElement = hideyshowf
+- SetVariable = fbboxpoofed,true
+
+ans=: feedbackboxunpoof
+ - HideElement = hideyshowf
+ - SetVariable = fbboxpoofed,false
+ 
+ ans=: testchest
+ - SetVariable = GameProgress,GotChestNow
+  - RunNamedCommands = <GLOBAL>,updatequest
+ - AddItem = chest
+ 
+ ans=: testani
+ - RunNamedCommands = playersnotesiconani,play
+ 
+ans=: skipstart1
+- AddItem = storybook
+- RemoveClassFromElement = storybookonoff,hide
+- SetVariable = gameprogress,intothecrypt 
+- SetVariable = lastbookscene,storybookchapter1 
+- SetVariable = chapter,1 
+- SetVariable = hansjecontinue,gotocrypt 
+- SetVariable = pagenumber,0 
+- SetVariable = lastpagenum,0 
+- LoadScene = Crypt,Crypt,true
+- SetVariable = Panel,left
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+
+ans=: skipstart2
+- AddItem = storybook
+- RemoveClassFromElement = storybookonoff,hide
+- SetVariable = gameprogress,entersbc3 
+- SetVariable = lastscene,casket 
+- SetVariable = lastbookscene,storybookchapter3 
+- SetVariable = chapter,1 
+- SetVariable = hansjecontinue,gotocrypt 
+- SetVariable = pagenumber,0 
+- SetVariable = lastpagenum,0 
+- SetVariable = hansjecryptcontinue,enough 
+- SetVariable = toosmall,true 
+- SetVariable = differentname,true 
+- SetVariable = dontunderstandtext,true 
+- SetVariable = glowingbookhand,true 
+- SetVariable = hereswind,appearing 
+- LoadScene = Crypt,Crypt,true
+- ScrollSceneToPosition = 4250,512
+- SetVariable = Panel,right
+
+
+
+ans=: skipstart3
+- AddItem = storybook
+- RemoveClassFromElement = storybookonoff,hide
+- SetVariable = gameprogress,entersbc3 
+- SetVariable = lastscene,casket 
+- SetVariable = lastbookscene,storybookchapter3 
+- SetVariable = chapter,1 
+- SetVariable = hansjecontinue,gotocrypt 
+- SetVariable = pagenumber,0 
+- SetVariable = lastpagenum,0 
+- SetVariable = hansjecryptcontinue,enough 
+- SetVariable = toosmall,true 
+- SetVariable = differentname,true 
+- SetVariable = dontunderstandtext,true 
+- SetVariable = glowingbookhand,true 
+- SetVariable = hereswind,appearing 
+- LoadScene = Font,Font,true
+
+ans=: archiveskip
+- AddItem = storybook
+- RemoveClassFromElement = storybookonoff,hide
+- AddItem = INV_bottle,Inventory Items
+- AddItem = INV_secateurs,Inventory Items
+- AddItem = chest,Inventory Items
+- AddItem = INV_lazertape,Inventory Items
+- SetVariable = gameprogress,gotchestnow 
+- SetVariable = sbc5,0 
+- SetVariable = coinprogress,none 
+- SetVariable = dodeprogress,none 
+- SetVariable = panel,zno 
+- SetVariable = lastscene,wallpuzzle 
+- SetVariable = lastbookscene,storybookchapter4 
+- SetVariable = chapter,1 
+- SetVariable = fbboxpoofed,false 
+- SetVariable = hansjecontinue,endchestconvo 
+- SetVariable = onstorybook,no 
+- SetVariable = pagenumber,1 
+- SetVariable = lastpagenum,1 
+- SetVariable = ntcont,sbcintroend 
+- SetVariable = lastlocation,wallpuzzle 
+- SetVariable = empirehelper,nothing 
+- SetVariable = notemuseum,done 
+- SetVariable = notecrypt,done 
+- SetVariable = lostincrypt,seen 
+- SetVariable = clickysph1,0 
+- SetVariable = sbc3entered,true 
+- SetVariable = hereswind,joinedup 
+- SetVariable = notesparkly,done 
+- SetVariable = notewallsecret,done 
+- SetVariable = firstconvo,true 
+- SetVariable = fboffscene,false 
+- SetVariable = visitedsbc4,true
+- SetVariable = notechestwoman,true 
+- LoadScene = outsidemuseum
+- SetLocation = outsidemuseum
+- SetScenePosition = 6350,512
+
+
+ans=: gatetester
+- SetVariable = GameProgress,FoundSwampRoute
+ - RunNamedCommands = <GLOBAL>,updatequest
+- SetVariable = NoteClueGrow,true
+
+ans=: skiptoafterchest
+- AddItem = chest
+- AddItem = storybook
+- RemoveClassFromElement = storybookonoff,hide
+- SetVariable = VisitedSBC4,true
+- SetVariable = GameProgress,HiddenChest
+ - RunNamedCommands = <GLOBAL>,updatequest
+
+
+//******** end skippers
+
+// ******** some ui styff
+
+
+ans=: forward
+- (divhasnotgotclass = fonoff,hide && divhasnotgotclass = hideyshowdirec,hide)
+- playsound = interface/Thud.ogg
+
+ans=: back
+- (divhasnotgotclass = bonoff,hide && divhasnotgotclass = hideyshowdirec,hide)
+- playsound = interface/Thud.ogg
+
+ans=: left
+- (divhasnotgotclass = lonoff,hide && divhasnotgotclass = hideyshowdirec,hide)
+- playsound = interface/Thud.ogg
+
+ans=: right
+- (divhasnotgotclass = ronoff,hide && divhasnotgotclass = hideyshowdirec,hide)
+- playsound = interface/Thud.ogg
+
+// ******* actual game nav stuff
+
+ans=TitleScreen : continue
+- LoadScene = BeforeChurch,BeforeChurch,true
+- LoadScene = OutsideMuseum,OutsideMuseum,false
+- LoadScene = archiveentrance,archiveentrance,false
+- LoadScene = churchentrance,churchentrance,false
+//- LoadScene = AtMuseumDoor,AtMuseumDoor,false
+- AddClassToElement = bonoff,hide
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- SetVariable = lastscene,<currentscenename>
+- SetVariable = lastbookscene,none
+- SetVariable = Chapter,Start
+- AddClassToElement = restoring,hide
+- AddClassToElement = saving,hide
+
+ans=atmuseumdoor: back
+- LoadScene = OutsideMuseum,OutsideMuseum,true
+- LoadScene = Church,Church,false
+- SetScenePosition = 3150,512
+- SetVariable = Panel,NW
+
+ans=outsidemuseum: left
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,NO)
+- RemoveClassFromElement = fonoff,hide
+- (TRUE)
+- (checkvalue = Panel,ZO)
+- RemoveClassFromElement = fonoff,hide
+- (TRUE)
+- (checkvalue = Panel,NW)
+- RemoveClassFromElement = fonoff,hide
+- (TRUE)
+- (checkvalue = Panel,ZNO)
+- RemoveClassFromElement = fonoff,hide
+- (TRUE)
+- EnterAns = left_generic
+
+ans=outsidemuseum: right
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,ZW||checkvalue = Panel,ZW2)
+- RemoveClassFromElement = fonoff,hide
+- (TRUE)
+- (checkvalue = Panel,NO)
+- RemoveClassFromElement = fonoff,hide
+- (TRUE)
+- (checkvalue = Panel,ZO)
+- RemoveClassFromElement = fonoff,hide
+- (TRUE)
+- (checkvalue = Panel,NW)
+- RemoveClassFromElement = fonoff,hide
+- (TRUE)
+- EnterAns = right_generic
+
+ans=OutsideMuseum: forward
+- (checkvalue = Panel,NW)
+
+- SetLocation = AtMuseumDoor
+- LoadScene = AtMuseumDoor
+- SetVariable = Panel,NONE
+- ExitActions
+- (checkvalue = Panel,zno)
+
+- SetLocation = beforechurch
+- LoadScene = beforechurch
+- SetVariable = Panel,zw2
+- SetScenePosition = 9200,512
+- AddClassToElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZW||checkvalue = Panel,ZW2)
+- LoadScene = flowerbit,flowerbit,false
+- LoadScene = toflowerbit,toflowerbit,false
+- LoadScene = outofthorn1,outofthorn1,false
+- SetLocation = fromthemuseum
+- LoadScene = fromthemuseum
+- SetScenePosition = 956,512
+- SetVariable = Panel,NONE
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- ExitActions
+- (checkvalue = Panel,NO)
+- SetVariable = Panel,todode
+- LoadScene = candystore,candystore,false
+- LoadScene = dodeshouse,dodeshouse,false
+- SetLocation = museumdodeinbetween
+- LoadScene = museumdodeinbetween
+- SetScenePosition = 2960,540
+- ExitActions
+
+ans=museumdodeinbetween: forward
+- (checkvalue = Panel,todode)
+- LoadScene = hoogstraat,hoogstraat,false
+- AddClassToElement = fonoff,hide
+- AddClassToElement = bonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- SetLocation = candystore
+- LoadScene = candystore
+- SetVariable = Panel,zno
+- SetScenePosition = 6250,512
+- ExitActions
+- (checkvalue = Panel,tomuseum)
+- SetLocation = OutsideMuseum
+- LoadScene = OutsideMuseum
+- SetVariable = Panel,ZO
+- SetScenePosition = 7000,512
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- AddClassToElement = bonoff,hide
+- AddClassToElement = fonoff,hide
+- ExitActions
+
+
+ans=museumdodeinbetween: back
+- (checkvalue = Panel,tomuseum)
+- SetLocation = candystore
+- LoadScene = candystore
+- AddClassToElement = fonoff,hide
+- AddClassToElement = bonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- SetVariable = Panel,zno
+- SetScenePosition = 6250,512
+- ExitActions
+- (checkvalue = Panel,todode)
+- SetLocation = OutsideMuseum
+- LoadScene = OutsideMuseum
+- SetVariable = Panel,NO
+- SetScenePosition = 4460,512
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- AddClassToElement = bonoff,hide
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+ans=storybookchapter1: back
+- (checkvalue = GameProgress,sbc1 && checkvalue = pagenumber,2)
+- RemoveClassFromElement = hideyshowdirec,hide
+- SetVariable = lastbookscene,<currentscenename> 
+- SetVariable = pagenumber,2
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+- RemoveClassFromElement = storybookonoff,bookused
+- RemoveClassFromElement = playersnotes,hide
+- RunNamedCommands = <GLOBAL>,fbboxFromSB
+- AddClassToElement = exitstory,hide
+- SetVariable = OnStorybook,no
+- ExitActions
+- (checkvalue = GameProgress,sbc1 || checkvalue = GameProgress,entersbc2)
+- RunNamedCommands = SB1pagemanager,hansjecomplains
+- ExitActions
+- (TRUE)
+- RemoveClassFromElement = hideyshowdirec,hide
+- SetVariable = lastbookscene,<currentscenename> 
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+- RemoveClassFromElement = storybookonoff,bookused
+- RemoveClassFromElement = playersnotes,hide
+- RunNamedCommands = <GLOBAL>,fbboxFromSB
+- AddClassToElement = exitstory,hide
+- SetVariable = OnStorybook,no
+- ExitActions
+
+ans=storybookchapter3: back
+- AddClassToElement = exitstory,hide
+- RemoveClassFromElement = hideyshowdirec,hide
+- SetVariable = lastbookscene,<currentscenename> 
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+- RemoveClassFromElement = storybookonoff,bookused
+- RemoveClassFromElement = playersnotes,hide
+- RunNamedCommands = <GLOBAL>,fbboxFromSB
+- SetVariable = OnStorybook,no
+- ExitActions
+
+ans=storybookchapter4: back
+- AddClassToElement = exitstory,hide
+- RemoveClassFromElement = hideyshowdirec,hide
+- SetVariable = lastbookscene,<currentscenename> 
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+- RemoveClassFromElement = storybookonoff,bookused
+- RemoveClassFromElement = playersnotes,hide
+- RunNamedCommands = <GLOBAL>,fbboxFromSB
+- SetVariable = OnStorybook,no
+- ExitActions
+
+ans=storybookchapter5: back
+- AddClassToElement = exitstory,hide
+- SetVariable = lastbookscene,<currentscenename> 
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+- RemoveClassFromElement = storybookonoff,bookused
+- RemoveClassFromElement = playersnotes,hide
+- RunNamedCommands = <GLOBAL>,fbboxFromSB
+- SetVariable = OnStorybook,no
+- RemoveClassFromElement = hideyshowdirec,hide
+- ExitActions
+
+ans=storybookchapterselect: back
+- AddClassToElement = exitstory,hide
+- RemoveClassFromElement = hideyshowdirec,hide
+- SetVariable = lastbookscene,<currentscenename> 
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+- RemoveClassFromElement = storybookonoff,bookused
+- RemoveClassFromElement = playersnotes,hide
+- RunNamedCommands = <GLOBAL>,fbboxFromSB
+- SetVariable = OnStorybook,no
+- ExitActions
+
+
+ans=beforechurch: left
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 9200,512
+- SetVariable = Panel,ZW2
+- ExitActions
+- (checkvalue = Panel,ZW2)
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 8810,512
+- SetVariable = Panel,ZWO
+- ExitActions
+- (checkvalue = Panel,ZWO)
+- ScrollSceneToPosition = 5872,512
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 4770,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- SetScenePosition = 13700,512
+- ScrollSceneToPosition = 11250,512
+- SetVariable = Panel,NO
+- ExitActions
+
+- (checkvalue = Panel,NO)
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 10075,512
+- SetVariable = Panel,NWO
+- ExitActions
+
+- (checkvalue = Panel,NWO)
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 9600,512
+- SetVariable = Panel,NW
+- ExitActions
+
+
+
+- (checkvalue = Panel,NW)
+//- SetScenePosition = 14445,512
+- ScrollSceneToPosition = 9200,512
+- SetVariable = Panel,ZW2
+- ExitActions
+
+ans=beforechurch: right
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,ZW)
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 9600,512
+- SetVariable = Panel,NW
+- ExitActions
+
+- (checkvalue = Panel,NW)
+- SetScenePosition = 10075,512
+- SetVariable = Panel,NWO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+- (checkvalue = Panel,NWO)
+- ScrollSceneToPosition = 11250,512
+- SetVariable = Panel,NO
+- ExitActions
+
+- (checkvalue = Panel,NO)
+- RemoveClassFromElement = fonoff,hide
+- SetScenePosition = 1950,512
+- ScrollSceneToPosition = 4770,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 5872,512
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 8810,512
+- SetVariable = Panel,ZWO
+- ExitActions
+- (checkvalue = Panel,ZWO)
+- ScrollSceneToPosition = 9200,512
+- SetVariable = Panel,ZW2
+- ExitActions
+- (checkvalue = Panel,ZW2)
+//- SetScenePosition = 1090,512
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 9600,512
+- SetVariable = Panel,NW
+- ExitActions
+
+ans=archivedoor: back
+- SetLocation = beforechurch
+- ScrollSceneToPosition = 5872,512
+- SetVariable = Panel,ZO
+- ObjectVisible = ArchiveBC,true
+- ObjectVisible = BCtothearchieve,true
+- ObjectVisible = ArchiveDoor,false
+ - AddClassToElement = bonoff,hide
+ - RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+
+ans=beforechurch: forward
+- (checkvalue = Panel,zwo)
+- LoadScene = tochurchentrance,tochurchentrance,true
+- LoadScene = churchentrance,churchentrance,false
+- AddClassToElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- ExitActions
+- (checkvalue = Panel,NW)
+- LoadScene = toabbeyspot,toabbeyspot,true
+- LoadScene = abbeyspot,abbeyspot,false
+- AddClassToElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- ExitActions
+
+- (checkvalue = Panel,zno)
+- LoadScene = OutsideMuseum,OutsideMuseum,true
+//- LoadScene = AtMuseumDoor,AtMuseumDoor,false
+- LoadScene = museumdodeinbetween,museumdodeinbetween,false
+- LoadScene = fromthemuseum,fromthemuseum,false
+- SetScenePosition = 3150,512
+- SetVariable = Panel,NW
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+- (checkvalue = Panel,NWO)
+- SetVariable = Panel,enterfrombeforechurch
+- LoadScene = aroundcarpark,aroundcarpark,true
+
+ans=abbeyspot: left
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 12745,512
+- SetVariable = Panel,ZW2
+- ExitActions
+- (checkvalue = Panel,ZW2)
+- ScrollSceneToPosition = 11100,512
+- SetVariable = Panel,ZWO
+- ExitActions
+- (checkvalue = Panel,ZWO)
+- ScrollSceneToPosition = 9040,512
+- RemoveClassFromElement = fonoff,hide
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 7558,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 5016,512
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 2790,512
+- SetVariable = Panel,NW
+- ExitActions
+- (checkvalue = Panel,NW)
+- SetScenePosition = 14445,512
+- ScrollSceneToPosition = 12745,512
+- SetVariable = Panel,ZW2
+- ExitActions
+
+
+ans=abbeyspot: right
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,ZW)
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 2790,512
+- SetVariable = Panel,NW
+- ExitActions
+- (checkvalue = Panel,NW)
+- ScrollSceneToPosition = 5016,512
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 7558,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 9040,512
+- RemoveClassFromElement = fonoff,hide
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 11100,512
+- SetVariable = Panel,ZWO
+- ExitActions
+- (checkvalue = Panel,ZWO)
+- ScrollSceneToPosition = 12745,512
+- SetVariable = Panel,ZW2
+- ExitActions
+- (checkvalue = Panel,ZW2)
+- AddClassToElement = fonoff,hide
+- SetScenePosition = 1090,512
+- ScrollSceneToPosition = 2790,512
+- SetVariable = Panel,NW
+- ExitActions
+
+ans=abbeyspot: forward
+- (checkvalue = Panel,ZNO)
+- SetVariable = Panel,enterfromabbeyspot
+- LoadScene = aroundcarpark,aroundcarpark,true
+- ExitActions
+- (checkvalue = Panel,tempdisabledasthevariablewillneverequalthissentance)
+- SetLocation = wallpuzzle
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- AddClassToElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- LoadScene = wallpuzzle,wallpuzzle,true
+- (checkvalue = Panel,ZO)
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- LoadScene = fromabbeyspot,fromabbeyspot,true
+- SetScenePosition = 960,512
+
+ans=wallpuzzle: back
+- LoadScene = abbeyspot,abbeyspot,true
+- SetLocation = abbeyspot
+- RemoveClassFromElement = fonoff,hide
+
+ans=wallsecret: back
+- LoadScene = abbeyspot,abbeyspot,true
+- SetLocation = abbeyspot
+- RemoveClassFromElement = fonoff,hide
+
+ans=: right_generic
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 3150,512
+- SetVariable = Panel,NW
+- ExitActions
+- (checkvalue = Panel,NW)
+- ScrollSceneToPosition = 4500,512
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 6350,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 7800,512
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 10330,512
+- SetVariable = Panel,ZW2
+- ExitActions
+- (checkvalue = Panel,ZW2)
+- SetScenePosition = 1570,512
+- ScrollSceneToPosition = 3150,512
+- SetVariable = Panel,NW
+- ExitActions
+
+ans=: left_generic
+- (checkvalue = Panel,NW)
+- ScrollSceneToPosition = 1570,512
+- SetVariable = Panel,ZW
+- ExitActions
+- (checkvalue = Panel,ZW||checkvalue = Panel,ZW2)
+- SetScenePosition = 10330,512
+- ScrollSceneToPosition = 7800,512
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 6350,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 4500,512
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 3150,512
+- SetVariable = Panel,NW
+- ExitActions
+
+
+
+
+ans=churchentrance: left
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,NW)
+- SetScenePosition = 15660,512
+- ScrollSceneToPosition = 11000,512
+- SetVariable = Panel,ZW2
+- ExitActions
+- (checkvalue = Panel,ZW||checkvalue = Panel,ZW2)
+- ScrollSceneToPosition = 8263,512
+- SetVariable = Panel,ZO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 5640,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 3250,512
+- SetVariable = Panel,NO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 1760,512
+- SetVariable = Panel,NW
+- AddClassToElement = fonoff,hide
+- ExitActions
+
+ans=churchentrance: right
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 1760,512
+- SetVariable = Panel,NW
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NW)
+- SetScenePosition = 1760,512
+- ScrollSceneToPosition = 3250,512
+- SetVariable = Panel,NO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 5640,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 8263,512
+- SetVariable = Panel,ZO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 11000,512
+- SetVariable = Panel,ZW2
+- ExitActions
+- (checkvalue = Panel,ZW2)
+- ScrollSceneToPosition = 15660,512
+- AddClassToElement = fonoff,hide
+- SetVariable = Panel,NW
+- ExitActions
+
+ans=churchentrance: forward
+- (checkvalue = Panel,NW)
+- SetLocation = Church
+- LoadScene = Church
+- LoadScene = outofchurch,outofchurch,false
+- LoadScene = tothecrypt,tothecrypt,false
+- SetVariable = Panel,ZO
+- SetScenePosition = 9480,750
+- ExitActions
+- (checkvalue = Panel,ZO)
+- SetLocation = Hoogstraat
+- LoadScene = Hoogstraat
+- SetVariable = Panel,South
+- RemoveClassFromElement = bonoff,hide
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = fonoff,hide
+- SetScenePosition = 3600,512
+- ExitActions
+- (checkvalue = Panel,NO)
+- LoadScene = beforechurch,beforechurch,true
+- SetScenePosition = 4770,512
+- SetVariable = Panel,ZNO
+- ExitActions
+
+
+//---------------------------------- Hoogstraat
+
+ans=hoogstraat: right
+- AddClassToElement = fonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- (checkvalue = Panel,West)
+- ScrollSceneToPosition = 3600,512
+- SetVariable = Panel,South
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- ExitActions
+- (checkvalue = Panel,South)
+- ScrollSceneToPosition = 7500,512
+- SetVariable = Panel,East
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,East)
+- SetVariable = Panel,ZO
+- SetLocation = churchentrance
+- LoadScene = churchentrance
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = bonoff,hide
+- SetScenePosition = 15660,512
+- addclasstoelement = fonoff,hide
+- setvariable = Panel,NW
+- ExitActions
+
+
+ans=hoogstraat: left
+- AddClassToElement = fonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- (checkvalue = Panel,East)
+- ScrollSceneToPosition = 3600,512
+- SetVariable = Panel,South
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- ExitActions
+- (checkvalue = Panel,South)
+- ScrollSceneToPosition = 1000,512
+- SetVariable = Panel,West
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,West)
+- SetVariable = Panel,ZO
+- SetLocation = churchentrance
+- LoadScene = churchentrance
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = bonoff,hide
+- SetScenePosition = 15660,512
+- addclasstoelement = fonoff,hide
+- setvariable = Panel,NW
+- ExitActions
+
+ans=hoogstraat: back
+- (checkvalue = Panel,East)
+- SetScenePosition = 1000,512
+- setvariable = Panel,West
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = bonoff,hide
+- ExitActions
+- (checkvalue = Panel,West)
+- SetScenePosition = 7500,512
+- setvariable = Panel,East
+- removeclassfromelement = fonoff,hide
+- removeclassfromelement = lonoff,hide
+- removeclassfromelement = ronoff,hide
+- ExitActions
+- (checkvalue = Panel,South)
+- LoadScene = churchentrance,churchentrance,true
+- SetScenePosition = 8263,512
+- SetVariable = Panel,ZO
+- RemoveClassFromElement = fonoff,hide
+
+ans=hoogstraat: forward
+- (checkvalue = Panel,West)
+- SetLocation = candystore
+- LoadScene = candystore
+- SetVariable = Panel,no
+- SetScenePosition = 3750,512
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- (checkvalue = Panel,East)
+- SetParagraph = PlayerBox,noleavetown1
+- AddObjectProperty = PlayerBox,text_visible
+
+//---------------------------------- CandyStore
+
+ans=candystore: left
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,NW)
+- SetScenePosition = 15000,512
+- ScrollSceneToPosition = 12640,512
+- SetVariable = Panel,ZW2
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+
+- (checkvalue = Panel,ZW||checkvalue = Panel,ZW2)
+- RemoveClassFromElement = fonoff,hide
+- ScrollSceneToPosition = 11000,512
+- SetVariable = Panel,ZO2
+- ExitActions
+
+- (checkvalue = Panel,ZO2)
+- ScrollSceneToPosition = 10070,512
+- SetVariable = Panel,ZO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 6250,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 3750,512
+- SetVariable = Panel,NO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 1126,512
+- SetVariable = Panel,NW
+- ExitActions
+
+ans=candystore: right
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 1376,512
+- SetVariable = Panel,NW
+- ExitActions
+- (checkvalue = Panel,NW)
+- SetScenePosition = 1376,512
+- ScrollSceneToPosition = 3750,512
+- SetVariable = Panel,NO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 6250,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 10070,512
+- SetVariable = Panel,ZO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 11000,512
+- SetVariable = Panel,ZO2
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+
+
+
+- (checkvalue = Panel,ZO2)
+- ScrollSceneToPosition = 12640,512
+- SetVariable = Panel,ZW2
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+
+- (checkvalue = Panel,ZW2)
+- ScrollSceneToPosition = 14750,512
+- SetVariable = Panel,NW
+- ExitActions
+
+ans=candystore: forward
+- (checkvalue = Panel,ZO)
+- SetLocation = hoogstraat
+- LoadScene = hoogstraat
+- SetVariable = Panel,east
+- SetScenePosition = 7500,512
+- RemoveClassFromElement = bonoff,hide
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = fonoff,hide
+- ExitActions
+
+- (checkvalue = Panel,NO)
+- SetLocation = dodeshouse
+- LoadScene = dodeshouse
+- SetVariable = Panel,NO
+- SetScenePosition = 3660,512
+- AddClassToElement = bonoff,hide
+- AddClassToElement = fonoff,hide
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+
+- ExitActions
+
+- (checkvalue = Panel,ZW2)
+- SetVariable = Panel,tomuseum
+- SetLocation = museumdodeinbetween
+- LoadScene = museumdodeinbetween
+- SetScenePosition = 960,540
+- ExitActions
+- (checkvalue = Panel,ZO2)
+- AddObjectProperty = PlayerBox,text_visible
+- SetParagraph = PlayerBox,noicecream
+
+//---------------------------------- 
+
+ans=dodeshouse: left
+- AddClassToElement = fonoff,hide
+- AddClassToElement = bonoff,hide
+- (checkvalue = Panel,NW)
+- SetScenePosition = 12237,512
+- ScrollSceneToPosition = 10331,512
+- SetVariable = Panel,ZW2
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZW||checkvalue = Panel,ZW2)
+- ScrollSceneToPosition = 8270,512
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 4194,512
+- SetVariable = Panel,ZNO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 3660,512
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 982,512
+- SetVariable = Panel,NW
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+ans=dodeshouse: right
+- AddClassToElement = fonoff,hide
+- AddClassToElement = bonoff,hide
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 982,512
+- SetVariable = Panel,NW
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NW)
+- SetScenePosition = 982,512
+- ScrollSceneToPosition = 3660,512
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 4194,512
+- SetVariable = Panel,ZNO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 8270,512
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 10331,512
+- SetVariable = Panel,ZW2
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZW2)
+- ScrollSceneToPosition = 12237,512
+- RemoveClassFromElement = fonoff,hide
+- SetVariable = Panel,NW
+- ExitActions
+
+
+ans=dodeshouse: forward
+- (checkvalue = Panel,ZW2)
+- SetLocation = candystore
+- LoadScene = candystore
+- SetVariable = Panel,ZO
+- SetScenePosition = 10070,512
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- ExitActions
+
+- (checkvalue = Panel,NW)
+- LoadScene = tofromflowerbit,toflowerbit,true
+- SetLocation = toflowerbit
+- SetVariable = Panel,NO
+- SetScenePosition = 958,512
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- ExitActions
+
+- (checkvalue = Panel,ZNO)
+- SetParagraph = PlayerBox,noleavetown1
+- AddObjectProperty = PlayerBox,text_visible
+
+ans=dodebasement: back
+- RemoveObjectProperty = dodebasement,visible
+
+// ---------------- tofromflowerbit
+
+ans=toflowerbit: forward
+- SetLocation = flowerbit
+- LoadScene = flowerbit
+- SetVariable = Panel,NO
+- SetScenePosition = 5200,512
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- ExitActions
+
+ans=fromflowerbit: forward
+- SetLocation = dodeshouse
+- LoadScene = dodeshouse
+- SetVariable = Panel,zno
+- SetScenePosition = 7500,512
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- ExitActions
+
+// ---------------- flowerbit
+
+
+ans=flowerbit: left
+- AddClassToElement = fonoff,hide
+- AddClassToElement = bonoff,hide
+- (checkvalue = Panel,NW)
+- SetScenePosition = 18111,512
+- ScrollSceneToPosition = 15000,512
+- SetVariable = Panel,ZW2
+- ExitActions
+- (checkvalue = Panel,ZW||checkvalue = Panel,ZW2)
+- ScrollSceneToPosition = 11570,512
+- SetVariable = Panel,ZO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 8000,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 5200,512
+- SetVariable = Panel,NO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 2300,512
+- SetVariable = Panel,NW
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+ans=flowerbit: right
+- AddClassToElement = fonoff,hide
+- AddClassToElement = bonoff,hide
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 766,512
+- SetVariable = Panel,NW
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NW)
+- SetScenePosition = 2300,512
+- ScrollSceneToPosition = 5200,512
+- SetVariable = Panel,NO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 8000,512
+- SetVariable = Panel,ZNO
+- ExitActions
+- (checkvalue = Panel,ZNO)
+- ScrollSceneToPosition = 11570,512
+- SetVariable = Panel,ZO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 15000,512
+- SetVariable = Panel,ZW2
+- ExitActions
+- (checkvalue = Panel,ZW2)
+- ScrollSceneToPosition = 18111,512
+- RemoveClassFromElement = fonoff,hide
+- SetVariable = Panel,NW
+- ExitActions
+
+ans=flowerbit: forward
+- (checkvalue = Panel,ZO)
+- SetLocation = fromflowerbit
+- LoadScene = tofromflowerbit
+- SetVariable = Panel,NO
+- SetScenePosition = 2960,512
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- ExitActions
+
+- (checkvalue = Panel,NW)
+- SetLocation = tothemuseum
+- LoadScene = tothemuseum
+- SetObjectState = tothemuseum,gotoframe0
+- SetVariable = Panel,NO
+- SetScenePosition = 956,512
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- ExitActions
+
+- (checkvalue = Panel,NO)
+- LoadScene = outofthornpan,outofthornpan,false
+- LoadScene = toswamp,toswamp,false
+- LoadScene = outofthorn1,outofthorn1,true
+- SetVariable = Panel,NO
+- SetScenePosition = 958,512
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- ExitActions
+
+// ------------------ outofthorn1
+
+
+ans=outofthorn1: forward
+
+- SetLocation = outofthorn2
+- SetScenePosition = 2952,512
+
+
+ans=outofthorn2: forward
+
+- SetLocation = outofthorn3
+- SetScenePosition = 4945,512
+
+ans=outofthorn3: forward
+- SetLocation = outofthornpan
+- LoadScene = outofthornpan,outofthornpan,true
+- SetScenePosition = 1000,512
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = bonoff,hide
+- SetVariable = Panel,West
+- ExitActions
+
+ans=outofthorn1: back
+
+- SetLocation = flowerbit
+- LoadScene = flowerbit
+- SetVariable = Panel,NO
+- SetScenePosition = 5200,512
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- ExitActions
+
+ans=outofthorn2: back
+
+- SetLocation = outofthorn1
+- SetScenePosition = 958,512
+
+ans=outofthorn3: back
+
+- SetLocation = outofthorn2
+- SetScenePosition = 2952,512
+
+//-------------------- outofthornpan
+
+ans=outofthornpan: right
+- AddClassToElement = fonoff,hide
+
+- (checkvalue = Panel,West)
+- ScrollSceneToPosition = 3600,512
+- SetVariable = Panel,South
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- ExitActions
+
+- (checkvalue = Panel,South)
+- ScrollSceneToPosition = 7500,512
+- SetVariable = Panel,East
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+- (checkvalue = Panel,East)
+- ScrollSceneToPosition = 11518,512
+- SetVariable = Panel,North
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = fonoff,hide
+- AddClassToElement = ronoff,hide
+- ExitActions
+
+
+ans=outofthornpan: left
+- AddClassToElement = fonoff,hide
+
+- (checkvalue = Panel,North)
+- SetVariable = Panel,East
+- ScrollSceneToPosition = 7500,512
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+- (checkvalue = Panel,East)
+- ScrollSceneToPosition = 3600,512
+- SetVariable = Panel,South
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- ExitActions
+
+- (checkvalue = Panel,South)
+- ScrollSceneToPosition = 970,512
+- SetVariable = Panel,West
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = fonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = bonoff,hide
+- ExitActions
+
+
+
+
+ans=outofthornpan: forward
+- (checkvalue = Panel,East)
+- SetLocation = intothorn
+- LoadScene = intothorn,intothorn,true
+- SetScenePosition = 2902,512
+- RemoveClassFromElement = bonoff,hide
+- RemoveClassFromElement = fonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = bonoff,hide
+- SetVariable = Panel,West
+- ExitActions
+
+- (checkvalue = Panel,West)
+- RunNamedCommands = <GLOBAL>,EndChecker
+- (checkvalue = Panel,West && checkvalue = Ready,NoWay)
+- SetParagraph = PlayerBox,noleavetown1
+- AddObjectProperty = PlayerBox,text_visible
+- (checkvalue = Panel,West && checkvalue = Ready,Whoops)
+- RunNamedCommands = WallPuzzleHereswind,Hdnotyetbuster
+- (checkvalue = Panel,West && checkvalue = Ready,SetGo)
+- RunNamedCommands = WallPuzzleHereswind,Hdpointofnoreturn
+- AddClassToElement = hideyshowdirec,hide
+- ExitActions
+
+- (checkvalue = Panel,North)
+- SetVariable = Panel,enterfromoutoftown
+- LoadScene = aroundtownroot,aroundtownroot,true
+- ExitActions
+
+
+ans=: ToTheSwampToFindTreasureYeah
+- SetLocation = leavingthorn
+- LoadScene = leavingthorn,leavingthorn,true
+- SetScenePosition = 960,512
+- RemoveClassFromElement = bonoff,hide
+- RemoveClassFromElement = fonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- SetVariable = Panel,West
+- ExitActions
+
+// ------------------ intothorn
+
+
+ans=intothorn: forward
+
+- SetLocation = intothorn2
+- SetScenePosition = 958,512	
+
+ans=intothorn2: forward
+
+- SetLocation = flowerbit
+- LoadScene = flowerbit,flowerbit,true
+- SetScenePosition = 11570,512
+- SetVariable = Panel,ZO
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = bonoff,hide
+- ExitActions
+
+
+// ------------------ leavingthorn
+
+
+ans=leavingthorn: forward
+
+- SetLocation = leavingthorn2
+- SetScenePosition = 2887,512
+
+ans=leavingthorn2: forward
+
+- SetLocation = leavingthorn3
+- SetScenePosition = 4833,512
+
+ans=leavingthorn3: forward
+
+- SetLocation = leavingthorn4
+- SetScenePosition = 6810,512
+
+ans=leavingthorn4: forward
+- SetLocation = toswamp
+- LoadScene = toswamp,toswamp,true
+
+
+ans=leavingthorn: back
+
+- SetLocation = outofthornpan
+- LoadScene = outofthornpan,outofthornpan,true
+- SetScenePosition = 1000,512
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = bonoff,hide
+- SetVariable = Panel,West
+
+ans=leavingthorn2: back
+
+- SetLocation = leavingthorn
+- SetScenePosition = 960,512
+
+ans=leavingthorn3: back
+
+- SetLocation = leavingthorn2
+- SetScenePosition = 2887,512
+
+
+ans=leavingthorn4: back
+
+- SetLocation = leavingthorn3
+- SetScenePosition = 4833,512
+
+
+// ------------------ toswamp
+
+ans=toswamp: forward
+- RunNamedCommands = crazypath,NextFrame
+
+ans=toswamp: back
+- RunNamedCommands = crazypath,prevframe
+
+
+
+// ------------------ tothemuseum
+
+
+ans=tothemuseum: forward
+
+- SetLocation = tothemuseum2
+- SetObjectState = tothemuseumsteps,NextFrameLoop
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+
+//- SetScenePosition = 3700,512
+//- RemoveClassFromElement = lonoff,hide
+//- AddClassToElement = ronoff,hide
+//- AddClassToElement = fonoff,hide
+//- SetVariable = Panel,right
+
+ans=tothemuseum2: forward
+- SetLocation = tothemuseum3
+- SetObjectState = tothemuseumsteps,NextFrameLoop
+
+ans=tothemuseum3: forward
+- SetLocation = tothemuseum4
+- SetObjectState = tothemuseumsteps,NextFrameLoop
+
+
+//- SetVariable = Panel,none
+//- SetScenePosition = 5550,512
+//- AddClassToElement = lonoff,hide
+//- AddClassToElement = ronoff,hide
+//- RemoveClassFromElement = fonoff,hide
+//- RemoveClassFromElement = bonoff,hide
+
+
+ans=tothemuseum3: back
+- SetLocation = tothemuseum2
+- SetObjectState = tothemuseumsteps,PrevFrameLoop
+
+ans=tothemuseum4: back
+- SetLocation = tothemuseum3
+- SetObjectState = tothemuseumsteps,PrevFrameLoop
+
+//- SetScenePosition = 2500,512
+//- AddClassToElement = lonoff,hide
+//- RemoveClassFromElement = ronoff,hide
+//- RemoveClassFromElement = fonoff,hide	
+//- SetVariable = Panel,left
+
+ans=tothemuseum4: forward
+- LoadScene = outsidemuseum
+- SetLocation = outsidemuseum
+- SetVariable = Panel,zno
+- SetScenePosition = 5550,512
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = fonoff,hide
+- AddClassToElement = bonoff,hide
+
+//ans=tothemuseum2: left
+//- ScrollSceneToPosition = 2500,512
+//- AddClassToElement = lonoff,hide
+//- RemoveClassFromElement = ronoff,hide
+//- RemoveClassFromElement = fonoff,hide	
+//- SetVariable = Panel,left
+
+///ans=tothemuseum2: right
+//- ScrollSceneToPosition = 3700,512
+//- AddClassToElement = ronoff,hide
+//- AddClassToElement = fonoff,hide
+//- RemoveClassFromElement = lonoff,hide
+//- SetVariable = Panel,right
+
+ans=tothemuseum2: back
+- SetLocation = tothemuseum
+- SetObjectState = tothemuseumsteps,PrevFrameLoop
+
+//- LoadScene = tothemuseum
+//- SetVariable = Panel,NO
+//- SetScenePosition = 820,512
+//- RemoveClassFromElement = fonoff,hide
+//- RemoveClassFromElement = bonoff,hide
+//- AddClassToElement = lonoff,hide
+//- AddClassToElement = ronoff,hide
+//- ExitActions
+
+
+ans=tothemuseum: back
+- SetLocation = flowerbit
+- LoadScene = flowerbit
+- SetVariable = Panel,NW
+- SetScenePosition = 16050,512
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- ExitActions
+
+
+// ------------------
+
+
+
+
+ans=aroundcarpark: forward
+- RunNamedCommands = acpathcontroller,moveforward
+
+ans=aroundcarpark: back
+- RunNamedCommands = acpathcontroller,turnaround
+
+ans=aroundcarpark: left
+- RunNamedCommands = acpathcontroller,turnleft
+
+ans=aroundcarpark: right
+- RunNamedCommands = acpathcontroller,turnright
+
+ans=aroundtownroot: forward
+- RunNamedCommands = atpathcontroller,moveforward
+
+ans=aroundtownroot: back
+- RunNamedCommands = atpathcontroller,turnaround
+
+ans=aroundtownroot: left
+- RunNamedCommands = atpathcontroller,turnleft
+
+ans=aroundtownroot: right
+- RunNamedCommands = atpathcontroller,turnright
+
+
+ans=tochurchentrance: forward
+- AddClassToElement = fonoff,hide
+- SetVariable = Panel,ZW2
+- SetLocation = churchentrance
+- LoadScene = churchentrance
+- LoadScene = church,church,false
+- ExitActions
+
+
+ans=tochurchentrance: back
+- SetVariable = Panel,zwo
+- SetLocation = beforechurch
+- LoadScene = beforechurch
+- SetScenePosition = 8760,512
+- ExitActions
+
+ans=toabbeyspot: forward
+- SetLocation = toabbeyspot2
+- SetScenePosition = 1450,512
+
+ans=toabbeyspot2: forward
+- SetLocation = toabbeyspot3
+- SetScenePosition = 4200,512
+
+ans=toabbeyspot3: forward
+- LoadScene = fromabbeyspot,fromabbeyspot,false
+- LoadScene = wallpuzzle,wallpuzzle,false
+- LoadScene = abbeyspot,abbeyspot,true
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = fonoff,hide
+- SetScenePosition = 4200,512
+- SetVariable = Panel,NO
+
+
+ans=fromabbeyspot: forward
+- AddClassToElement = ronoff,hide
+- SetLocation = fromabbeyspot2
+- SetObjectState = fromabbey,NextFrameLoop
+//- SetScenePosition = 3500,512
+
+ans=fromabbeyspot: right
+- LoadScene = abbeyspot,abbeyspot,true
+- SetVariable = Panel,NW
+- SetScenePosition = 2790,512
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = fonoff,hide
+
+ans=fromabbeyspot2: forward
+- SetLocation = fromabbeyspot3
+- SetObjectState = fromabbey,NextFrameLoop
+//- SetScenePosition = 5740,512
+- AddClassToElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+
+
+ans=fromabbeyspot3: forward
+- SetLocation = fromabbeyspot4
+- SetObjectState = fromabbey,NextFrameLoop
+//- SetScenePosition = 7600,512
+
+ans=fromabbeyspot4: forward
+- LoadScene = beforechurch,beforechurch,true
+- SetObjectState = fromabbey,gotoframe0
+- AddClassToElement = bonoff,hide
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- SetScenePosition = 4770,512
+- SetVariable = Panel,zno
+	
+
+
+ans=fromthemuseum: forward
+- SetLocation = fromthemuseum2
+- SetScenePosition = 2902,512
+
+ans=fromthemuseum2: forward
+- SetLocation = fromthemuseum3
+- SetScenePosition = 4856,512
+
+ans=fromthemuseum3: forward
+- SetLocation = fromthemuseum4
+- SetScenePosition = 6805,512
+
+ans=fromthemuseum4: forward
+- SetLocation = fromthemuseum5
+- SetScenePosition = 8777,512
+
+ans=fromthemuseum5: forward
+- SetLocation = flowerbit
+- LoadScene = flowerbit
+- AddClassToElement = fonoff,hide
+- SetScenePosition = 8000,512
+- SetVariable = Panel,zno
+- ExitActions
+
+ans=fromthemuseum: back
+- SetScenePosition = 770,512
+- SetVariable = Panel,zw
+- LoadScene = outsidemuseum
+- SetLocation = outsidemuseum
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = fonoff,hide
+- AddClassToElement = bonoff,hide
+
+ans=fromthemuseum2: back
+- SetLocation = fromthemuseum
+- SetScenePosition = 956,512
+
+ans=fromthemuseum3: back
+- SetLocation = fromthemuseum2
+- SetScenePosition = 2893,512
+
+ans=fromthemuseum4: back
+- SetLocation = fromthemuseum3
+- SetScenePosition = 4856,512
+
+ans=fromthemuseum5: back
+- SetLocation = fromthemuseum4
+- SetScenePosition = 6805,512
+
+
+ans=Church: left
+- (checkvalue = Panel,NW)
+- ScrollSceneToPosition = 2707,750
+- SetVariable = Panel,ZW
+- AddClassToElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZW||checkvalue = Panel,ZW2)
+- SetScenePosition = 11273,750
+- ScrollSceneToPosition = 9040,750
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 7360,750
+- SetVariable = Panel,NZO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NZO)
+- ScrollSceneToPosition = 6869,750
+- AddClassToElement = fonoff,hide
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 4925,750
+- SetVariable = Panel,NW
+- RunNamedCommands = <GLOBAL>,sbc3noforwardchecker
+- ExitActions
+
+
+ans=Church: right
+- RemoveClassFromElement = fonoff,hide
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 4925,750
+- RunNamedCommands = <GLOBAL>,sbc3noforwardchecker
+- SetVariable = Panel,NW
+- ExitActions
+- (checkvalue = Panel,NW)
+- ScrollSceneToPosition = 6869,750
+- AddClassToElement = fonoff,hide
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 7360,750
+- SetVariable = Panel,NZO
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,NZO)
+- ScrollSceneToPosition = 9040,750
+- AddClassToElement = fonoff,hide
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 11273,750
+- SetVariable = Panel,ZW2
+- AddClassToElement = fonoff,hide
+- ExitActions
+- (checkvalue = Panel,ZW2)
+- SetScenePosition = 2707,750
+- ScrollSceneToPosition = 4925,750
+- SetVariable = Panel,NW
+- RunNamedCommands = <GLOBAL>,sbc3noforwardchecker
+- ExitActions
+
+
+
+ans=Crypt: right
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,left)
+- ScrollSceneToPosition = 1900,592
+- SetVariable = Panel,ZW
+- ExitActions
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 2700,592
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 3590,592
+- SetVariable = Panel,NO
+- ExitActions
+
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 4162,592
+- SetVariable = Panel,right
+//- EnterAns = justforanarrow
+- AddClassToElement = bonoff,hide
+- ExitActions
+- (checkvalue = Panel,right)
+- LoadScene = outofcrypt,outofcrypt,true
+- ObjectVisible = stairglowa,true
+- ObjectVisible = floortileglow,false
+- SetObjectState = outofcryptsteps,gotoframe0
+//- SetScenePosition = 850,592
+- AddClassToElement = ronoff,hide
+- AddClassToElement = bonoff,hide
+- RemoveClassFromElement = fonoff,hide
+- ExitActions
+
+ans=Crypt: justforanarrow
+- (checkvalue = GameProgress,intothecrypt)
+- RemoveClassFromElement = fonoff,hide
+
+ans=Crypt: left
+- RemoveClassFromElement = ronoff,hide
+- RemoveClassFromElement = lonoff,hide
+- AddClassToElement = fonoff,hide
+- (checkvalue = Panel,right)
+- ScrollSceneToPosition = 3590,592
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 2700,592
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 1900,592
+- SetVariable = Panel,ZW
+- ExitActions
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 1000,592
+- SetVariable = Panel,left
+- AddClassToElement = lonoff,hide
+- ExitActions
+
+ans=outofchurch: forward
+- SetVariable = Panel,ZO
+- SetScenePosition = 8263,512
+- SetLocation = churchentrance
+- LoadScene = churchentrance
+- AddClassToElement = bonoff,hide
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- ExitActions
+
+ans=outofchurch: back
+- SetLocation = Church
+- LoadScene = Church
+- SetVariable = Panel,ZO
+- SetScenePosition = 9480,750
+
+ans=Church: forward
+- (checkvalue = Panel,NW)
+- LoadScene = outofchurch,outofchurch,true
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- ExitActions
+- (checkvalue = Panel,NZO)
+- LoadScene = crypt,crypt,false
+- LoadScene = cryptdetails,cryptdetails,false
+- LoadScene = casket,casket,false
+- LoadScene = ToTheCrypt,ToTheCrypt,true
+- SetVariable = Panel,NO
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- RemoveClassFromElement = bonoff,hide
+
+ans=ToTheCrypt: back
+- AddClassToElement = bonoff,hide
+- LoadScene = Church
+- SetVariable = Panel,ZW
+- SetScenePosition = 1870,750
+
+ans=ToTheCrypt: forward
+- AddClassToElement = bonoff,hide
+- SetObjectState = tothecryptsteps,NextFrameLoop
+- SetLocation = ToTheCrypt2
+//- SetScenePosition = 3000,512
+- playsound = scenes/introcrypt_Stairs_Knock.ogg
+
+ans=ToTheCrypt2: forward
+- SetLocation = ToTheCrypt3
+- SetObjectState = tothecryptsteps,NextFrameLoop
+//- SetScenePosition = 5000,512
+- playsound = scenes/introcrypt_Stairs_Knock.ogg
+	
+ans=ToTheCrypt3: forward
+- LoadScene = Crypt,Crypt,true
+- SetVariable = Panel,left
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- SetScenePosition = 1000,592
+- playsound = scenes/introcrypt_Stairs_Knock.ogg
+
+ans=Crypt: forward
+- (checkvalue = Panel,right)
+- (checkvalue = GameProgress,intothecrypt)
+- RemoveObjectProperty = CryptPlayerBox,text_visible 
+- LoadScene = casket,casket,true
+- SetScenePosition = 1412,512
+- AddClassToElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- RemoveClassFromElement = fonoff,hide
+
+ans=Crypt: back
+- LoadScene = outofcrypt,outofcrypt,true
+- ObjectVisible = stairglowa,true
+- ObjectVisible = floortileglow,false
+- SetObjectState = outofcryptsteps,gotoframe0
+//- SetScenePosition = 850,512
+- AddClassToElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = bonoff,hide
+- RemoveClassFromElement = fonoff,hide
+
+
+ans=cryptdetails: back
+- LoadScene = Crypt,Crypt,true
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = fonoff,hide
+- RemoveClassFromElement = lonoff,hide
+
+ans=outofcrypt: forward
+- SetLocation = outofcrypt2
+- SetObjectState = outofcryptsteps,NextFrameLoop
+- ObjectVisible = stairglowa,false
+//- SetScenePosition = 3000,512
+- playsound = scenes/introcrypt_Stairs_Knock.ogg
+
+ans=outofcrypt2: forward
+- SetLocation = outofcrypt3
+- SetObjectState = outofcryptsteps,NextFrameLoop
+- ObjectVisible = floortileglow,true
+- playsound = scenes/introcrypt_Stairs_Knock.ogg
+//- SetScenePosition = 5450,512
+
+ans=outofcrypt3: forward
+- SetLocation = outofcrypt4
+- SetObjectState = outofcryptsteps,NextFrameLoop
+- ObjectVisible = floortileglow,false
+//- SetScenePosition = 7320,512
+
+ans=outofcrypt4: forward
+- SetLocation = Church
+- LoadScene = Church
+- SetVariable = Panel,zw
+- AddClassToElement = fonoff,hide
+- SetScenePosition = 3870,750
+
+
+ans=casket: forward
+
+- SetLocation = casket2
+- SetScenePosition = 3871,512
+- (hasnotgotproperty = casketladyshadow,talkedto)
+- RunNamedCommandsAfter = casketladyshadow,closer1,200
+
+ans=casket2: forward
+
+- SetLocation = casket3
+- SetScenePosition = 6262,512
+- (hasnotgotproperty = casketladyshadow,talkedto)
+- RunNamedCommandsAfter = casketladyshadow,closer2,200
+
+ans=casket3: forward
+- SetLocation = casket4
+- SetObjectState = breath,PlayForward
+- RunNamedCommandsAfter = breath,triggerbreathing,3000 
+- RunNamedCommandsAfter = caskettexteffect,triggerglow,4000
+- RunNamedCommandsAfter = sparkle,showsparkle,5000 
+- RunNamedCommandsAfter = sparkle,stopsparkle,9000 
+- ObjectVisible = handprint,true
+- AddClassToElement = fonoff,hide 
+- (hasnotgotproperty = casketladyshadow,talkedto)
+- AddObjectProperty = casketladyshadow,talkedto
+- RunNamedCommandsAfter = casketladyshadow,childgetsaway,200
+
+ans=casket4: back
+- (checkvalue = GameProgress,entersbc3 && checknotvalue = hereswind,appearing)
+- AddObjectProperty = PlayerBox,text_visible
+- SetParagraph = PlayerBox,glowingnow
+- ExitActions
+(TRUE)
+- SetLocation = casket2
+- SetScenePosition = 3871,512
+- SetObjectURL = breath,breath0.png,5
+- SetObjectState = breath,PlayBack
+- RemoveClassFromElement = fonoff,hide
+
+ans=casket3: back
+- SetLocation = casket2
+- SetScenePosition = 3871,512
+
+ans=casket2: back
+- SetLocation = casket
+- SetScenePosition = 1412,512
+- EnterAns = feedbackboxunpoof
+
+ans=casket: back
+- LoadScene = Crypt,Crypt,true
+- SetVariable = Panel,right
+- SetScenePosition = 4162,512
+- RemoveClassFromElement = lonoff,hide
+- RemoveClassFromElement = ronoff,hide
+- AddClassToElement = bonoff,hide
+
+ans=Font: back
+- (checkvalue = gameprogress,entersbc3)
+- AddObjectProperty = PlayerBox,text_visible
+- SetParagraph = PlayerBox,pwhatshere
+- (checknotvalue = gameprogress,entersbc3)
+- LoadScene = Church,Church,True
+- SetScenePosition = 4925,750
+- RemoveClassFromElement = fonoff,hide
+- AddClassToElement = bonoff,hide
+- SetVariable = Panel,NW
+
+
+
+ans=archiveentrance: back
+- RemoveObjectProperty = PlayerBox,text_visible
+- LoadScene = beforechurch,beforechurch,true
+- SetVariable = CameFromArchive,true
+- (checkvalue = ArchContinue,endconvo)
+- EnterAns = feedbackboxunpoof 
+
+// ------------------------------------------- coin scene navigation
+
+ans=coinsceneenterance: forward
+- SetScenePosition = 3965,1840
+- SetLocation = coinsceneoverall
+- RunNamedCommands = <GLOBAL>,togglechecker
+- RunNamedCommands = <GLOBAL>,togglerepeater
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- AddClassToElement = fonoff,hide
+- EnterAns = feedbackboxunpoof
+
+ans=coinsceneenterance: back
+- LoadScene = archiveentrance,archiveentrance,true
+- RemoveClassFromElement = bonoff,hide
+
+ans=coinsceneoverall: gototable
+- SetScenePosition = 1020,485
+- SetLocation = coinscenetable
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = fonoff,hide
+- AddClassToElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- (checknotvalue = PutDownCoin,once)
+- SetVariable = PutDownCoin,once
+- SetParagraph = PlayerBox,outchestdown
+- playsound = interface/ChestJingling.ogg
+- AddObjectProperty = PlayerBox,text_visible
+- ExitActions
+- (checkvalue = PutDownCoin,once && checknotvalue = NoteTruthCoins,done && checkvalue = SawInstructions,yes)
+- RunNamedCommands = WallPuzzleHereswind,needhelp
+
+
+ans=coinscenetable: back
+- SetLocation = coinsceneoverall
+- RunNamedCommands = <GLOBAL>,togglechecker
+- RunNamedCommands = <GLOBAL>,togglerepeater
+- SetScenePosition = 3965,1840
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = ronoff,hide
+- AddClassToElement = fonoff,hide
+- RemoveObjectProperty = PlayerBox,text_visible
+- (checkvalue = CheckedNamePage,true)
+- RunNamedCommands = sparkle,showsparkle
+- AddObjectProperty = textobject-NewChapter,playing
+- SetVariable = Sparkle,on
+- (hasproperty = WallPuzzleHereswind,speaking)
+- StopNamedCommands = WallPuzzleHereswind,needhelpplayer
+- RemoveObjectProperty = WallPuzzleHereswind,speaking
+- (checkvalue = hideyshowinv,hidden)
+- ShowElement = hideyshowinv
+- SetVariable = hideyshowinv,visible
+
+ans=coinsceneinstructions: back
+- SetScenePosition = 1020,500
+- SetLocation = coinscenetable
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = fonoff,hide
+- AddClassToElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- (checkvalue = PutDownCoin,once && checknotvalue = NoteTruthCoins,done && checkvalue = SawInstructions,yes)
+- RunNamedCommands = WallPuzzleHereswind,needhelp
+
+
+ans=coinscenebook: back
+- SetScenePosition = 1020,500
+- SetLocation = coinscenetable
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = fonoff,hide
+- AddClassToElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- (checkvalue = PutDownCoin,once && checknotvalue = NoteTruthCoins,done && checkvalue = SawInstructions,yes)
+- RunNamedCommands = WallPuzzleHereswind,needhelp
+
+
+ans=coinsceneoverall: back
+- SetScenePosition = 1060,1840
+- SetLocation = coinsceneenterance
+- RemoveClassFromElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+
+ans=coinsceneoverall: gotoshelf
+- LoadScene = dodefile,dodefile,false
+- SetScenePosition = 7000,1840
+- SetLocation = coinsceneshelf
+- RunNamedCommands = <GLOBAL>,togglechecker
+- RunNamedCommands = <GLOBAL>,togglerepeater
+//- AddObjectProperty = crest-page,visible
+- AddClassToElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- RemoveClassFromElement = monoff,hide
+- (checknotvalue = PutDownCrest,once)
+- SetVariable = PutDownCrest,once
+- SetParagraph = PlayerBox,outchestup
+- playsound = interface/ChestJingling.ogg
+- AddObjectProperty = PlayerBox,text_visible
+
+ans=coinsceneshelf: back
+- SetLocation = coinsceneoverall
+- RunNamedCommands = <GLOBAL>,togglechecker
+- RunNamedCommands = <GLOBAL>,togglerepeater
+- SetScenePosition = 4000,1840
+- AddClassToElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- AddClassToElement = fonoff,hide
+- RemoveClassFromElement = monoff,hide
+- RunNamedCommands = <GLOBAL>,togglechecker
+- RunNamedCommands = <GLOBAL>,togglerepeater
+- (checkvalue = VisitedCrestPage,true)
+- RunNamedCommands = sparkle,showsparkle
+- AddObjectProperty = textobject-NewChapter,playing
+- SetVariable = Sparkle,on
+- (hasproperty = WallPuzzleHereswind,speaking)
+- RemoveObjectProperty = WallPuzzleHereswind,speaking
+
+
+ans=coinsceneshelf: forward
+- SetLocation = coinscenechestcloseup
+- SetScenePosition = 10120,1840
+- AddClassToElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = fonoff,hide
+- RemoveClassFromElement = bonoff,hide
+- RemoveClassFromElement = monoff,hide
+
+ans=coinscenechestcloseup: back
+- SetScenePosition = 7000,1840
+- SetLocation = coinsceneshelf
+- AddClassToElement = ronoff,hide
+- AddClassToElement = lonoff,hide
+- AddClassToElement = fonoff,hide
+- AddClassToElement = bonoff,hide
+- AddClassToElement = monoff,hide
+- RunNamedCommands = crest-explanation,returntoscenebackbutton
+
+
+ans=swamp: left
+
+- (checkvalue = Panel,ZW)
+- ScrollSceneToPosition = 6361,512
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 4440,512
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- SetScenePosition = 14102,512
+- ScrollSceneToPosition = 12182,512
+- SetVariable = Panel,N
+- ExitActions
+- (checkvalue = Panel,N)
+- ScrollSceneToPosition = 10262,512
+- SetVariable = Panel,NW
+- ExitActions
+- (checkvalue = Panel,NW)
+- ScrollSceneToPosition = 8281,512
+- SetVariable = Panel,ZW
+- ExitActions
+
+
+
+
+ans=swamp: right
+
+- (checkvalue = Panel,NW)
+- ScrollSceneToPosition = 12182,512
+- SetVariable = Panel,N
+- ExitActions
+- (checkvalue = Panel,N)
+- SetScenePosition = 2520,512
+- ScrollSceneToPosition = 4440,512
+- SetVariable = Panel,NO
+- ExitActions
+- (checkvalue = Panel,NO)
+- ScrollSceneToPosition = 6361,512
+- SetVariable = Panel,ZO
+- ExitActions
+- (checkvalue = Panel,ZO)
+- ScrollSceneToPosition = 8281,512
+- SetVariable = Panel,ZW
+- ExitActions
+- (checkvalue = Panel,ZW)
+//- SetScenePosition = 1090,512
+- ScrollSceneToPosition = 10262,512
+- SetVariable = Panel,NW
+- ExitActions
+
+ans=MuseumEntrance: forward
+- ObjectVisible = museumentrance,false
+- AddClassToElement = hideyshowdirec,hide
+- RunNamedCommandsAfter = Parent,worried,2000
+- RunNamedCommandsAfter = IMupperblackbar,cutsceneon,1500
+
+
+ans=: gotomap
+- (ison = Dodefile || checkvalue = OnStorybook,yes) 
+- EnterAns = back
+- (ison = playersnotes)
+- EnterAns = playersnotes 
+- (TRUE)
+- SetVariable = OnMap,yes
+- SetVariable = lastlocation,<currentlocationname>
+- SetVariable = lastscene,<currentscenename>
+- LoadScene = mapscreen,mapscreen,true
+
+
+ans=mapscreen: back
+- SetVariable = OnMap,no
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+
+
+ans=: sb3test
+- SetVariable = passonto10peepspuzzle,true
+- SetVariable = lastscene,<currentscenename>
+- SetVariable = GameProgress,EnterSBC3
+ - RunNamedCommands = <GLOBAL>,updatequest
+- LoadScene = StoryBookChapter3
+- AddItem = bottle
+- SetVariable = gameprogress,entersbc3 
+- SetVariable = lastscene,casket 
+- SetVariable = lastbookscene,storybookchapter3 
+- SetVariable = chapter,1 
+- SetVariable = hansjecontinue,gotocrypt 
+- SetVariable = pagenumber,0 
+- SetVariable = lastpagenum,0 
+- SetVariable = hansjecryptcontinue,enough 
+- SetVariable = toosmall,true 
+- SetVariable = differentname,true 
+- SetVariable = dontunderstandtext,true 
+- SetVariable = glowingbookhand,true 
+- SetVariable = hereswind,appearing 
+- ExitActions
+
+ans=: sb4test
+- AddItem = bottle
+- SetVariable = lastscene,<currentscenename>
+- LoadScene = StoryBookChapter4,StoryBookChapter4,true
+- ExitActions
+
+ans=: sb5test
+- AddItem = bottle
+- SetVariable = ChapterJumpTo,5
+- SetVariable = lastscene,<currentscenename>
+- LoadScene = StoryBookChapter5,StoryBookChapter5,true
+- ExitActions
+
+
+
+ans=: dodefile
+- SetVariable = OnDodefile,yes
+- RunNamedCommands = <GLOBAL>,fbboxFromSB
+- SetVariable = lastlocation,<currentlocationname>
+- SetVariable = lastscene,<currentscenename>
+- LoadScene = dodefile,dodefile,true
+- ExitActions
+
+ans=dodefile: back
+- SetVariable = OnDodefile,no
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+- RemoveClassFromElement = storybookonoff,hide
+- RunNamedCommands = <GLOBAL>,fbboxFromSB
+- RemoveClassFromElement = hideyshowdirec,hide
+- ExitActions 
+
+ans=: chapterselect
+- AddClassToElement = playersnotes,hide
+- SetVariable = lastlocation,<currentlocationname>
+- SetVariable = lastscene,<currentscenename>
+- RunNamedCommands = <GLOBAL>,fbboxToSB
+- LoadScene = StoryBookChapterSelect,StoryBookChapterSelect,true
+
+ans=: storybook
+- (checkvalue = GameProgress,sbc1 || checkvalue = GameProgress,entersbc2)
+- ExitActions
+- (checkvalue=gameprogress,aftersbc2)
+- SetVariable = lastbookscene,<currentscenename> 
+- SetVariable = pagenumber,7
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+- RemoveClassFromElement = storybookonoff,bookused
+- SetVariable = OnStorybook,no
+- ExitActions
+- (checkvalue = OnDodefile,yes || checkvalue = OnMap,yes) 
+- EnterAns = back
+- (checkvalue = OnNotes,yes)
+- EnterAns = playersnotes 
+- (TRUE)
+- SetVariable = OnStorybook,yes
+- SetVariable = lastlocation,<currentlocationname>
+- SetVariable = lastscene,<currentscenename>
+- AddClassToElement = playersnotes,hide
+- RunNamedCommands = <GLOBAL>,fbboxToSB
+- AddClassToElement = hideyshowdirec,hide
+- (checkvalue = SkippingFromSelect,true)
+- SetVariable = SkippingFromSelect,toselect
+- LoadScene = StoryBookChapterSelect,StoryBookChapterSelect,true
+- ExitActions
+- (checkvalue = SBC5,>0)
+- LoadScene = StoryBookChapter5,StoryBookChapter5,true
+- ExitActions
+- (checkvalue = VisitedSBC4,current)
+- LoadScene = StoryBookChapter4,StoryBookChapter4,true
+- ExitActions
+- (checkvalue = GameProgress,EnterSBC3)
+- LoadScene = StoryBookChapter3,StoryBookChapter3,true
+- ExitActions
+- (checkvalue = GameProgress,EnterSBC2)
+- LoadScene = StoryBookChapter1,StoryBookChapter1,true
+- ExitActions
+- (checkvalue = GameProgress,EnterSBC1)
+- LoadScene = StoryBookChapter1,StoryBookChapter1,true
+- ExitActions
+- (TRUE)
+- LoadScene = <lastbookscene>,<lastbookscene>,true
+
+ans=: overlaytest
+- AddItem = abbessmap
+- AddItem = fragment1maps
+- AddItem = fragment2maps
+
+ans=: swamp
+- SetVariable = Panel,NW
+- LoadScene = swamp,swamp,true
+
+
+ans=: pos
+- SetScenePosition = BeforeChurch,10000,500
+
+ans=: options
+- OpenPanel = Control
+
+ans=: shake
+- SetSceneShake = 5000,50
+
+ans=: playersnotes
+- (checkvalue = GameProgress,sbc1 || checkvalue = GameProgress,entersbc2)
+- ExitActions
+- (ison = mapscreen || ison = Dodefile || checkvalue = OnStorybook,yes)
+- EnterAns = back
+- (checkvalue = OnStorybook,yes)
+- SetVariable = OnStorybook,no)
+- (isnoton = playersnotes)
+- AddClassToElement = hideyshowdirec,hide
+- SetVariable = OnNotes,yes
+- SetVariable = playersnotes,true
+- SetVariable = lastlocation,<currentlocationname>
+- SetVariable = lastscene,<currentscenename>
+- LoadScene = playersnotes,playersnotes,true
+- RemoveClassFromElement = playersnotes,playersnotes
+- AddClassToElement = playersnotes,PNexit
+- ExitActions
+- (ison = playersnotes)
+- RemoveClassFromElement = hideyshowdirec,hide
+- SetVariable = playersnotes,false
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+- AddClassToElement = playersnotes,playersnotes
+- RemoveClassFromElement = playersnotes,PNexit
+- SetVariable = OnNotes,no
+
+ans=playersnotes: back
+- SetVariable = playersnotes,false
+- LoadScene = <lastscene>
+- SetLocation = <lastlocation>
+
+ans=: tutorial
+- (checknotvalue = ontutorial,true)
+- FadeInElement = helpfader,10
+- FadeInElement = help2,10
+- FadeInElement = help1,10
+
+- SetVariable = ontutorial,true
+- ExitActions
+- (checkvalue = ontutorial,true)
+
+- fadeoutelement = helpfader,100
+- fadeoutelement = help2,100
+- fadeoutelement = help1,100
+
+- SetVariable = ontutorial,false
+- (checkvalue = GameProgress,tutorial)
+- SetVariable = GameProgress,start
+- RunNamedCommands = <GLOBAL>,updatequest
+- AddItem = notepadd
+- PlaySound = interface/OpenBag.ogg
+- AddObjectProperty = textobject-itemadded,playing
+- ExitActions
+
+
+ans=: startgame
+- RemoveClassFromElement = playersnotes,hide
+- RemoveClassFromElement = hideyshowdirec,hide
+- RemoveClassFromElement = restoring,hide
+- RemoveClassFromElement = saving,hide
+- RemoveClassFromElement = Inventory,hide
+- RemoveClassFromElement = hints,hide
+- RemoveClassFromElement = saving,hide
+- ObjectVisible = Directions-ToMuseumBC,true
+
+
+ans=: hints
+- (checkvalue = onhints,on)
+- ObjectVisible = PressT,false
+- AddClassToElement = hints,hintsoff
+- RemoveClassFromElement = hints,hintson
+- RunNamedCommands = <GLOBAL>,untogglehint
+- SetVariable = onhints,off
+- ExitActions
+- (checknotvalue = onhints,on)
+- ObjectVisible = PressT,true
+- AddClassToElement = hints,hintson
+- RemoveClassFromElement = hints,hintsoff
+- RunNamedCommands = <GLOBAL>,togglehint
+- SetVariable = onhints,on
+
+ans=: aftercreditsplay
+- SetVariable = GameProgress,aftercreditsplay
+- RunNamedCommands = <GLOBAL>,updatequest
+- LoadScene = AtMuseumDoor,AtMuseumDoor,true
+
+ans=: endgame
+- SetVariable = GameProgress,end
+ - RunNamedCommands = <GLOBAL>,updatequest
+
+ans=: titlescreen
+- ClearGameData
+- EnterAns = setupTitle 
+ 
+ans=:

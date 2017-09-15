@@ -1,0 +1,729 @@
+package com.darkflame.client;
+
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import org.adamtacy.client.ui.EffectPanel;
+import org.adamtacy.client.ui.effects.core.MorphStyle;
+import org.adamtacy.client.ui.effects.impl.Fade;
+import org.adamtacy.client.ui.effects.impl.css.Selector;
+import org.adamtacy.client.ui.effects.*;
+
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
+
+import java.util.Iterator;
+import java.util.ArrayList;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.KeyboardListener;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabListener;
+import com.google.gwt.user.client.ui.SourcesTabEvents;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.Window;
+
+/**
+ * Entry point classes define <code>onModuleLoad()</code>.
+ */
+public class MyApplication implements EntryPoint {
+
+	String controllscript = "";
+	String chapter = "";
+
+	HTML MainStoryText = new HTML();
+	final TextBox AnswerBox = new TextBox();
+	final TextBox Feedback = new TextBox();
+	  
+	
+	//Effect panel that controlls whole of StoryPanel
+	EffectPanel StoryEffect = new EffectPanel();
+		
+	
+	
+	
+	
+	final Label LocationLabel = new Label("Locations;");
+	//story current locations
+	DecoratedTabPanel StoryTabs = new DecoratedTabPanel();
+	
+	//list of opened pages in active chapter
+	final static ArrayList<String> openPages = new ArrayList<String>();
+	final static ArrayList<String> locationpuzzlesActive = new ArrayList<String>();
+	
+	//list of opened chapters	
+	final static ArrayList<LocationTabSet> AllLocationTabSets = new ArrayList<LocationTabSet>();
+	
+	//current chapters locations
+	LocationTabSet CurrentLocationTabs = new LocationTabSet();
+	int CurrentLocationTabsIndex=0;
+	//locations
+	static final String textfetcher_url = "http://www.darkflame.co.uk/EngineTest/Test%20Game%202/text%20fetcher.php";
+
+	public void onModuleLoad() {
+
+		
+		// Set loading text
+		MainStoryText.setText("loading..");
+
+		// First we load the main control script
+
+		startgamefromcontrollfile("/Game Controll Script/Main_Game_Controll.txt");
+		
+		// Set Label style
+		
+		StoryTabs.setStylePrimaryName("standard_message_back");
+		// while waiting for that we load the text boxs into the interface;
+		
+		
+		
+
+		MainStoryText.setSize("100%", "100%");
+		Feedback.setWidth("400px");
+		Feedback.setReadOnly(true);
+		//MainStoryText.setReadOnly(true);
+		//MainStoryText.setStyleName("standard_message");
+		
+		//Story tabs
+		StoryTabs.setSize("100%", "100%");
+		StoryTabs.setStylePrimaryName("standard_message");
+		StoryTabs.getDeckPanel().setAnimationEnabled(true);
+	
+		
+		//and onto the location panel
+		//create first location set
+		//Location tab panel
+		final LocationTabSet WelcomeTabs = new LocationTabSet();
+		AllLocationTabSets.add(WelcomeTabs);
+		//set Welcome as first part.
+		//CurrentLocationTabs = WelcomeTabs;	
+		CurrentLocationTabsIndex = AllLocationTabSets.indexOf(WelcomeTabs);
+		
+		
+		setNewPage("Welcome.html");
+		setNewPage("Welcome.html");
+		
+		//add to story tabs
+		StoryTabs.add(CurrentLocationTabs, "Welcome");	
+		StoryTabs.selectTab(0);		
+		
+		//remove welcome from being active
+		CurrentLocationTabs.removeTabListener(CurrentLocationTabs.OurTabListener);
+		openPages.clear();
+		locationpuzzlesActive.clear();
+		
+		
+		//Create the first chapter
+		final LocationTabSet Firstchapter = new LocationTabSet();
+		AllLocationTabSets.add(Firstchapter);		
+		CurrentLocationTabs = AllLocationTabSets.get(1);
+		
+		//create first chapter, adding its locations
+		StoryTabs.add(CurrentLocationTabs, "Part 1: The Awakening");	
+		StoryTabs.selectTab(1);
+		
+		//create first tab
+		Label Tab0 = new Label();
+		Tab0.setText("Welcome");
+		openPages.add("Welcome");
+
+		// set chapter name to match
+		locationpuzzlesActive.add("Welcome");
+		
+		CurrentLocationTabs.add(MainStoryText,openPages.get(0));			
+		CurrentLocationTabs.selectTab(0);
+		
+		
+		StoryEffect.add(StoryTabs);
+		
+		
+		
+		
+		RootPanel.get("bigtextbox").add(LocationLabel);
+		RootPanel.get("bigtextbox").add(StoryEffect);
+
+		RootPanel.get("answerbox").add(AnswerBox);
+		RootPanel.get("feedback").add(Feedback);
+	}
+
+	public void startgamefromcontrollfile(final String fileurl) {
+		
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,
+				textfetcher_url);
+				
+				try {
+				      requestBuilder.sendRequest("FileURL=" + fileurl, new RequestCallback() {
+				        public void onError(Request request, Throwable exception) {
+				        	System.out.println("http failed");
+				        }
+
+				        public void onResponseReceived(Request request, Response response) {
+
+				        	//catch error
+				        	if (response.getText().length()<10){
+				        		System.out.println("controll file not recieved;"+response.getText());
+				        		MainStoryText.setText("controll file not recieved;"+response.getText());
+				        		return;
+				        	}
+				        	
+							controllscript = response.getText();
+
+							// crop till start;
+							// "Game Controll Starts Here:"
+
+							int StartIndex = controllscript
+									.indexOf("Game Controll Starts Here:");
+
+							controllscript = controllscript.substring(StartIndex,
+									controllscript.length());
+							
+							System.out.print(controllscript);
+
+							// once loaded we start the main game loop
+							maingameloop();
+				        }
+				      });
+				    } catch (RequestException ex) {
+				    	System.out.println("can not connect to game controll file");
+				    }
+/*
+		HTTPRequest.asyncPost(textfetcher_url, "FileURL=" + fileurl,
+				(new ResponseTextHandler() {
+
+					public void onCompletion(String responseText) {
+
+						controllscript = responseText;
+
+						// crop till start;
+						// "Game Controll Starts Here:"
+
+						int StartIndex = controllscript
+								.indexOf("Game Controll Starts Here:");
+
+						controllscript = controllscript.substring(StartIndex,
+								controllscript.length());
+						
+						System.out.print(controllscript);
+
+						// once loaded we start the main game loop
+						maingameloop();
+
+					}
+				})); */
+	}
+
+	public void maingameloop() {
+
+		// Maingame here
+
+		// Set loading text
+		MainStoryText.setText("loading....");
+
+		// Set start chapter
+
+		int StartIndex = controllscript.indexOf("Start:");
+		int ChapterPositionStart = controllscript.indexOf("- SetChapter =",
+				StartIndex + 6);
+		int ChapterPositionEnd = controllscript.indexOf("\n",
+				ChapterPositionStart + 14);
+
+		chapter = controllscript.substring(ChapterPositionStart + 14,
+				ChapterPositionEnd).trim();
+
+		// set window title
+		Window.setTitle("chapter-" + chapter);
+
+		// --------------------
+		// get start message location
+
+		StartIndex = controllscript.indexOf("Start:");
+		int StartPositionStart = controllscript.indexOf("- StoryBox =",
+				StartIndex + 6);
+		int StartPositionEnd = controllscript.indexOf("\n",
+				StartPositionStart + 12);
+
+		String startmessagename_url = controllscript.substring(
+				StartPositionStart + 12, StartPositionEnd).trim();
+
+		// Load starting message text
+
+		// Update story text
+		MainStoryText.setText("loading......");
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,
+				textfetcher_url);
+				
+				try {
+				      requestBuilder.sendRequest("FileURL=Game Message Text/" + startmessagename_url, new RequestCallback() {
+				        public void onError(Request request, Throwable exception) {
+				        	System.out.print("http failed");
+				        }
+
+				        public void onResponseReceived(Request request, Response response) {
+
+				        	MainStoryText.setHTML(response.getText());
+				        }
+				      });
+				    } catch (RequestException ex) {
+				    	System.out.print("can not load story text");
+				    }
+
+		// --------------------
+
+		// We add the answer listener to the main answer box;
+
+		AnswerBox.addKeyboardListener(new KeyboardListener() {
+			public void onKeyUp(Widget sender, char Key, int Mod) {
+
+			};
+
+			public void onKeyPress(Widget sender, char Key, int Mod) {
+
+			};
+
+			public void onKeyDown(Widget sender, char Key, int Mod) {
+
+				if (Key == 13) {
+					AnswerBox.setText(RemoveCartReturns(AnswerBox.getText())
+							.trim());
+
+					// if over one letters scan if its correct answer
+					if (AnswerBox.getText().length()>1){
+					
+					AnswerGiven(AnswerBox.getText());
+					}
+
+				}
+
+			};
+		});
+
+	}
+
+	public void AnswerGiven(String Ans) {
+		
+		//System.out.print("Answer given ="+Ans+"<br>");
+		
+		// trim and lower case the answer;
+		Ans = Ans.trim().toLowerCase();
+		
+		// search for answer (specific to chapter)
+		int AnswerIndex = controllscript.toLowerCase().indexOf("ans"+chapter.toLowerCase()+": "+Ans);
+		
+		System.out.print("Answer given ="+"ans"+chapter+": "+Ans);
+		System.out.print("-"+AnswerIndex);
+		
+		if (AnswerIndex>-1){			
+			// if its the right answer			
+			Feedback.setText("correct");
+			System.out.print("correct"+AnswerIndex+Ans.length()+chapter.length()+5);
+			// send for answer processing
+			CorrectAnswerProcess(AnswerIndex + Ans.length()+chapter.length()+5);
+						// set window title
+			Window.setTitle("chapter-" + chapter);
+			return;
+		} 
+		
+		// search for answer (non specific)
+		AnswerIndex = controllscript.toLowerCase().indexOf("ans: "+Ans);
+		if (AnswerIndex>-1){			
+			// if its the right answer			
+			Feedback.setText("correct");
+			System.out.print("correct"+5+AnswerIndex+Ans.length());
+			// send for answer processing
+			CorrectAnswerProcess(5+AnswerIndex + Ans.length());
+						// set window title
+			Window.setTitle("chapter-" + chapter);
+			return;
+		} 
+		
+/*
+		while (tempstart < controllscript.length()) {
+
+			// now search the main controll file for the string
+			int AnswerIndex = controllscript.toLowerCase().indexOf(Ans,
+					tempstart);
+
+			System.out.print("Answer index"+AnswerIndex);
+			
+			// if not present, then answer is wrong
+			if (AnswerIndex == -1) {
+				Feedback.setText("wrong, sorry");
+				tempstart = AnswerIndex + 1;
+				break;
+
+			} else if (!((controllscript.charAt(AnswerIndex - 1) == 32) || (controllscript
+					.charAt(AnswerIndex - 1) == 58))) {
+
+				// if the previous letter is not a colon or space, then its part
+				// of
+				// another word; wrong answer!
+				Feedback.setText("wrong, sorry.");
+				System.out.print("no colon before");
+				tempstart = AnswerIndex + 1;
+
+			} else if (!((controllscript.charAt(AnswerIndex + Ans.length()) == 32)
+					|| (controllscript.charAt(AnswerIndex + Ans.length()) == 58) || (controllscript
+					.charAt(AnswerIndex + Ans.length()) == 13))) {
+
+				// if the next letter is not a colon or space, then its part of
+				// another word; wrong answer!
+				Feedback.setText("wrong ,sorry ");
+				System.out.print("no colon after");
+				tempstart = AnswerIndex + 1;
+
+			} else {
+				// if present, we check if its for the right question
+
+				// search back till last new line
+				int AnsQuestionS = controllscript.toLowerCase().lastIndexOf(
+						"\n", AnswerIndex);
+				String AnsQuestion = controllscript.substring(AnsQuestionS,
+						AnswerIndex).trim();
+
+				if (AnsQuestion.indexOf("ans" + chapter + ":") > -1) {
+					// if its the right answer
+					Feedback.setText("correct");
+
+					// send for answer processing
+					CorrectAnswerProcess(AnswerIndex + Ans.length());
+					break;
+
+				} else if (AnsQuestion.indexOf("ans:") > -1) {
+					// its a general answer
+					Feedback.setText("correct (general)");
+
+					// send for answer processing
+					CorrectAnswerProcess(AnswerIndex + Ans.length());
+					break;
+
+				} else {
+					Feedback.setText("wrong, sorry");
+					tempstart = AnswerIndex + 1;
+					continue;
+				}
+
+			}
+
+		}*/
+
+		
+
+	}
+
+	public void CorrectAnswerProcess(int StartHere) {
+
+		
+		
+		// get position of next answer
+		int NextAnsPos = controllscript.indexOf("ans", StartHere);
+		System.out.print("/n ans next pos="+NextAnsPos);
+		
+			
+		//Isolate instructions to process		
+		final String instructionset = controllscript.substring(StartHere, NextAnsPos);		
+		
+		System.out.print("\n -instruction set- \n "+instructionset+" \n -instruction set- \n");
+		
+		//Start pos to zero
+		StartHere = 0;
+		
+		// clear command var
+		String CurrentCommand = "";
+		String CurrentProperty = "";
+		
+		//Loop for each instruction
+		
+		while (instructionset.indexOf("- ", StartHere)>-1)
+		{
+			StartHere = instructionset.indexOf("- ", StartHere)+2;
+			
+			// Get name of current command
+			CurrentCommand = instructionset.substring(StartHere,instructionset.indexOf(" = ", StartHere)).trim();
+			CurrentProperty = instructionset.substring(instructionset.indexOf(" = ", StartHere)+3,instructionset.indexOf("\n", StartHere)).trim();
+			// Get the property of the command
+			
+			//test
+			System.out.print("\n command recieved;"+CurrentCommand+"\n");
+			System.out.print("\n command property recieved;"+CurrentProperty+"\n");
+			
+			//on different commands we do different things;
+			//boy, I wish java support strings on switchs
+			
+			if (CurrentCommand.equalsIgnoreCase("SetChapter")){
+				
+				System.out.print("setting chapter to '"+CurrentProperty+"'; \n");
+				chapter = CurrentProperty;
+				
+			} else if (CurrentCommand.equalsIgnoreCase("Message"))
+			{
+				System.out.print("setting feedback '"+CurrentProperty+"'; \n");
+				Feedback.setText(CurrentProperty);
+			} else if (CurrentCommand.equalsIgnoreCase("SpecialEffect"))
+			{
+				System.out.println("Setting special effect to "+CurrentProperty+" \n");
+				TriggerEffect(CurrentProperty);
+			} else if (CurrentCommand.equalsIgnoreCase("StoryBox"))
+			{
+				System.out.print("Setting '"+CurrentProperty+"' to storybox \n");
+				setNewPage(CurrentProperty);
+				
+			} else if (CurrentCommand.equalsIgnoreCase("RemoveLocation"))
+			{
+				System.out.print("Removing '"+CurrentProperty+"' from storybox \n");
+				removePage(CurrentProperty);		
+			}
+				
+			
+			
+		}
+		
+		
+		
+		/*
+		// look for a set chapter
+
+		int ChapStart = (instructionset.indexOf("- SetChapter ="));
+        
+		if ((ChapStart > -1) && (14 + ChapStart < NextAnsPos)) {
+			int ChapEnd = (instructionset.indexOf("\n", 14 + ChapStart));
+			chapter = instructionset.substring(14 + ChapStart, ChapEnd).trim();
+			
+		}
+
+		// look for a message
+
+		int MessageStart = (instructionset.indexOf("- Message = \""));
+
+		if ((MessageStart > -1) && (13 + MessageStart < NextAnsPos)) {
+			int MessageEnd = (instructionset.indexOf("\"", 13 + MessageStart));
+			String Message = instructionset.substring(13 + MessageStart,
+					MessageEnd).trim();
+			Feedback.setText(Message);
+		}
+
+		// look for a effect
+
+		int EffectStart = (instructionset.indexOf("- SpecialEffect ="));
+
+		if ((EffectStart > -1) && (17 + EffectStart < NextAnsPos)) {
+			int EffectEnd = (instructionset.indexOf("\n", 17 + EffectStart));
+			String EffectName = instructionset.substring(17 + EffectStart,
+					EffectEnd).trim();
+			
+			System.out.println("\n gogo Gadget Special Effect:"+EffectStart+","+EffectEnd);
+			TriggerEffect(EffectName);
+		}
+		
+		
+		// look for a add location
+		// Goto new page (if page is not on the list already, then add it)
+
+		int StoryboxStart = (instructionset.indexOf("- StoryBox = "));
+
+		if ((StoryboxStart > -1) && (13 + StoryboxStart < NextAnsPos)) {
+			int StoryboxEnd = (instructionset.indexOf("\n", 13 + StoryboxStart));
+
+			String NewMessageURL = (instructionset.substring(
+					13 + StoryboxStart, StoryboxEnd));
+			// Load new message text
+			//MainStoryText.setText("Loading..");
+			
+			setNewPage(NewMessageURL);
+			
+
+		}
+		
+		// Loop till all commands are processed
+		while ((StartHere<NextAnsPos)&&((instructionset.substring(StartHere).indexOf("- RemoveLocation = "))>-1))
+		{
+			System.out.println("starthere"+StartHere);
+		// look for remove location
+		// Goto new page (if page is not on the list already, then add it)
+
+		int StoryboxRemoveStart = (instructionset.indexOf("- RemoveLocation = ", StartHere));
+
+		if ((StoryboxRemoveStart > -1) && (19 + StoryboxRemoveStart < NextAnsPos)) {
+			int StoryboxRemoveEnd = (instructionset.indexOf("\n", 19 + StoryboxRemoveStart));
+
+			String RemoveThisChap = (instructionset.substring(
+					19 + StoryboxRemoveStart, StoryboxRemoveEnd));
+			// Load new message text
+			//MainStoryText.setText("Loading..");			
+			removePage(RemoveThisChap);			
+			StartHere = StoryboxRemoveEnd;
+		}
+		
+		
+		
+		}
+		*/
+		
+	}
+public void TriggerEffect(final String EffectName) {
+		
+	System.out.println("-"+EffectName+"-"+(EffectName.compareTo("Flash")==0));
+	
+		if (EffectName.compareTo("Flash")==0){
+			
+			System.out.print("effect go!");
+			
+			
+			MorphStyle morph1 = new MorphStyle(new Selector(".logo1"), new Selector(".logo2")); 
+			//MorphStyle ToWhite = new MorphStyle(new Selector(".strike_white"), new Selector(".strike_purple"));  
+			//MorphStyle ToPurple = new MorphStyle(new Selector(".strike_purple"), new Selector(".strike_blue"));  
+			
+			StoryEffect.addEffect(morph1);
+			//StoryEffect.addEffect(ToWhite);
+			//StoryEffect.addEffect(ToPurple);
+			
+			StoryEffect.playEffects();
+			StoryEffect.resetEffects();
+			
+		}
+		
+	}
+
+	public void removePage(final String RemoveLocation) {
+		
+		int TabCount = CurrentLocationTabs.getWidgetCount();
+		int cindex =0;
+		System.out.println("remove-"+RemoveLocation);
+		
+		//remove tab
+		 while(cindex<TabCount)
+	        {
+	        	if (openPages.get(cindex).indexOf(RemoveLocation)>-1) {	
+       		
+	        		//we remove it from the tabs
+	        		CurrentLocationTabs.remove(cindex);
+
+	        		openPages.remove(cindex);
+		    		// set chapter name to match
+		    		locationpuzzlesActive.remove(cindex);
+	        		
+	        		
+	        		return;
+	        	}
+	        	cindex++;
+	        }
+		
+	}
+
+	public void setNewPage(final String NewMessageURL) {
+		
+		
+		
+		
+		// First we check if its on the page list already.
+		// ==
+		
+		
+		int TabCount = CurrentLocationTabs.getWidgetCount();
+		int cindex =0;
+		System.out.println("/n index"+cindex+"tabCount"+TabCount);
+		
+	        while(cindex<TabCount)
+	        {
+	        	if (openPages.get(cindex).indexOf(NewMessageURL)>-1) {
+	        		System.out.println("/n match. Already Open.");
+	        		//we set it to front and return
+	        		CurrentLocationTabs.selectTab(cindex);
+	        		
+		    		
+	        		return;
+	        	}
+	        	
+	        	
+	        	cindex++; 
+	        }
+		
+		
+		
+		
+		
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,
+				textfetcher_url);
+				
+				try {
+				      requestBuilder.sendRequest("FileURL=Game Message Text/" + NewMessageURL.trim(), new RequestCallback() {
+				        public void onError(Request request, Throwable exception) {
+				        	System.out.println("http failed");
+				        }
+
+				        public void onResponseReceived(Request request, Response response) {
+
+				        	HTML StoryText = new HTML(response.getText());
+				        	StoryText.setSize("100%", "100%");
+				        	
+				        	Label Tab = new Label();
+				    		Tab.setText(NewMessageURL.substring(0, NewMessageURL.length()-5));
+				    		// add opened chapter name to list
+				    		openPages.add(NewMessageURL);
+				    		// set chapter name to match
+				    		locationpuzzlesActive.add(chapter);
+				    		
+				    		CurrentLocationTabs.add(StoryText,(NewMessageURL.substring(0, NewMessageURL.length()-5)));		
+				    		CurrentLocationTabs.selectTab(CurrentLocationTabs.getWidgetIndex(StoryText));
+				        	
+				        	AnswerBox.setText("");
+				        }
+				      });
+				    } catch (RequestException ex) {
+				    	System.out.println("cant load message text");
+				    }
+	}
+
+	public String RemoveCartReturns(String input_string) {
+		input_string = input_string.replaceAll("\n", " ");
+		input_string = input_string.replaceAll("\r", " ");
+		input_string = input_string.replaceAll("\r\n", " ");
+		return input_string;
+	}
+	
+	public class LocationTabSet extends DecoratedTabPanel {	
+		
+		
+		public final class SetActiveAnswersFromTab implements TabListener {
+			public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
+			        // Let the user know what they just did.	
+				  
+				   chapter = locationpuzzlesActive.get(tabIndex);
+				   
+				   Window.setTitle("chapter-" + chapter);
+				   Feedback.setText("You goto the " + chapter+".");
+				   System.out.println("blah");
+				    
+			  }
+
+			public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) {
+			        // Let the user know what they just did.				        
+			        return true;
+			  }
+		}
+
+		final public SetActiveAnswersFromTab OurTabListener = new SetActiveAnswersFromTab();	
+		
+		public LocationTabSet() {	
+			
+			this.setStyleName("standard_message_back");
+			this.setSize("100%", "100%");
+			this.setStylePrimaryName("standard_message");
+			this.getDeckPanel().setAnimationEnabled(true);
+			
+			System.out.println("co");
+			
+			this.addTabListener(OurTabListener);
+			
+		}
+
+		}
+
+}

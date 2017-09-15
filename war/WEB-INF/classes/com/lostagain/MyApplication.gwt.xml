@@ -1,0 +1,87 @@
+<module rename-to='MyApplication'>
+
+
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name='com.google.gwt.user.User' />
+
+	<!-- Inherit the JamCore. -->
+	<inherits name='com.darkflame.Jam.Jam' /> 
+	
+	
+	
+	<!-- css -->
+	<inherits name='com.google.gwt.user.theme.clean.Clean' />
+
+	<!-- Inherit gwt-dnd 2.x support -->
+	<inherits name='com.allen_sauer.gwt.dnd.gwt-dnd' />
+	<inherits name='net.sphene.gwt.widgets.Slider' />
+	<stylesheet src='slider/sliderwithspinner.css' />
+	<stylesheet src='slider/HorizontalSlider.css' />
+	<stylesheet src='slider/VerticalSlider.css' />
+
+	<inherits name='org.matheclipse.parser.Parser'/> <!-- (apache 2.0 lisence, but sublisences lesser gnu) -->
+	
+		<!-- for array/arraylist functions (also used in the semantic project) -->
+
+     <inherits name="com.google.common.collect.Collect"/>
+     
+		
+	<!--  for compression of save strings (apache 2.0 lisence) -->
+	<inherits name='org.dellroad.lzma.LZMA'/>
+	
+	<inherits name="com.google.gwt.logging.Logging" />
+	<set-property name="gwt.logging.enabled" value="TRUE" />
+	
+	<!-- <set-property name="gwt.logging.gfe" value="FALSE"/> -->
+	<!-- <set-property name="gwt.logging.popupHandler" value="DISABLED" />-->
+
+
+
+
+	<!-- <extend-property name="user.agent" values="opera" /> RIP opera :( Long live Vivaldi!)-->
+	
+	<!--  Note; No permutation for ie10 specified at the moment, due to (I think) an
+	error caused by a imported jar  -->
+	<set-property name="user.agent" value="ie8,ie9,gecko1_8,safari,ie10" />
+
+
+	<!-- For development a default of `DEBUG` is recommended -->
+	<inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG" />
+	<set-property name="log_DivLogger" value="DISABLED" />
+	<set-property name="log_FirebugLogger" value="ENABLED" />
+
+	<!-- for smooth animations we need to make sure its not using DataURLs but 
+		instead image strips. The following disables dataurls, to ensure image strips 
+		are used, use "-Dgwt.imageResource.maxBundleSize=1000" in GWT compile options, 
+		VM arguements.  This will override the normal size limit  -->
+	<set-property name="ClientBundle.enableInlining" value="false" />
+	
+	
+	<!-- test for profiling 
+	<set-property name="compiler.useSourceMaps" value="true"></set-property>
+	-->
+
+	<!-- Inherit sound support -->
+	<inherits name='com.allen_sauer.gwt.voices.gwt-voices' />
+	
+	<inherits name="com.google.common.collect.Collect" />
+	
+	
+   <inherits name='org.gonevertical.core.RichText'/>
+	
+	<!-- Canvus support -->
+	<inherits name='gwt.canvas.gwt-canvas' />
+	<inherits name='com.google.gwt.widgetideas.GWTCanvas' />
+        
+	<!-- Specify the app entry point class. -->
+	<entry-point class='com.darkflame.client.JAM' />
+
+	<!-- Opera needs a different implementation due to issue #3956 -->
+	<!--<replace-with class="com.google.gwt.user.client.impl.HistoryImplTimer">
+		<when-type-is class="com.google.gwt.user.client.impl.HistoryImpl" />
+		<any>
+			<when-property-is name="user.agent" value="opera" />
+		</any>
+	</replace-with>-->
+
+</module>

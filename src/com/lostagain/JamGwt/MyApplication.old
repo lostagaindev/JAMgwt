@@ -1,0 +1,2770 @@
+package com.darkflame.client;
+
+import com.allen_sauer.gwt.voices.client.SoundController;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.allen_sauer.gwt.voices.client.Sound;
+import com.darkflame.client.InventoryPanel;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
+import com.google.gwt.i18n.client.HasDirection.Direction;
+
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.KeyboardListener;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.HistoryListener;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.WindowResizeListener;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.MouseListener;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.Window;
+
+
+/**
+ * Entry point classes define <code>onModuleLoad()</code>.
+ */
+public class MyApplication implements EntryPoint, HistoryListener {
+
+	// debug window
+	final static debugWindow DebugWindow = new debugWindow();
+
+	
+	static String controllscript = ""; //$NON-NLS-1$
+	static String itemmixscript = ""; //$NON-NLS-1$	
+	static String chapter = ""; //$NON-NLS-1$
+
+	static// player data
+	String Username = "The Player"; //$NON-NLS-1$
+	static String Organisation = ""; //$NON-NLS-1$
+	static String Client = ""; //$NON-NLS-1$
+	static String InterfaceSize = "Default"; //$NON-NLS-1$
+
+	static HTML MainStoryText = new HTML();
+
+	// storytext array
+	static AssArray StoryTextStore = new AssArray();
+
+	final static TextBox AnswerBox = new TextBox();
+	static final TypedLabel Feedback = new TypedLabel(""); //$NON-NLS-1$
+
+	static final LoginBox user_login = new LoginBox();
+
+	// Chapter list
+	static VerticalTabs ChapterList = new VerticalTabs();
+
+	// Preloader
+	static Preloader Preloader;
+
+	final Label LocationLabel = new Label("Locations;"); //$NON-NLS-1$
+	//private static boolean StartFromURL = false;
+//	private static boolean newplayer = false;
+
+	// story current locations
+	static DecoratedTabPanel StoryTabs = new DecoratedTabPanel();
+
+	// list of opened pages in active chapter
+	final static ArrayList<String> openPages = new ArrayList<String>();
+	final static ArrayList<String> locationpuzzlesActive = new ArrayList<String>();
+
+	// list of opened chapters
+	final static ArrayList<LocationTabSet> AllLocationTabSets = new ArrayList<LocationTabSet>();
+
+	// current chapters locations
+	static LocationTabSet CurrentLocationTabs = new LocationTabSet();
+	static int CurrentLocationTabsIndex = 0;
+
+	// multimessage place array
+	static AssArray MultiMessagePlace = new AssArray();
+
+	// fader
+	final static public fader fadeback = new fader();
+
+	// fader
+	final static public SpiffyImage loginbackground = new SpiffyImage();
+
+	// Get size string from css
+	public static String iconsizestring = ""; //$NON-NLS-1$
+
+	// decoration Icons
+	final static public InterfaceIcon StatueFeat = new InterfaceIcon(
+			"GameIcons/BIG/CCfeet0.png", 1); //$NON-NLS-1$
+	final static public InterfaceIcon StatueHead = new InterfaceIcon(
+			"GameIcons/BIG/CCladyclock0.png", 3); //$NON-NLS-1$
+	final static public InterfaceIcon solider = new InterfaceIcon(
+			"GameIcons/BIG/CCsoldier0.png", 5); //$NON-NLS-1$
+	final static SpiffyClock gwt_clock = new SpiffyClock(50, 50);
+	// timers to animate icons above;
+	static 	Timer Blinking;
+	static Timer Cyclonish;
+	// interface buttons
+
+	final static public InterfaceIcon InventoryButton = new InterfaceIcon(
+			"GameIcons/BIG/cc2rugzakje0.png", 6); //$NON-NLS-1$
+
+	final static public InterfaceIcon NotepadButton = new InterfaceIcon(
+			"GameIcons/BIG/cc2notebook0.png", 4); //$NON-NLS-1$
+	final static public InterfaceIcon ControllPanelButton = new InterfaceIcon(
+			"GameIcons/BIG/CCtype0.png", 4); //$NON-NLS-1$
+	final static public InterfaceIcon ForumLinkButton = new InterfaceIcon(
+			"GameIcons/BIG/CC2forum0.png", 4); //$NON-NLS-1$
+
+	final static public InterfaceIcon MessageHistoryButton = new InterfaceIcon(
+			"GameIcons/logboek0.png", 2); //$NON-NLS-1$
+
+	final static public InterfaceIcon MessageBackButton = new InterfaceIcon(
+			"GameIcons/previous0.png", 2); //$NON-NLS-1$
+	
+	final static public InterfaceIcon MessageForwardButton = new InterfaceIcon(
+			"GameIcons/next0.png", 2); //$NON-NLS-1$
+	
+	final static public InterfaceIcon SecretsPopupPanelButton = new InterfaceIcon(
+			"GameIcons/BIG/easteregg0.png", 5); //$NON-NLS-1$
+
+	// interface icons
+	// final static public InterfaceIcon LoadingBar = new
+	// InterfaceIcon("GameIcons/loading0.png",7);
+
+	// close all windows button
+	final static public InterfaceIcon closeallwindows = new InterfaceIcon("GameIcons/closeall0.png",3);
+
+
+	// inventory popups
+	final static ControllPanel ControlPanel = new ControllPanel();
+	final static PopUpWithShadow ControllPanelShadows = new PopUpWithShadow(
+			null,
+			"50%", "25%", LoadGamesText.MainGame_SaveOrLoadYourGame, ControlPanel); //$NON-NLS-1$ //$NON-NLS-2$ 
+
+	final static InventoryPanel PlayersInventory = new InventoryPanel();
+	final static PopUpWithShadow PlayersInventoryFrame = new PopUpWithShadow(
+			null,
+			"50%", "25%", LoadGamesText.MainGame_Inventory, PlayersInventory); //$NON-NLS-1$ 
+
+	final static Notebook PlayersNotepad = new Notebook();
+	final static PopUpWithShadow PlayersNotepadFrame = new PopUpWithShadow(
+			null,
+			"50%", "25%", LoadGamesText.MainGame_Charecter_Profiles, PlayersNotepad); //$NON-NLS-1$ 
+
+	final static secretsPanel SecretPanel = new secretsPanel();
+	final static PopUpWithShadow SecretPanelFrame = new PopUpWithShadow(null,
+			"50%", "25%", LoadGamesText.MainGame_Secrets_Found, SecretPanel); //$NON-NLS-1$ 
+
+	// Message History
+	final static MessageHistory messagehistory = new MessageHistory();
+
+	final static Button EnterAns = new Button(LoadGamesText.MainGame_Submit);
+	final static HorizontalPanel AnsBar = new HorizontalPanel();
+
+	// interface open/close flag
+	public static boolean InventoryOpen = false;
+	public static boolean NotepadOpen = false;
+	public static boolean ControllPanelOpen = false;
+
+	public static boolean MessageHistoryOpen = false;
+	public static boolean SecretsPanelOpen = false;
+
+	// overlay popup list ;
+	final static ArrayList<PopUpWithShadow> overlayPopUpsOpen = new ArrayList<PopUpWithShadow>();
+
+	// locations
+	public static final String textfetcher_url = "text%20fetcher.php"; //$NON-NLS-1$
+	public static final String emailer_url = "Login_System/Emailer.php"; //$NON-NLS-1$
+
+	// audio location
+	public static final String audioLocation_url = "audio/"; //$NON-NLS-1$
+
+	// item locations
+	static final String inventory_url = "InventoryItems/"; //$NON-NLS-1$
+
+	// item locations
+	static final String notebookpages_url = "NotebookPages/"; //$NON-NLS-1$
+
+	// sound controller (for effects);
+	static final SoundController soundController = new SoundController();
+
+	// music box (for music)
+	static final MusicBox musicPlayer = new MusicBox();
+	static final SimpleEffectOverlay EffectOverlay = new SimpleEffectOverlay();
+
+	// max popup zdepth
+	static int z_depth_max = 1050;
+
+	// last clicked on X/Y/item
+	static int lastclicked_x = 0;
+	static int lastclicked_y = 0;
+	static toggleimagegroupPopUp lastclicked_item;
+	static Widget lastpopupmessage;
+	static SpiffyArrow messageArrow;
+
+	// player options
+
+	static boolean SoundEffectOn = true;
+	static boolean AnimationEffectsOn = true;
+
+	// screen settings
+	static int Story_Text_Height = 0;
+	static int Story_Text_Width = 0;
+
+	Timer ResizeOnLoad;
+	private static int Game_Window_Width;
+	private static int Game_Window_Height;
+	private static int testafter;
+
+	// zoom fix toggle (this determains if +1 is added on the zoom image width,
+	// to fix a loading bug)
+	public static boolean zoomfixboolean = true;
+
+	// All the games strings stored here;
+	static LoadGamesText GamesText = new LoadGamesText();
+	
+	//Score and Jocker Container
+	public static final HorizontalPanel ScoreAndJokerContainer = new HorizontalPanel();
+	//Scoreboard
+	public static final SpiffyScoreBoard PlayersScore = new SpiffyScoreBoard("GameIcons/ScoreBox.jpg");
+	
+	//calculator
+	public static final Calculator calc = new Calculator();
+	
+	//clock silly bit
+	public static final Image clockpopup = new Image("GameIcons/stopthat.png");
+	
+	public void onModuleLoad() {
+		
+		//preload the images nesscery for login
+		Image.prefetch("GameTextures/loginbox_back.jpg");
+		
+		
+		// then we load the interface text
+
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET,
+		//		"text/messages_dutch.properties");
+		"text/messages_dutch.properties");
+
+		try {
+			requestBuilder.sendRequest("", new RequestCallback() { //$NON-NLS-1$
+						public void onError(Request request, Throwable exception) {
+							DebugWindow.setText("http get failed"); //$NON-NLS-1$
+						}
+
+						public void onResponseReceived(Request request,
+								Response response) {
+
+							//DebugWindow.setText("\n got text"+response.getText().length()+" ");
+							
+							// load the text
+							GamesText.LoadText(response.getText());
+							DebugWindow.addText("\n loaded text");
+							
+							// update interface language
+							ControllPanelShadows.caption
+									.setText(LoadGamesText.MainGame_SaveOrLoadYourGame);
+							PlayersInventoryFrame.caption
+									.setText(LoadGamesText.MainGame_Inventory);
+							PlayersNotepadFrame.caption
+									.setText(LoadGamesText.MainGame_Charecter_Profiles);
+							SecretPanelFrame.caption
+									.setText(LoadGamesText.MainGame_Secrets_Found);
+
+							////close all title
+
+							closeallwindows.setTitle(LoadGamesText.MainGame_CloseAlWindows);
+							
+							EnterAns.setText(LoadGamesText.MainGame_submit);
+
+							// update controll panel text
+
+							ControlPanel.changepassword
+									.setText(LoadGamesText.ControllPanel_ChangePassword);
+							ControlPanel.sound_options
+									.setText(LoadGamesText.ControllPanel_SoundEffects);
+							ControlPanel.soundon
+									.setText(LoadGamesText.ControllPanel_on);
+							ControlPanel.soundoff
+									.setText(LoadGamesText.ControllPanel_off);
+							ControlPanel.animation_options
+									.setText(LoadGamesText.ControllPanel_AnimationEffects);
+							ControlPanel.animationon
+									.setText(LoadGamesText.ControllPanel_on);
+							ControlPanel.animationoff
+									.setText(LoadGamesText.ControllPanel_off);
+							ControlPanel.LayoutSizeOveride
+									.setText(LoadGamesText.ControllPanel_InterfaceSize);
+							ControlPanel.NewTopBar.Title
+									.setText(LoadGamesText.ControllPanel_ControllPanel);
+							ControlPanel.animationoff
+									.setText(LoadGamesText.ControllPanel_off);
+							ControlPanel.SaveGameDataToSever
+									.setText(LoadGamesText.ControllPanel_ClickHereToSaveYourProgress);
+							ControlPanel.LoadGameData
+									.setText(LoadGamesText.ControllPanel_LoadFromText);
+							ControlPanel.LogOut
+									.setText(LoadGamesText.ControllPanel_ClickHereToLogOut);
+
+							ControlPanel.LayoutModes.clear();
+							ControlPanel.LayoutModes
+									.addItem(LoadGamesText.ControllPanel_Default);
+							ControlPanel.LayoutModes
+									.addItem(LoadGamesText.ControllPanel_Small);
+							ControlPanel.LayoutModes
+									.addItem(LoadGamesText.ControllPanel_Medium);
+							ControlPanel.LayoutModes
+									.addItem(LoadGamesText.ControllPanel_Big);
+							
+							//update reset box text
+							ControlPanel.ResetGameBox.lab_warning.setText(LoadGamesText.GameReset_Warning);
+							ControlPanel.ResetGameBox.resetgamebutton.setText(LoadGamesText.GameReset_Button);
+							//ControlPanel.ResetGameBox. .setText(MyApplication.GamesText.GameReset_Warning);
+							//update change password
+							ControlPanel.ChangePasswordBox.changepassword_button.setText(LoadGamesText.ControllPanel_ChangePassword);
+							
+							//Update login box bits
+							user_login.signup.setText(LoadGamesText.Login_SignUp);
+							user_login.lab_password.setText(LoadGamesText.Login_Password);
+							user_login.lab_rememberme.setText(LoadGamesText.Login_Rememberme);
+							user_login.guestlogin.setText(LoadGamesText.Login_GuestLogin);
+							user_login.forgotpassword.setText(LoadGamesText.Login_ForgotPassword);
+							user_login.lab_name.setText(LoadGamesText.Login_Username);
+							user_login.clearcookies.setText(LoadGamesText.Login_ClearCookies);
+							
+							
+						}
+					});
+		} catch (RequestException ex) {
+			DebugWindow.addText("can not connect to games text file"); //$NON-NLS-1$
+		}
+
+		
+
+		// Set loading text
+		MainStoryText.setText(LoadGamesText.MainGame_Loading);
+		Window.setTitle(LoadGamesText.MainGame_WindowTitle_Loading);
+
+		// Store screen settings
+		Story_Text_Height = RootPanel.get("bigtextbox").getOffsetHeight() - 2; //$NON-NLS-1$
+		Story_Text_Width = RootPanel.get("bigtextbox").getOffsetWidth() - 2; //$NON-NLS-1$
+
+		Game_Window_Width = Window.getClientWidth();
+		Game_Window_Height = Window.getClientWidth();
+
+		// set icon size
+		setInterfaceIconSize();
+
+	
+		InventoryButton.setStyleName("IconPositionsInventory"); //$NON-NLS-1$
+		NotepadButton.setStyleName("IconPositionsNotebook"); //$NON-NLS-1$
+		ControllPanelButton.setStyleName("IconPositionsControllPanel"); //$NON-NLS-1$
+
+		
+		
+		
+		// test login
+		test_for_logged_in_user();
+
+		
+		
+		// disable button
+		AnswerBox.setEnabled(false);
+
+		// First we load the main control script
+
+		startgamefromcontrollfile("Game Controll Script/Main_Game_Controll.txt"); //$NON-NLS-1$
+
+		// startgamefromlocalcontrollfile("Game Controll Script/Main_Game_Controll.txt");
+
+		// Load item mix script
+		LoadItemMixScript();
+
+		// add history listener
+		// History.addHistoryListener(this);
+
+		if (History.getToken().length() > 2) {
+			String decoded = URL.decodeComponent(History.getToken());
+		//	StartFromURL = true;
+
+			onHistoryChanged(decoded);
+		}
+
+		// Set Label style
+
+		StoryTabs.setStylePrimaryName("standard_message_back"); //$NON-NLS-1$
+
+		AnswerBox.setEnabled(true);
+
+		// while waiting for that we load the text boxs into the interface;
+
+		// set chapter list
+
+		ChapterList.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		ChapterList.addStyleName("standard_message_back"); //$NON-NLS-1$
+
+		Feedback.setWidth("95%"); //$NON-NLS-1$
+		// Feedback.setHeight("18px");
+
+		Feedback.setStyleName("Feedback"); //$NON-NLS-1$
+
+		// MainStoryText.setReadOnly(true);
+		// MainStoryText.setStyleName("standard_message");
+		System.out.print("________height=" + StoryTabs.getOffsetHeight()); //$NON-NLS-1$
+
+		// Story tabs
+		StoryTabs.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		StoryTabs.getDeckPanel().setSize("100%", Story_Text_Height + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		Window.addWindowResizeListener(new WindowResizeListener() {
+			public void onWindowResized(int width, int height) {
+				Game_Window_Width = Window.getClientWidth();
+				Game_Window_Height = Window.getClientWidth();
+
+				setInterfaceIconSize();
+
+				// resize message history if open
+				if (MessageHistoryOpen == true) {
+					RootPanel.get().remove(messagehistory);
+					MessageHistoryOpen = false;
+					MessageHistoryButton.setAnimateClose();
+				}
+
+				resizeStoryBox();
+
+				//resize inventory if open
+				if (InventoryOpen == true){
+					PlayersInventory.OpenDefault();
+				}
+				
+				
+			}
+
+		});
+
+		ResizeOnLoad = new Timer() {
+			@Override
+			public void run() {
+				// We check the size here, and fix if not correct. (for IE, as
+				// IE dosnt work with LoadListener due to the cache)
+
+				resizeStoryBox();
+			}
+
+		};
+
+		ResizeOnLoad.schedule(1000);
+
+		StoryTabs.setStylePrimaryName("standard_message"); //$NON-NLS-1$
+
+		// StoryTabs.selectTab(0);
+		CurrentLocationTabs.setHeight("100%"); //$NON-NLS-1$
+
+		// remove welcome from being active
+
+		CurrentLocationTabs
+				.removeTabListener(CurrentLocationTabs.OurTabListener);
+		openPages.clear();
+		locationpuzzlesActive.clear();
+
+		StoryTabs.getTabBar().setVisible(false);
+		CurrentLocationTabs.setHeight("100%"); //$NON-NLS-1$
+		CurrentLocationTabs.setWidth("100%"); //$NON-NLS-1$
+		// create first tab
+		// Label Tab0 = new Label();
+		// Tab0.setText("Welcome");
+		// openPages.add("Welcome");
+
+		// set chapter name to match
+		// locationpuzzlesActive.add("Welcome");
+
+		// CurrentLocationTabs.add(MainStoryText,openPages.get(0));
+		// CurrentLocationTabs.selectTab(0);
+		MainStoryText.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+		// Add inventory
+
+		InventoryButton.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
+
+				PlayersInventoryFrame.OpenDefault();
+				//always open this when a panel is opened;
+				closeallwindows.setAnimateOpen();
+				//--
+				
+			}
+		});
+		InventoryButton.addMouseListener(new MouseListener() {
+			public void onMouseDown(Widget sender, int mx, int my) {
+				
+				
+				
+				// InventoryButton.setUrl("GameIcons/Inventory_open.png");
+				// InventoryButton.setAnimateOpen();
+				// toggle inventory open
+				InventoryOpen = true;
+
+			}
+
+			public void onMouseUp(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseEnter(Widget sender) {
+
+				InventoryButton.setAnimateOpen();
+			}
+
+			public void onMouseMove(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseLeave(Widget sender) {
+				if (InventoryOpen == false) {
+					InventoryButton.setAnimateClose();
+				}
+			}
+		});
+
+		// add forum link
+		ForumLinkButton.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
+
+				// loadforum
+				Window.open("http://forum.res-nova.nl/fora/", "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			}
+		});
+
+		ForumLinkButton.addMouseListener(new MouseListener() {
+			public void onMouseDown(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseUp(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseEnter(Widget sender) {
+				ForumLinkButton.setAnimateOpen();
+			}
+
+			public void onMouseMove(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseLeave(Widget sender) {
+				ForumLinkButton.setAnimateClose();
+
+			}
+		});
+		MessageForwardButton.addClickListener(new ClickListener() {
+
+			public void onClick(Widget sender) {
+				String mess = MessageHistory.getnextmessage();
+				
+				//remove the tags
+				mess = mess.replaceAll("\\<.*?>","").trim();
+				
+				Feedback.setTextNow(" "+mess);
+			}
+			
+		});
+		MessageForwardButton.addMouseListener(new MouseListener(){
+
+			public void onMouseDown(Widget sender, int x, int y) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onMouseEnter(Widget sender) {
+				// TODO Auto-generated method stub
+				MessageForwardButton.setAnimateOpen();
+			}
+
+			public void onMouseLeave(Widget sender) {
+				// TODO Auto-generated method stub
+				MessageForwardButton.setAnimateClose();
+			}
+
+			public void onMouseMove(Widget sender, int x, int y) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onMouseUp(Widget sender, int x, int y) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		MessageBackButton.addMouseListener(new MouseListener(){
+
+			public void onMouseDown(Widget sender, int x, int y) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onMouseEnter(Widget sender) {
+				// TODO Auto-generated method stub
+				MessageBackButton.setAnimateOpen();
+			}
+
+			public void onMouseLeave(Widget sender) {
+				// TODO Auto-generated method stub
+				MessageBackButton.setAnimateClose();
+			}
+
+			public void onMouseMove(Widget sender, int x, int y) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onMouseUp(Widget sender, int x, int y) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		MessageBackButton.addClickListener(new ClickListener() {
+
+			public void onClick(Widget sender) {
+				String mess = MessageHistory.getprevmessage();
+				
+				//remove the tags
+				mess = mess.replaceAll("\\<.*?>","").trim();
+				
+				Feedback.setTextNow(" "+mess);
+				
+			}
+			
+		});
+		
+		// MessageHistory popup
+		MessageHistoryButton.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
+
+				if (MessageHistoryOpen == false) {
+					messagehistory.setHeight("300px"); //$NON-NLS-1$
+					messagehistory.setWidth(((Feedback.getParent()
+							.getOffsetWidth()) - 6)
+							+ "px"); //$NON-NLS-1$
+					messagehistory.setStyleName("Feedback"); //$NON-NLS-1$
+					messagehistory.scrolltobottom();
+
+					// loadpanel
+					RootPanel.get().add(messagehistory,
+							Feedback.getAbsoluteLeft(),
+							Feedback.getAbsoluteTop() - 300);
+					MessageHistoryButton.setAnimateOpen();
+					MessageHistoryOpen = true;
+
+				} else {
+					RootPanel.get().remove(messagehistory);
+					MessageHistoryOpen = false;
+					MessageHistoryButton.setAnimateClose();
+				}
+
+			}
+		});
+
+		// Add Notepad
+
+		NotepadButton.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
+
+				// RootPanel.get().add(MyApplication.fadeback,0, 0);
+				PlayersNotepadFrame.OpenDefault();
+
+			}
+		});
+		NotepadButton.addMouseListener(new MouseListener() {
+			public void onMouseDown(Widget sender, int mx, int my) {
+
+				NotepadOpen = true;
+
+				// NotepadButton.setUrl("GameIcons/Notebook_open.png");
+				// toggle inventory open
+				// NotepadOpen = true;
+				//always open this when a panel is opened;
+				closeallwindows.setAnimateOpen();
+				//--
+				
+			}
+
+			public void onMouseUp(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseEnter(Widget sender) {
+				NotepadButton.setAnimateOpen();
+			}
+
+			public void onMouseMove(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseLeave(Widget sender) {
+				if (NotepadOpen == false) {
+					NotepadButton.setAnimateClose();
+				}
+			}
+		});
+
+		ControllPanelButton.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
+				//always open this when a panel is opened;
+				closeallwindows.setAnimateOpen();
+				//--
+				
+				RootPanel.get().add(MyApplication.fadeback, 0, 0);
+				// ControlPanel.ShowDefault();
+				DOM.setStyleAttribute(fadeback.getElement(),
+						"zIndex", "" + (MyApplication.z_depth_max + 1)); //$NON-NLS-1$ //$NON-NLS-2$
+				DOM.setStyleAttribute(fadeback.getElement(),
+						"z-index", "" + (MyApplication.z_depth_max + 1)); //$NON-NLS-1$ //$NON-NLS-2$
+				z_depth_max = z_depth_max + 1;
+
+				ControllPanelShadows.OpenDefault();
+
+				ControllPanelShadows.getElement().getStyle().setProperty(
+						"zIndex", "2000"); //$NON-NLS-1$ //$NON-NLS-2$
+				ControllPanelShadows.getElement().getStyle().setProperty(
+						"z-index", "2000"); //$NON-NLS-1$ //$NON-NLS-2$
+
+				// make sure its on top
+
+				ControllPanelShadows.fixedZdepth(2000);
+
+			}
+		});
+
+		ControllPanelButton.addMouseListener(new MouseListener() {
+			public void onMouseDown(Widget sender, int mx, int my) {
+
+				ControllPanelOpen = true;
+
+			}
+
+			public void onMouseUp(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseEnter(Widget sender) {
+				ControllPanelButton.setAnimateOpen();
+			}
+
+			public void onMouseMove(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseLeave(Widget sender) {
+				if (ControllPanelOpen == false) {
+					ControllPanelButton.setAnimateClose();
+				}
+			}
+		});
+
+		// invisible by default
+		SecretsPopupPanelButton.setVisible(false);
+		SecretsPopupPanelButton.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
+				SecretPanelFrame.OpenDefault();
+				
+				//always open this when a panel is opened;
+				//closeallwindows.setAnimateOpen();
+			}
+
+		});
+		SecretsPopupPanelButton.addMouseListener(new MouseListener() {
+			public void onMouseDown(Widget sender, int mx, int my) {
+
+				SecretsPanelOpen = true;
+
+			}
+
+			public void onMouseUp(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseEnter(Widget sender) {
+				SecretsPopupPanelButton.setAnimateLoop();
+			}
+
+			public void onMouseMove(Widget sender, int mx, int my) {
+
+			}
+
+			public void onMouseLeave(Widget sender) {
+				if (SecretsPanelOpen == false) {
+					SecretsPopupPanelButton.setAnimateClose();
+				}
+			}
+		});
+
+		// close all button
+		closeallwindows.addClickListener(new ClickListener() {
+
+			public void onClick(Widget sender) {
+
+				closeallwindows.setAnimateClose();
+				
+				// close popups
+				// Iterator <PopUpWithShadow> itp =
+				// System.out.print("popups open="+overlayPopUpsOpen.size());
+				DebugWindow.addText("popups open=" + overlayPopUpsOpen.size()); //$NON-NLS-1$
+
+				int size = overlayPopUpsOpen.size();
+				int closei = size - 1;
+				while (closei > -1) {
+
+					DebugWindow.addText("closing "); //$NON-NLS-1$
+
+					PopUpWithShadow closethis = overlayPopUpsOpen.get(closei);
+
+					DebugWindow
+							.addText("-" + closethis.getWidget().getClass() + "-"); //$NON-NLS-1$ //$NON-NLS-2$
+
+					closethis.CloseDefault();
+					closei--;
+				}
+
+				// make sure main ones are closed too all main panels.
+				// SecretPanelFrame.CloseDefault();
+				// PlayersNotepadFrame.CloseDefault();
+				// PlayersInventoryFrame.CloseDefault();
+			}
+
+		});
+		ScoreAndJokerContainer.add(PlayersScore);
+		PlayersScore.SetScore(10000);
+		RootPanel.get("ScoreBox").add(ScoreAndJokerContainer);		
+		ScoreAndJokerContainer.setSize("100%", "40px");
+		
+		RootPanel.get().add(closeallwindows, Window.getClientWidth() - 100, 0);
+		// decorations
+		RootPanel.get("Statuefeet").add(StatueFeat); //$NON-NLS-1$
+		RootPanel.get("clocklady").add(StatueHead); //$NON-NLS-1$
+
+		RootPanel.get("clocklady").add(gwt_clock, 35, 40); //$NON-NLS-1$
+
+		gwt_clock.addClickListener(new ClickListener() {
+			int clickcount =0;
+			public void onClick(Widget sender) {
+				gwt_clock.SetModeRandom(3000);
+				clickcount++;
+				System.out.print(clickcount);
+				if (clickcount>5){
+					
+					RootPanel.get().add(clockpopup,RootPanel.get("clocklady").getAbsoluteLeft()+35,RootPanel.get("clocklady").getAbsoluteTop()-30);
+					//put it on top
+					DOM.setIntStyleAttribute(clockpopup.getElement(),"zIndex",5000);
+					
+					//timer to make it vanish
+					Timer vanishimage = new Timer(){
+
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							clockpopup.removeFromParent();
+						}
+						
+					};
+					vanishimage.schedule(3000);
+				}
+
+			}
+
+		});
+		// gwt_clock.setRadius((int)(StatueHead.getOffsetWidth()/2.2));
+
+		RootPanel.get("soldier").add(solider); //$NON-NLS-1$
+		solider.setStyleName("solider"); //$NON-NLS-1$
+
+		DOM.setStyleAttribute(solider.getElement(), "zIndex", "0");
+
+		try {
+			RootPanel.get("Inventory").add(InventoryButton); //$NON-NLS-1$
+			InventoryButton.setWidth("100%"); //$NON-NLS-1$
+			RootPanel.get("Notepad").add(NotepadButton); //$NON-NLS-1$
+			NotepadButton.setWidth("100%"); //$NON-NLS-1$
+			RootPanel.get("ControllPanel").add(ControllPanelButton); //$NON-NLS-1$
+			ControllPanelButton.setWidth("100%"); //$NON-NLS-1$
+			RootPanel.get("chapterlist").add(ChapterList); //$NON-NLS-1$
+
+			RootPanel.get("musicControll").add(musicPlayer); //$NON-NLS-1$
+			RootPanel.get("Secretlink").add(SecretsPopupPanelButton); //$NON-NLS-1$
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		RootPanel.get("ForumLink").add(ForumLinkButton); //$NON-NLS-1$
+		RootPanel.get("bigtextbox").add(StoryTabs); //$NON-NLS-1$
+
+		// RootPanel.get("answerbox").add(AnswerBox);
+		// RootPanel.get("answerbox").add(EnterAns);
+
+		// we have to do this to get around the text going off the bottom of the
+		// frame (in FF and Chrome)
+		VerticalPanel FeedbackContainer = new VerticalPanel();
+		FeedbackContainer.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+		FeedbackContainer.add(Feedback);
+		FeedbackContainer.setCellVerticalAlignment(Feedback,
+				HasVerticalAlignment.ALIGN_BOTTOM);
+
+		RootPanel.get("feedback").add(Feedback); //$NON-NLS-1$
+		// feedback history flip thingy
+		MessageForwardButton.setSize("19px", "19px");
+		Style MHBStyle2 = MessageForwardButton.getElement().getStyle();
+		MHBStyle2.setProperty("zIndex", "250"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		MessageBackButton.setSize("19px", "19px");
+		Style MHBStyle3 = MessageBackButton.getElement().getStyle();
+		MHBStyle3.setProperty("zIndex", "250"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		MessageHistoryButton.setSize("16px", "16px"); //$NON-NLS-1$ //$NON-NLS-2$
+		Style MHBStyle = MessageHistoryButton.getElement().getStyle();
+		MHBStyle.setProperty("zIndex", "250"); //$NON-NLS-1$ //$NON-NLS-2$
+		
+
+		RootPanel.get().add(MessageHistoryButton,
+				Feedback.getAbsoluteLeft() + Feedback.getOffsetWidth(),
+				Feedback.getAbsoluteTop());
+		
+		RootPanel.get().add(MessageForwardButton,
+				MessageHistoryButton.getAbsoluteLeft() - 16,
+				Feedback.getAbsoluteTop()); 
+
+		RootPanel.get().add(MessageBackButton,
+				MessageHistoryButton.getAbsoluteLeft() - 35,
+				Feedback.getAbsoluteTop());
+		
+		// AnsBar.setWidth("100%");
+		AnsBar.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		AnsBar.setHeight("100%"); //$NON-NLS-1$
+		AnsBar.add(AnswerBox);
+		// AnsBar.setBorderWidth(2);
+		AnsBar.add(EnterAns);
+		// EnterAns.setWidth("200px");
+		RootPanel.get("ansbar").add(AnsBar); //$NON-NLS-1$
+
+		// size has to be set after its added
+
+		StoryTabs.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+		// StoryTabs.setWidth(""+(StoryTabs.getParent().getOffsetWidth()-16)+"px");
+		// StoryTabs.setHeight((StoryTabs.getParent().getOffsetHeight()-15)+"px");
+
+		System.out
+				.print("get offset-" + StoryTabs.getParent().getOffsetWidth()); //$NON-NLS-1$
+		StoryTabs.getDeckPanel().setSize("100%", Story_Text_Height + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+
+	}
+
+	public static void setInterfaceIconSize() {
+
+		iconsizestring = "BIG"; //$NON-NLS-1$
+		if (InterfaceSize.compareTo("Default") == 0) { //$NON-NLS-1$
+			if (Game_Window_Width < 1050) {
+				iconsizestring = "MEDIUM"; //$NON-NLS-1$
+			}
+			if (Game_Window_Width < 800) {
+				iconsizestring = "SMALL"; //$NON-NLS-1$
+			}
+		} else {
+			if (InterfaceSize.compareTo("Small") == 0) { //$NON-NLS-1$
+				iconsizestring = "SMALL"; //$NON-NLS-1$
+			}
+			if (InterfaceSize.compareTo("Medium") == 0) { //$NON-NLS-1$
+				iconsizestring = "MEDIUM"; //$NON-NLS-1$
+			}
+			if (InterfaceSize.compareTo("Big") == 0) { //$NON-NLS-1$
+				iconsizestring = "BIG"; //$NON-NLS-1$
+			}
+		}
+
+		//InventoryButton.setURL(
+		//		"GameIcons/" + iconsizestring + "/cc2rugzakje0.png", 6); //$NON-NLS-1$ //$NON-NLS-2$
+		
+		InventoryButton.setURL(
+				"GameIcons/" + iconsizestring + "/"+InventoryButton.originalfilename+".png", 6); //$NON-NLS-1$ //$NON-NLS-2$
+		
+		
+		NotepadButton.setURL(
+				"GameIcons/" + iconsizestring + "/cc2notebook0.png", 4); //$NON-NLS-1$ //$NON-NLS-2$
+		ControllPanelButton.setURL(
+				"GameIcons/" + iconsizestring + "/CCtype0.png", 4); //$NON-NLS-1$ //$NON-NLS-2$
+		ForumLinkButton.setURL(
+				"GameIcons/" + iconsizestring + "/CC2forum0.png", 4); //$NON-NLS-1$ //$NON-NLS-2$
+		SecretsPopupPanelButton.setURL(
+				"GameIcons/" + iconsizestring + "/easteregg0.png", 5); //$NON-NLS-1$ //$NON-NLS-2$
+		StatueHead.setURL(
+				"GameIcons/" + iconsizestring + "/CCladyclock0.png", 3); //$NON-NLS-1$ //$NON-NLS-2$
+		StatueFeat.setURL("GameIcons/" + iconsizestring + "/"+StatueFeat.originalfilename+".png", 1); //$NON-NLS-1$ //$NON-NLS-2$
+		solider.setURL("GameIcons/" + iconsizestring + "/CCsoldier0.png", 5); //$NON-NLS-1$ //$NON-NLS-2$
+		// fix for IE because ie is dumb
+		StatueHead.getElement().getStyle().setProperty("zIndex", "50"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public void startgamefromlocalcontrollfile(final String fileurl) {
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET,
+				fileurl);
+
+		try {
+			requestBuilder.sendRequest("", new RequestCallback() { //$NON-NLS-1$
+						public void onError(Request request, Throwable exception) {
+							System.out.println("http failed"); //$NON-NLS-1$
+						}
+
+						public void onResponseReceived(Request request,
+								Response response) {
+
+							// catch error
+							if (response.getText().length() < 10) {
+								System.out
+										.println("controll file not recieved;" + response.getText()); //$NON-NLS-1$
+								MainStoryText
+										.setText("controll file not recieved;" + response.getText()); //$NON-NLS-1$
+								return;
+							}
+
+							controllscript = response.getText();
+
+							// crop till start;
+							// "Game Controll Starts Here:"
+
+							int StartIndex = controllscript
+									.indexOf("Game Controll Starts Here:"); //$NON-NLS-1$
+
+							controllscript = controllscript.substring(
+									StartIndex, controllscript.length());
+
+							System.out.print(controllscript);
+
+							// once loaded we start the main game loop
+							maingameloop();
+						}
+					});
+		} catch (RequestException ex) {
+			System.out.println("can not connect to game controll file"); //$NON-NLS-1$
+		}
+
+	}
+
+	public void LoadItemMixScript() {
+
+		// RequestBuilder requestBuilder = new
+		// RequestBuilder(RequestBuilder.POST,
+		// textfetcher_url);
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET,
+				inventory_url + "ItemControllScript.txt"); //$NON-NLS-1$
+		try {
+			requestBuilder.sendRequest("", new RequestCallback() { //$NON-NLS-1$
+						public void onError(Request request, Throwable exception) {
+							System.out.println("http failed"); //$NON-NLS-1$
+						}
+
+						public void onResponseReceived(Request request,
+								Response response) {
+
+							String responsetext = response.getText();
+							// update widgets HTML field
+							itemmixscript = responsetext;
+						}
+					});
+		} catch (RequestException ex) {
+			String responsetext = "can not connect to game controll file"; //$NON-NLS-1$
+			itemmixscript = responsetext;
+		}
+
+	}
+
+	public void GetTextSecurely(final String fileurl, final HTML updateThis) {
+
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,
+				textfetcher_url);
+
+		try {
+			requestBuilder.sendRequest(
+					"FileURL=" + fileurl, new RequestCallback() { //$NON-NLS-1$
+						public void onError(Request request, Throwable exception) {
+							System.out.println("http failed"); //$NON-NLS-1$
+						}
+
+						public void onResponseReceived(Request request,
+								Response response) {
+
+							String responsetext = response.getText();
+							// update widgets HTML field
+							updateThis.setText(responsetext);
+						}
+					});
+		} catch (RequestException ex) {
+			String responsetext = "can not connect to game controll file"; //$NON-NLS-1$
+			updateThis.setText(responsetext);
+		}
+
+	}
+
+	public void startgamefromcontrollfile(final String fileurl) {
+
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,
+				textfetcher_url);
+	
+		try {
+			requestBuilder.sendRequest(
+					"FileURL=" + fileurl, new RequestCallback() { //$NON-NLS-1$
+						public void onError(Request request, Throwable exception) {
+							System.out.println("http failed"); //$NON-NLS-1$
+						}
+
+						public void onResponseReceived(Request request,
+								Response response) {
+
+							controllscript = response.getText();
+
+							// crop till start;
+							// "Game Controll Starts Here:"
+
+							int StartIndex = controllscript
+									.indexOf("Game Controll Starts Here:"); //$NON-NLS-1$
+
+							// catch error
+							if (StartIndex == -1) {
+								System.out
+										.println("controll file not recieved;" + response.getText()); //$NON-NLS-1$
+								MainStoryText
+										.setText("controll file not recieved;" + response.getText()); //$NON-NLS-1$
+								return;
+							}
+
+							controllscript = controllscript.substring(
+									StartIndex, controllscript.length());
+
+							System.out.print(controllscript);
+
+							// once loaded we start the main game loop
+
+							// maingameloop();
+						}
+					});
+		} catch (RequestException ex) {
+			System.out.println("can not connect to game controll file"); //$NON-NLS-1$
+		}
+
+	}
+
+	public static void maingameloop() {
+
+		// Maingame here
+
+		// We add the answer listener to the main answer box;
+		EnterAns.addClickListener(new ClickListener() {
+			public void onClick(Widget Sender) {
+				// if over one letters scan if its correct answer
+				if (AnswerBox.getText().length() > 1) {
+
+					AnswerGiven(AnswerBox.getText());
+				}
+			}
+		});
+
+		AnswerBox.addKeyboardListener(new KeyboardListener() {
+			public void onKeyUp(Widget sender, char Key, int Mod) {
+
+			};
+
+			public void onKeyPress(Widget sender, char Key, int Mod) {
+
+			};
+
+			public void onKeyDown(Widget sender, char Key, int Mod) {
+
+				if (Key == 13) {
+					AnswerBox.setText(RemoveCartReturns(AnswerBox.getText())
+							.trim());
+
+					// if over one letters scan if its correct answer
+					if (AnswerBox.getText().length() > 1) {
+
+						AnswerGiven(AnswerBox.getText());
+					}
+
+				}
+
+			};
+		});
+
+	}
+
+	private static void start_of_game_script() {
+		//wait to make sure controll script is loaded
+		// Set loading text
+		MainStoryText.setText(LoadGamesText.MainGame_StoryText_Loading);
+		Feedback.setText(LoadGamesText.MainGame_LoadingNewGame);
+		
+		Timer temptimer = new Timer(){
+
+			@Override
+			public void run() {
+				
+				if (controllscript.length()>5){
+				
+					this.cancel();
+				// TODO Auto-generated method stub
+				// Set loading text
+				MainStoryText.setText(LoadGamesText.MainGame_StoryText_Loading+"...");
+				Feedback.setText(LoadGamesText.MainGame_LoadingNewGame+"...");
+				// grab start commands
+				int FirstBitsStart = controllscript.indexOf("Start:", 0) + 6; //$NON-NLS-1$
+				int FirstBitsEnd = controllscript.indexOf("ans=", 0); //$NON-NLS-1$
+				// System.out.print("/n ans next pos="+FirstBitsStart);
+				DebugWindow.addText("/n ans next pos=" + FirstBitsStart); //$NON-NLS-1$
+				// Isolate instructions to process
+				final String instructionset = controllscript.substring(FirstBitsStart,
+						FirstBitsEnd);
+
+				System.out
+						.print("\n -instruction set- \n " + instructionset + " \n -instruction set- \n"); //$NON-NLS-1$ //$NON-NLS-2$
+				DebugWindow
+						.addText("\n -instruction set- \n " + instructionset + " \n -instruction set- \n"); //$NON-NLS-1$ //$NON-NLS-2$
+
+				// if theres no preloaded instructions, then we process the first lot
+				// if (StartFromURL == false) {
+				processInstructions(instructionset);
+				// }
+				maingameloop();
+				}
+			}
+			
+		};
+		
+		temptimer.scheduleRepeating(30);
+		
+		
+	}
+
+	public static void AnswerGiven(String Ans) {
+
+		
+		if (Ans.equals("DebugWindow")){
+			DebugWindow.setStyleName("standard_message"); //$NON-NLS-1$
+			DebugWindow.setSize("15%", "15%"); //$NON-NLS-1$ //$NON-NLS-2$
+			RootPanel.get().add(DebugWindow, 0, 0);
+			
+		}
+		
+		// if the ans is a special code;
+		
+		if ((Ans.startsWith("SPC"))&&(Ans.length()==12)){
+			specialCodeEntered(Ans);
+			return;
+		}
+		
+		DebugWindow.addText("starting ans search..."); //$NON-NLS-1$
+		EnterAns.setText(LoadGamesText.MainGame_Sending);
+
+		// trim and lower case the answer;
+		Ans = Ans.trim().toLowerCase();
+		int AnswerIndex = -1;
+
+		// search for answer (specific to chapter)
+
+		// loop till we find the ans at the correct chapter
+		int starthere = 0;
+		while (starthere <= controllscript.length()) {
+			// get answer position, search for each combination of a ans
+			// frameing
+			int AnswerLineA = controllscript.toLowerCase().indexOf(Ans,
+					starthere);
+
+			// check its not last
+			if (AnswerLineA < 0) {
+				break;
+			}
+
+			// ans must be a word unto itself
+			String char_before_ans = controllscript.toLowerCase().substring(
+					(AnswerLineA - 1), AnswerLineA);
+			if (!((char_before_ans.compareTo(" ") == 0) || (char_before_ans.compareTo(",") == 0))) { //$NON-NLS-1$ //$NON-NLS-2$
+				starthere = AnswerLineA + 1;
+				continue;
+			}
+
+			String char_after_ans = controllscript.toLowerCase().substring(
+					(Ans.length() + AnswerLineA),
+					Ans.length() + AnswerLineA + 1);
+			DebugWindow.addText("-after=" + char_after_ans + "-"); //$NON-NLS-1$ //$NON-NLS-2$
+			testafter = -4;
+			testafter = (char_after_ans.indexOf(" ")) + (char_after_ans.indexOf(",")) + (char_after_ans.indexOf("\r")) + (char_after_ans.indexOf("\n")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			//testafter = char_after_ans.matches("[ ,\\r\\n]+");
+			
+			DebugWindow.addText("=" + testafter + ".   "); //$NON-NLS-1$ //$NON-NLS-2$
+
+			if (testafter < -3) {
+				// <0 changed to <-1 and added "AnswerLineA" rather then just
+				// ++1
+				starthere = AnswerLineA + 1;
+				continue;
+			}
+			
+			
+			
+			
+
+			// MyApplication.AnswerBox.setTitle(""+AnswerLineA);
+			int AnswerLineIndex = controllscript.lastIndexOf(
+					"ans=", AnswerLineA); //$NON-NLS-1$
+
+			// check there isnt a newline before the answer start (in which
+			// case, it wasnt a real answer
+			int Lastnewline = controllscript.lastIndexOf("\n", AnswerLineA); //$NON-NLS-1$
+
+			if (Lastnewline > AnswerLineIndex) {
+				starthere = AnswerLineA + 1;
+				continue;
+			}
+
+			// check its not last
+			if (AnswerLineA < 0) {
+				break;
+			}
+
+			// get whole line
+			String AnswerLine = controllscript.toLowerCase().substring(
+					AnswerLineIndex, controllscript.indexOf("\n",AnswerLineIndex)  );
+			
+			//check it isnt part of a multi-word ans
+			//check the next letter after any spaces is either a , or a newline
+			
+			String anwsers = AnswerLine.substring(AnswerLine.indexOf(":"))+"\n";
+			DebugWindow.addText(anwsers);
+			if ((anwsers.matches(".*(,|:) *"+Ans+" *(,|[\\n|\\r]).*[\\n|\\r]*"))==false){
+				DebugWindow.addText("part right");
+				starthere = AnswerLineA + 1;
+				continue;
+				
+			}
+			
+
+		//	MyApplication.AnswerBox
+		//			.setTitle(AnswerLineIndex + " " + AnswerLine); //$NON-NLS-1$
+			if (AnswerLine.startsWith("ans=" + chapter.toLowerCase() + ": ")) { //$NON-NLS-1$ //$NON-NLS-2$
+				AnswerIndex = AnswerLineIndex;
+				DebugWindow.addText("ans line correct"+ chapter.toLowerCase());
+			//	MyApplication.AnswerBox.setTitle(AnswerLineIndex
+			//			+ " -f- " + AnswerLine); //$NON-NLS-1$
+				break;
+			}
+			starthere = AnswerLineA + 1;
+		}
+
+		// AnswerIndex =
+		// controllscript.toLowerCase().indexOf("ans="+chapter.toLowerCase()+": "+Ans);
+
+		System.out.print("Answer given =" + "ans=" + chapter + ": " + Ans); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		System.out.print("-" + AnswerIndex); //$NON-NLS-1$
+
+		if (AnswerIndex > -1) {
+			// if its the right answer
+			// Feedback.setText("correct");
+			MyApplication.DebugWindow.addText("correct ans detected..."); //$NON-NLS-1$
+			// System.out.print("correct"+AnswerIndex+Ans.length()+chapter.length()+5);
+
+			// store ans in history box
+			messagehistory.AddNewMessage_notrecorded("-- " + Ans); //$NON-NLS-1$
+
+			// send for answer processing
+			CorrectAnswerProcess(AnswerIndex + Ans.length() + chapter.length()
+					+ 6);
+			// set window title
+			Window.setTitle(Username + LoadGamesText.MainGame_is_on_chapter
+					+ chapter);
+			
+			//clear ans box
+			AnswerBox.setText("");
+			
+			return;
+		}
+
+		// loop for non-specific answer
+
+		starthere = 0;
+		while (starthere <= controllscript.length()) {
+			// get answer position, search for each combination of a ans
+			// frameing
+			int AnswerLineA = controllscript.toLowerCase().indexOf(Ans,
+					starthere);
+
+			// check its not last
+			if (AnswerLineA < 0) {
+
+				EnterAns.setText(LoadGamesText.MainGame_submit);
+				break;
+			}
+
+			// ans must be a word unto itself
+			String char_before_ans = controllscript.toLowerCase().substring(
+					(AnswerLineA - 1), AnswerLineA);
+			if (!((char_before_ans.compareTo(" ") == 0) || (char_before_ans.compareTo(",") == 0))) { //$NON-NLS-1$ //$NON-NLS-2$
+				starthere = AnswerLineA + 1;
+				continue;
+			}
+
+			String char_after_ans = controllscript.toLowerCase().substring(
+					(Ans.length() + AnswerLineA),
+					Ans.length() + AnswerLineA + 1);
+			testafter = -4;
+			testafter = (char_after_ans.indexOf(" ")) + (char_after_ans.indexOf(",")) + (char_after_ans.indexOf("\r")) + (char_after_ans.indexOf("\n")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+			DebugWindow.addText("=" + testafter + ".   "); //$NON-NLS-1$ //$NON-NLS-2$
+
+			if (testafter < -3) { // <0 changed to <-1 and added "AnswerLineA"
+									// rather then just ++1
+				starthere = AnswerLineA + 1;
+				continue;
+			}
+
+			// MyApplication.AnswerBox.setTitle(""+AnswerLineA);
+			int AnswerLineIndex = controllscript.lastIndexOf(
+					"ans=", AnswerLineA); //$NON-NLS-1$
+			// check there isnt a newline before the answer start (in which
+			// case, it wasnt a real answer
+			int Lastnewline = controllscript.lastIndexOf("\n", AnswerLineA); //$NON-NLS-1$
+
+			if (Lastnewline > AnswerLineIndex) {
+				starthere = AnswerLineA + 1;
+				continue;
+			}
+			// check its not last
+			if (AnswerLineA < 0) {
+
+				EnterAns.setText(LoadGamesText.MainGame_Submit); 
+				break;
+			}
+
+			// get whole line
+
+			String AnswerLine = controllscript.toLowerCase().substring(
+					AnswerLineIndex, controllscript.indexOf("\n",AnswerLineIndex)  );
+			
+			String anwsers = AnswerLine.substring(AnswerLine.indexOf(":"))+"\n";
+			DebugWindow.addText("&"+anwsers+"&");
+			DebugWindow.addText("+"+Ans+"+");
+			
+			if ((anwsers.matches(".*(,|:) *"+Ans+" *(,|[\\n|\\r]).*[\\n|\\r]*"))==false){
+				DebugWindow.addText("part right2");
+				starthere = AnswerLineA + 1;
+				continue;
+				
+			}
+			
+		//	MyApplication.AnswerBox
+			//		.setTitle(AnswerLineIndex + " " + AnswerLine); //$NON-NLS-1$
+			if (AnswerLine.startsWith("ans=: ")) { //$NON-NLS-1$
+				AnswerIndex = AnswerLineIndex;
+			//	MyApplication.AnswerBox.setTitle(AnswerLineIndex
+			//			+ " -f- " + AnswerLine); //$NON-NLS-1$
+				break;
+			}
+			starthere = AnswerLineA + 1;
+		}
+
+		if (AnswerIndex > -1) {
+			// if its the right answer
+			messagehistory.AddNewMessage_notrecorded("-- " + Ans); //$NON-NLS-1$
+
+			CorrectAnswerProcess(6 + AnswerIndex + Ans.length());
+			// set window title
+			Window.setTitle(Username + LoadGamesText.MainGame_is_on_chapter
+					+ chapter);
+			
+			//clear ans box
+			AnswerBox.setText("");
+			
+			return;
+		} else {
+				//test for maths input
+			if ( calc.isCalculation(Ans) ){
+				
+				String result = ""+calc.AdvanceCalculation(Ans);
+				System.out.println("-"+result+"-");
+				
+				if (result.endsWith(".0")){ 
+					System.out.println("="+result+"=");
+					
+					result=result.replaceFirst("\\.0", "");
+					System.out.println("="+result+"=");
+					
+				}
+				messagehistory.AddNewMessage_notrecorded("-- " + Ans);
+				Feedback.setText( LoadGamesText.MainGame_Mathsbeforeans+" "+result+" "+LoadGamesText.MainGame_Mathsafterans );
+				messagehistory
+				.AddNewMessage("<div class=\"MessageHistoryReplyStyle\" >  " +  LoadGamesText.MainGame_Mathsbeforeans+result+LoadGamesText.MainGame_Mathsafterans  + "</div>"); //$NON-NLS-1$ //$NON-NLS-2$
+
+				return;
+			}
+			
+			//
+			
+			
+			
+			
+			
+			MyApplication.DebugWindow
+					.addText("checking for generic ans..." + "ans=" + chapter.toLowerCase() + ": {default}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+			// check for generic answer in this chapter
+			AnswerIndex = controllscript.toLowerCase().indexOf(
+					"ans=" + chapter.toLowerCase() + ": {default}"); //$NON-NLS-1$ //$NON-NLS-2$
+			if (AnswerIndex > -1) {
+				MyApplication.DebugWindow
+						.addText("generic ans for chapter detected..."); //$NON-NLS-1$
+
+				// store ans in history box
+				messagehistory.AddNewMessage_notrecorded("-- " + Ans); //$NON-NLS-1$
+
+				// send for answer processing
+				CorrectAnswerProcess(AnswerIndex + Ans.length()
+						+ chapter.length() + 6);
+				// set window title
+				Window.setTitle(Username + LoadGamesText.MainGame_is_on_chapter + chapter); 
+				
+				//clear ans box
+				AnswerBox.setText("");
+				return;
+			}
+
+		}
+		
+		
+		
+		
+
+	}
+
+	private static void specialCodeEntered(String ans) {
+		//goto special code function
+		DebugWindow.setText("\n special code entered");
+		
+		//check code
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,
+				"scripts/checkcode.php");
+	
+		try {
+			requestBuilder.sendRequest(
+					"checkthis=" + ans, new RequestCallback() { //$NON-NLS-1$
+						public void onError(Request request, Throwable exception) {
+							DebugWindow.addText("\n error");
+						}
+
+						public void onResponseReceived(Request request,
+								Response response) {
+
+							DebugWindow.addText("\n response"+response.getText());
+							
+							
+							if (response.getText().endsWith("VALID ID")){
+								
+								// we look for where to send the gamer next;
+								
+								//search for {SPECIAL CODE} on current chapter
+								String searchfor = "ans="+chapter.toLowerCase()+": {special code}";
+								DebugWindow.addText("\n looking for "+searchfor);
+								
+								int AnswerIndex = controllscript.toLowerCase().indexOf(searchfor);
+								
+								if (AnswerIndex==-1){
+									DebugWindow.addText("\n not found ");
+									return;
+								}
+								
+								//process instructions;
+								CorrectAnswerProcess(AnswerIndex + 14
+										+ chapter.length() + 6);
+								
+								
+							}
+							
+							
+						}
+					});
+		} catch (RequestException ex) {
+			DebugWindow.addText("\n error");
+		}
+
+	}
+
+	public static void CorrectAnswerProcess(int StartHere) {
+
+		// get position of next answer
+		int NextAnsPos = controllscript.indexOf("ans=", StartHere); //$NON-NLS-1$
+		System.out.print("/n ans next pos=" + NextAnsPos); //$NON-NLS-1$
+
+		// Isolate instructions to process
+		final String instructionset = controllscript.substring(StartHere,
+				NextAnsPos);
+
+		System.out
+				.print("\n -instruction set- \n " + instructionset + " \n -instruction set- \n"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		processInstructions(instructionset);
+
+		EnterAns.setText(LoadGamesText.MainGame_Submit); 
+
+	}
+
+	public static void processInstructions(String instructionset) {
+		int StartHere;
+		// Start pos to zero
+		StartHere = 0;
+		instructionset = instructionset + "\n"; //$NON-NLS-1$
+		// clear command var
+		String CurrentCommand = ""; //$NON-NLS-1$
+		String CurrentProperty = ""; //$NON-NLS-1$
+
+		// Loop for each instruction
+
+		while (instructionset.indexOf("- ", StartHere) > -1) //$NON-NLS-1$
+		{
+			StartHere = instructionset.indexOf("- ", StartHere) + 2; //$NON-NLS-1$
+
+			// Get name of current command
+			CurrentCommand = instructionset.substring(StartHere,
+					instructionset.indexOf(" = ", StartHere)).trim(); //$NON-NLS-1$
+			CurrentProperty = instructionset
+					.substring(
+							instructionset.indexOf(" = ", StartHere) + 3, instructionset.indexOf("\n", StartHere)).trim(); //$NON-NLS-1$ //$NON-NLS-2$
+			// Get the property of the command
+
+			// test
+			System.out.print("\n command recieved;" + CurrentCommand + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			System.out
+					.print("\n command property recieved;" + CurrentProperty + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+
+			// on different commands we do different things;
+			// boy, I wish java support strings on switchs
+
+			if (CurrentCommand.equalsIgnoreCase("SetLocation")) { //$NON-NLS-1$
+
+				System.out
+						.print("setting chapter to '" + CurrentProperty + "'; \n"); //$NON-NLS-1$ //$NON-NLS-2$
+				chapter = CurrentProperty;
+				Window.setTitle(Username + LoadGamesText.MainGame_is_on_chapter
+						+ chapter);
+
+			} else if (CurrentCommand.equalsIgnoreCase("Message")) //$NON-NLS-1$
+			{
+				// progressive messages
+				if (CurrentProperty.indexOf(">>") > -1) { //$NON-NLS-1$
+					// test location we are at in ans message memory
+					DebugWindow.addText("display message:"); //$NON-NLS-1$
+
+					int CurrentItem = 0;
+					if (MultiMessagePlace.GetItem(AnswerBox.getText().trim())
+							.isEmpty()) {
+						// set it to item 0
+						CurrentItem = 0;
+
+					} else {
+						// get current item
+						CurrentItem = Integer.parseInt(MultiMessagePlace
+								.GetItem((AnswerBox.getText())));
+						DebugWindow.addText("message num:" + CurrentItem); //$NON-NLS-1$
+					}
+
+					DebugWindow.addText("display message:" + CurrentItem); //$NON-NLS-1$
+					// display message number..
+					int totalmessages = CurrentProperty
+							.split("(\">>\")|(\" >> \")").length; //$NON-NLS-1$
+					if (CurrentItem > totalmessages) {
+						CurrentItem = 0;
+
+					}
+
+					CurrentProperty = CurrentProperty
+							.split("(\">>\")|(\" >> \")")[CurrentItem]; //$NON-NLS-1$
+
+					CurrentItem = CurrentItem + 1;
+
+					MultiMessagePlace.RemoveItem((AnswerBox.getText().trim()));
+					MultiMessagePlace.AddItem(
+							"" + CurrentItem, (AnswerBox.getText().trim())); //$NON-NLS-1$
+
+					DebugWindow
+							.addText("get item test" + MultiMessagePlace.GetItem("thistest") + ":"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+				}
+
+				// if theres a , in the propertys then we randomize
+				if (CurrentProperty.indexOf("\",\"") > -1) { //$NON-NLS-1$
+
+					int totalmessages = CurrentProperty.split("\",\"").length; //$NON-NLS-1$
+					int selectthis = (int) (Math.random() * totalmessages);
+					// note - to increase speed a precompiled regex can be used
+					// here.
+					CurrentProperty = CurrentProperty
+							.split("(\",\")|(\" , \")")[selectthis]; //$NON-NLS-1$
+
+				}
+				CurrentProperty = CurrentProperty.replaceAll("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
+				messagehistory
+						.AddNewMessage("<div class=\"MessageHistoryReplyStyle\" >  " + CurrentProperty + "</div>"); //$NON-NLS-1$ //$NON-NLS-2$
+
+				Feedback.setText(CurrentProperty);
+			} else if (CurrentCommand.equalsIgnoreCase("PreviousMessage")) //$NON-NLS-1$
+			{
+				Feedback.setText(messagehistory.getlastmessage(Integer
+						.parseInt(CurrentProperty)));
+
+			} else if (CurrentCommand.equalsIgnoreCase("SetMessageDelay")) //$NON-NLS-1$
+			{
+				Feedback.setDelay(Integer.parseInt(CurrentProperty));
+
+			} else if (CurrentCommand.equalsIgnoreCase("SetMessageSpeed")) //$NON-NLS-1$
+			{
+				Feedback.setSpeed(Integer.parseInt(CurrentProperty));
+
+			} else if (CurrentCommand.equalsIgnoreCase("AddItem")) //$NON-NLS-1$
+			{
+				if (PlayersInventory.playerHasItem(CurrentProperty) == false) {
+					System.out
+							.println("Adding " + CurrentProperty + " to the inventory \n"); //$NON-NLS-1$ //$NON-NLS-2$
+					InventoryButton.setAnimateOpenThenClose();
+					
+					PlayersInventory.AddItem(CurrentProperty);
+					PlayersInventory.OpenDefault();
+					
+				} else {
+					Feedback
+							.setText(LoadGamesText.MainGame_YouAlreadyHaveThisItem);
+				}
+
+			} else if (CurrentCommand.equalsIgnoreCase("RemoveItem")) //$NON-NLS-1$
+			{
+				System.out
+						.println("Removing " + CurrentProperty + " to the inventory \n"); //$NON-NLS-1$ //$NON-NLS-2$
+				PlayersInventory.RemoveItem(CurrentProperty);
+
+			} else if (CurrentCommand.equalsIgnoreCase("SpecialEffect")) //$NON-NLS-1$
+			{
+				System.out
+						.println("Setting special effect to " + CurrentProperty + " \n"); //$NON-NLS-1$ //$NON-NLS-2$
+				TriggerEffect(CurrentProperty);
+			} else if (CurrentCommand.equalsIgnoreCase("StoryBox")) //$NON-NLS-1$
+			{
+				if (CurrentProperty.equals("1 Pierres aktetas.html")){
+					CurrentProperty="10 Pierres aktetas.html";
+				}
+				
+				System.out
+						.print("Setting '" + CurrentProperty + "' to storybox \n"); //$NON-NLS-1$ //$NON-NLS-2$
+				setNewPage(CurrentProperty);
+				// CurrentLocationTabs.setNewPage(CurrentProperty);
+
+			} else if (CurrentCommand.equalsIgnoreCase("RemoveLocation")) //$NON-NLS-1$
+			{
+				System.out
+						.print("Removing '" + CurrentProperty + "' from storybox \n"); //$NON-NLS-1$ //$NON-NLS-2$
+				// removePage(CurrentProperty);
+				CurrentLocationTabs.removePage(CurrentProperty);
+
+			} else if (CurrentCommand.equalsIgnoreCase("OpenItem")) //$NON-NLS-1$
+			{
+				PlayersInventory.triggerItem(CurrentProperty);
+
+			} else if (CurrentCommand.equalsIgnoreCase("OpenURL")) //$NON-NLS-1$
+			{
+				Window.open(CurrentProperty, "_blank", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+			} else if (CurrentCommand.equalsIgnoreCase("NewChapter")) //$NON-NLS-1$
+			{
+				newchapter(CurrentProperty);
+
+			} else if (CurrentCommand.equalsIgnoreCase("AddProfile")) //$NON-NLS-1$
+			{
+				if (CurrentProperty.equals("Thm45.html")){
+					CurrentProperty="Th0m45.html";
+				}
+				
+				PlayersNotepad.AddPage(CurrentProperty, CurrentProperty.substring(0,CurrentProperty.indexOf(".html")));
+				NotepadButton.setAnimateOpenThenClose();
+								
+
+			} else if (CurrentCommand.equalsIgnoreCase("SetTIGitem")) //$NON-NLS-1$
+			{
+				String itemnamesearch = CurrentProperty.split(",")[0]; //$NON-NLS-1$
+				String state = CurrentProperty.split(",")[1]; //$NON-NLS-1$
+				DebugWindow.addText("\n setting tig item.."); //$NON-NLS-1$
+				(lastclicked_item).setItemState(
+						itemnamesearch, state);
+
+			} else if (CurrentCommand.equalsIgnoreCase("CheckTIG")) //$NON-NLS-1$
+			{
+
+				(lastclicked_item).testCombination();
+
+			} else if (CurrentCommand.equalsIgnoreCase("TIGMessage")) //$NON-NLS-1$
+			{
+				// progressive messages
+				if (CurrentProperty.indexOf(">>") > -1) { //$NON-NLS-1$
+					// test location we are at in ans message memory
+					DebugWindow.addText("display message:"); //$NON-NLS-1$
+
+					int CurrentItem = 0;
+					if (MultiMessagePlace.GetItem(AnswerBox.getText().trim())
+							.isEmpty()) {
+						// set it to item 0
+						CurrentItem = 0;
+
+					} else {
+						// get current item
+						CurrentItem = Integer.parseInt(MultiMessagePlace
+								.GetItem((AnswerBox.getText())));
+						DebugWindow.addText("message num:" + CurrentItem); //$NON-NLS-1$
+					}
+
+					DebugWindow.addText("display message:" + CurrentItem); //$NON-NLS-1$
+					// display message number..
+					int totalmessages = CurrentProperty
+							.split("(\">>\")|(\" >> \")").length; //$NON-NLS-1$
+					if (CurrentItem > totalmessages) {
+						CurrentItem = 0;
+
+					}
+
+					CurrentProperty = CurrentProperty
+							.split("(\">>\")|(\" >> \")")[CurrentItem]; //$NON-NLS-1$
+
+					CurrentItem = CurrentItem + 1;
+
+					MultiMessagePlace.RemoveItem((AnswerBox.getText().trim()));
+					MultiMessagePlace.AddItem(
+							"" + CurrentItem, (AnswerBox.getText().trim())); //$NON-NLS-1$
+
+					DebugWindow
+							.addText("get item test" + MultiMessagePlace.GetItem("thistest") + ":"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+				}
+
+				// if theres a , in the propertys then we randomize
+				if (CurrentProperty.indexOf("\",\"") > -1) { //$NON-NLS-1$
+
+					int totalmessages = CurrentProperty.split("\",\"").length; //$NON-NLS-1$
+					int selectthis = (int) (Math.random() * totalmessages);
+					// note - to increase speed a precompiled regex can be used
+					// here.
+					CurrentProperty = CurrentProperty
+							.split("(\",\")|(\" , \")")[selectthis]; //$NON-NLS-1$
+
+				}
+				CurrentProperty = CurrentProperty.replaceAll("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
+				toggleimagegroupPopUp.TiGFeedback.setText(CurrentProperty);
+
+			}else if (CurrentCommand.equalsIgnoreCase("PopUpMessage")) //$NON-NLS-1$
+			{
+
+				if (CurrentProperty.indexOf(",") > -1) { //$NON-NLS-1$
+					int totalmessages = CurrentProperty.split("\",\"").length; //$NON-NLS-1$
+					int selectthis = (int) (Math.random() * totalmessages);
+					// note - to increase speed a precompiled regex can be used
+					// here.
+					CurrentProperty = CurrentProperty
+							.split("(\",\")|(\" , \")")[selectthis]; //$NON-NLS-1$
+				}
+				CurrentProperty = CurrentProperty.replaceAll("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
+				DebugWindow.addText(MyApplication.lastclicked_x
+						+ "  " + lastclicked_item.getWidgetCount()); //$NON-NLS-1$
+
+				Label messagepop = new Label(CurrentProperty.trim());
+
+				if (!(messageArrow == null)) {
+					messageArrow.removeFromParent();
+				}
+
+				messageArrow = new SpiffyArrow(30, 30);
+
+				messagepop.setSize("100px", "50px"); //$NON-NLS-1$ //$NON-NLS-2$
+				messagepop.setStylePrimaryName("mesagePopUps"); //$NON-NLS-1$
+
+				// position based on freespace
+				// check for too far right
+				if (lastclicked_x > (lastclicked_item.getOffsetWidth() - 200)) {
+					messageArrow.SetArrowTopRight();
+					lastclicked_item.imagegroupframe.add(messageArrow, lastclicked_x - 30,
+							lastclicked_y);
+					lastclicked_item.imagegroupframe.add(messagepop, lastclicked_x - 30 - 107,
+							lastclicked_y + 29);
+
+				} else {
+					lastclicked_item.imagegroupframe.add(messageArrow, lastclicked_x,
+							lastclicked_y);
+					lastclicked_item.imagegroupframe.add(messagepop, lastclicked_x + 30,
+							lastclicked_y + 29);
+
+				}
+
+				if (!(lastpopupmessage == null)) {
+					lastpopupmessage.removeFromParent();
+				}
+				lastpopupmessage = messagepop;
+
+			} else if (CurrentCommand.equalsIgnoreCase("PopUpAdvert")) //$NON-NLS-1$
+			{
+				// DebugWindow.addText(CurrentProperty);
+				imagePNGPopUp imagepop = new imagePNGPopUp(CurrentProperty
+						.trim(), ""); //$NON-NLS-1$
+				PopUpWithShadow imagepopupcontainer = new PopUpWithShadow(null,
+						"30%", "25%", "ADVERT", imagepop); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				imagepopupcontainer.OpenDefault();
+				imagepopupcontainer.setPopupPosition(
+						(int) (Math.random() * (Window.getClientWidth() / 2)),
+						(int) (Math.random() * (Window.getClientHeight() / 2)));
+
+			} else if (CurrentCommand.equalsIgnoreCase("PopUpImage")) //$NON-NLS-1$
+			{
+				// DebugWindow.addText(CurrentProperty);
+				imagePNGPopUp imagepop = new imagePNGPopUp(CurrentProperty
+						.trim(), ""); //$NON-NLS-1$
+				PopUpWithShadow imagepopupcontainer = new PopUpWithShadow(null,
+						"30%", "25%", "Amuse", imagepop); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				imagepopupcontainer.OpenDefault();
+				//imagepopupcontainer.setPopupPosition(
+				//		 (Window.getClientWidth() / 2)-( imagepopupcontainer.getOffsetWidth()/2 ),
+					//	 (Window.getClientHeight() / 2)-( imagepopupcontainer.getOffsetHeight()/2 ));
+
+			} else if (CurrentCommand.equalsIgnoreCase("PlaySound")) //$NON-NLS-1$
+			{
+				Sound sound = soundController.createSound(
+						Sound.MIME_TYPE_AUDIO_MPEG, audioLocation_url
+								+ CurrentProperty);
+				sound.play();
+
+			} else if (CurrentCommand.equalsIgnoreCase("AddMusicTrack")) //$NON-NLS-1$
+			{
+				// DebugWindow.addText("adding music track:"+CurrentProperty);
+				musicPlayer.addTrack(CurrentProperty);
+
+			} else if (CurrentCommand.equalsIgnoreCase("AddSecret")) //$NON-NLS-1$
+			{
+				// reveal button;
+				SecretsPopupPanelButton.setVisible(true);
+
+				String secretname = CurrentProperty.split(",")[0]; //$NON-NLS-1$
+				String secreturl = CurrentProperty.split(",")[1]; //$NON-NLS-1$
+				SecretPanel.addItem(secretname, secreturl);
+
+			} else if (CurrentCommand.equalsIgnoreCase("SendEmail")) //$NON-NLS-1$
+			{
+
+				sendemail(CurrentProperty);
+
+			}  else if (CurrentCommand.equalsIgnoreCase("SetClockLadyIcon")) //$NON-NLS-1$
+			{
+				String iconloc = CurrentProperty.split(",")[0]; //$NON-NLS-1$
+				int iconframes = Integer.parseInt(CurrentProperty.split(",")[1]); //$NON-NLS-1$
+				
+				StatueHead.setURL("GameIcons/" + iconsizestring + "/"+iconloc,iconframes); 
+				DebugWindow.addText("-seticon-"+iconloc);
+				
+				
+			}  else if (CurrentCommand.equalsIgnoreCase("SetInventoryIcon")) //$NON-NLS-1$
+			{
+				
+				
+				String iconloc = CurrentProperty.split(",")[0]; //$NON-NLS-1$
+				
+				if (iconloc.equals("magrietbag.png")){
+					iconloc="magrietbag0.png";
+				}
+				
+				int iconframes = Integer.parseInt(CurrentProperty.split(",")[1]); //$NON-NLS-1$
+				
+				InventoryButton.setURL("GameIcons/" + iconsizestring + "/"+iconloc,iconframes); 
+				DebugWindow.addText("-seticon-"+iconloc);
+				
+				
+				
+			} else if (CurrentCommand.equalsIgnoreCase("SetBackgroundImage")) //$NON-NLS-1$
+			{
+				if (CurrentProperty.compareTo("none") == 0) { //$NON-NLS-1$
+					RootPanel.getBodyElement().setAttribute("background", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+				} else {
+					RootPanel.getBodyElement().setAttribute(
+							"background", CurrentProperty); //$NON-NLS-1$
+
+				}
+
+			} else if (CurrentCommand.equalsIgnoreCase("SetClockMode")) //$NON-NLS-1$
+			{
+				if (CurrentProperty.compareTo("fast") == 0) { //$NON-NLS-1$
+					gwt_clock.setModeFast();
+				} else {
+					gwt_clock.setModeNormal();
+				}
+
+			} else if (CurrentCommand.equalsIgnoreCase("SetGameMode")) //$NON-NLS-1$
+			{
+				if (CurrentProperty.compareTo("hacked") == 0) { //$NON-NLS-1$
+
+					if (EffectOverlay.isAttached() == false) {
+						RootPanel.get().add(EffectOverlay, 0, 0);
+					}
+
+					// add second advert. Cuyperbix its archtechral-ishious!
+					EffectOverlay
+							.ProcessThisAfter(" - SetBackgroundImage = GameTextures/hackedback.gif \n - SetClockMode = fast \n - PopUpAdvert = advert/Advert1.jpg \n - PopUpAdvert = advert/Advert2.jpg \n"); //$NON-NLS-1$
+					EffectOverlay.Hacked_in();
+					EffectOverlay.Hacked_out();
+					Feedback.setDirection(Direction.RTL);
+					((HTML) (messagehistory.MessageHistoryScroller.getWidget()))
+							.setDirection(Direction.RTL);
+
+					Blinking = new Timer() {
+
+						@Override
+						public void run() {
+							StatueHead.setAnimateOpenThenClose();
+
+						}
+
+					};
+
+					Blinking.scheduleRepeating(5000);
+					//set feet hacked
+					StatueFeat.setURL("GameIcons/" + iconsizestring + "/"+"CCfeethacked0.png", 1);
+					
+					//make cylon soldier
+
+					Cyclonish = new Timer() {
+
+						@Override
+						public void run() {
+							solider.setAnimateOpenThenClose();
+
+						}
+
+					};
+
+					Cyclonish.scheduleRepeating(3000);
+
+				} else {
+					if (EffectOverlay.isAttached() == false) {
+						RootPanel.get().add(EffectOverlay, 0, 0);
+					}
+					EffectOverlay
+							.ProcessThisAfter(" - SetBackgroundImage = none \n - SetClockMode = normal \n"); //$NON-NLS-1$
+
+					EffectOverlay.Hacked_in();
+					EffectOverlay.Hacked_out();
+					Feedback.setDirection(Direction.LTR);
+					((HTML) (messagehistory.MessageHistoryScroller.getWidget()))
+							.setDirection(Direction.LTR);
+
+					// RootPanel.getBodyElement().setAttribute("background",
+					// "");
+
+					// gwt_clock.setModeNormal();
+					//set feet hacked
+					StatueFeat.setURL("GameIcons/" + iconsizestring + "/"+"CCfeetb.png", 1);
+				
+					Blinking.cancel();
+					Cyclonish.cancel();
+				}
+
+			}
+
+		}
+
+		// after all commands we reselect the input box;
+		AnswerBox.setFocus(true);
+
+	}
+
+	private static void sendemail(String currentProperty) {
+
+		// First we grab the emails contents
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,
+				textfetcher_url);
+
+		try {
+			requestBuilder
+					.sendRequest(
+							"FileURL=Game%20Emails/" + currentProperty, new RequestCallback() { //$NON-NLS-1$
+								public void onError(Request request,
+										Throwable exception) {
+
+								}
+
+								public void onResponseReceived(Request request,
+										Response response) {
+
+									// we have the email
+									// we now divide up the lines
+									String emailtext = response.getText();
+
+									String Title = emailtext
+											.substring(
+													emailtext
+															.indexOf("Subject:") + 8, emailtext.indexOf("\n", emailtext.indexOf("Subject:") + 8)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+									String From = emailtext
+											.substring(
+													emailtext.indexOf("From:") + 5, emailtext.indexOf("\n", emailtext.indexOf("From:") + 5)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+									String Content = emailtext
+											.substring(emailtext
+													.indexOf("Message:") + 8); //$NON-NLS-1$
+
+									RequestBuilder emailer = new RequestBuilder(
+											RequestBuilder.POST, emailer_url);
+
+									try {
+										emailer
+												.sendRequest(
+														"Title=" + Title + "&From=" + From + "&Content=" + Content, new RequestCallback() { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+															public void onError(
+																	Request request,
+																	Throwable exception) {
+
+															}
+
+															public void onResponseReceived(
+																	Request request,
+																	Response response) {
+																// Feedback.setText(response.getText());
+
+															}
+														});
+									} catch (RequestException ex) {
+										// blah blah
+										// Feedback.setText("emailer failed");
+
+									}
+
+								}
+							});
+		} catch (RequestException ex) {
+			// blah blah
+			// Feedback.setText("email data missing");
+
+		}
+
+	}
+
+	static void newchapter(String CurrentProperty) {
+		// remove quotes
+		CurrentProperty = CurrentProperty.substring(1, (CurrentProperty
+				.length() - 1));
+
+		System.out
+				.print("Createing a new chapter called '" + CurrentProperty + "' \n"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		LocationTabSet NewChapter = new LocationTabSet();
+		AllLocationTabSets.add(NewChapter);
+
+		// disable current tabs
+		CurrentLocationTabs.disableAllTabFunctions();
+
+		openPages.clear();
+		locationpuzzlesActive.clear();
+
+		CurrentLocationTabsIndex = AllLocationTabSets.indexOf(NewChapter);
+		CurrentLocationTabs = AllLocationTabSets.get(CurrentLocationTabsIndex);
+		StoryTabs.add(CurrentLocationTabs, CurrentProperty);
+
+		ChapterList.addTab(CurrentProperty, StoryTabs
+				.getWidgetIndex(CurrentLocationTabs));
+		StoryTabs.selectTab(StoryTabs.getWidgetIndex(CurrentLocationTabs));
+	}
+
+	public static void TriggerEffect(final String EffectName) {
+
+		System.out
+				.println("-" + EffectName + "-" + (EffectName.compareTo("Flash") == 0)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		if (EffectName.compareTo("FadeOut") == 0) { //$NON-NLS-1$
+
+			if (EffectOverlay.isAttached() == false) {
+				RootPanel.get().add(EffectOverlay, 0, 0);
+			}
+			EffectOverlay.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+			EffectOverlay.FadeOut(2000);
+		}
+
+		if (EffectName.compareTo("FadeIn") == 0) { //$NON-NLS-1$
+
+			if (EffectOverlay.isAttached() == false) {
+				RootPanel.get().add(EffectOverlay, 0, 0);
+			}
+			EffectOverlay.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+			EffectOverlay.FadeIn(2000);
+
+		}
+		if (EffectName.compareTo("Hacked") == 0) { //$NON-NLS-1$
+			if (EffectOverlay.isAttached() == false) {
+				RootPanel.get().add(EffectOverlay, 0, 0);
+			}
+			EffectOverlay.Hacked_in();
+
+			EffectOverlay.Hacked_out();
+
+		}
+		if (EffectName.compareTo("Clear") == 0) { //$NON-NLS-1$
+
+			EffectOverlay.Clear();
+
+		}
+	}
+
+	public void removePage(final String RemoveLocation) {
+
+		int TabCount = CurrentLocationTabs.getWidgetCount();
+		int cindex = 0;
+		System.out.println("remove-" + RemoveLocation); //$NON-NLS-1$
+
+		for (Iterator<String> it = CurrentLocationTabs.OpenPagesInSet
+				.iterator(); it.hasNext();) {
+
+			String currentItem = it.next();
+
+			if (currentItem.compareTo(RemoveLocation) == 0) {
+				CurrentLocationTabs.OpenPagesInSet.remove(currentItem);
+			}
+
+		}
+
+		// remove tab
+		while (cindex < TabCount) {
+			if (openPages.get(cindex).indexOf(RemoveLocation) > -1) {
+
+				// we remove it from the tabs
+				CurrentLocationTabs.remove(cindex);
+
+				openPages.remove(cindex);
+				// set chapter name to match
+				locationpuzzlesActive.remove(cindex);
+
+				return;
+			}
+			cindex++;
+		}
+
+	}
+
+	public static void setNewPage(final String NewMessageURL) {
+
+		// First we check if its on the page list already.
+		// ==
+
+		int TabCount = CurrentLocationTabs.getWidgetCount();
+		int cindex = 0;
+		System.out.println("/n index" + cindex + "tabCount" + TabCount); //$NON-NLS-1$ //$NON-NLS-2$
+
+		while (cindex < TabCount) {
+			if (openPages.get(cindex).indexOf(NewMessageURL) > -1) {
+				System.out.println("/n match. Already Open."); //$NON-NLS-1$
+				// we set it to front and return
+				CurrentLocationTabs.selectTab(cindex);
+
+				return;
+			}
+
+			cindex++;
+		}
+
+		// if it dosnt;
+		System.out.print("setting page" + NewMessageURL); //$NON-NLS-1$
+		CurrentLocationTabs.OpenPagesInSet.add(NewMessageURL.replace(
+				".html", "")); //$NON-NLS-1$ //$NON-NLS-2$
+
+		// place the current location in a temp
+		final LocationTabSet TempCurrentLocationTabs = CurrentLocationTabs;
+
+		// disable answer box
+		AnswerBox.setEnabled(false);
+
+		// turned off while offline
+
+		RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST,
+				textfetcher_url);
+
+		// RequestBuilder requestBuilder = new
+		// RequestBuilder(RequestBuilder.GET,
+		// "Game Message Text/" + NewMessageURL.trim());
+		try {
+			// requestBuilder.sendRequest("", new RequestCallback() {
+			requestBuilder
+					.sendRequest(
+							"FileURL=Game Message Text/" + NewMessageURL.trim(), new RequestCallback() { //$NON-NLS-1$
+								public void onError(Request request,
+										Throwable exception) {
+									System.out.println("http failed"); //$NON-NLS-1$
+									AnswerBox.setEnabled(true);
+
+									AnswerBox.setText(""); //$NON-NLS-1$
+								}
+
+								public void onResponseReceived(Request request,
+										Response response) {
+
+									HTML StoryText = new HTML(
+											MyApplication
+													.SwapCustomWords(response
+															.getText())
+													+ "<br><br>"); //$NON-NLS-1$
+									ScrollPanel StoryScroller = new ScrollPanel();
+
+									StoryScroller.add(StoryText);
+									
+									System.out.println(StoryText);
+									String randomstyle = "backgroundtexture" + ((int) ((Math.random() * 3) + 1)); //$NON-NLS-1$
+									
+									//if firefox, set the back of the scroller instead
+									if (MyApplication.Client.toLowerCase().contains("firefox")||MyApplication.Client.toLowerCase().contains("chrome")){
+										//StoryScroller.addStyleName(randomstyle);
+										//MyApplication.DebugWindow.addText("firefox found");
+										
+										
+									} else {
+										StoryText.setStylePrimaryName(randomstyle);
+										MyApplication.DebugWindow.addText("client found="+Client);
+										
+									}
+									
+									StoryText.addStyleName("maintextsettings");
+									
+									StoryScroller.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+									
+									
+									DOM.setStyleAttribute(StoryScroller.getElement(), "zIndex", "150");
+									
+									StoryText.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+									// StoryText.addStyleName("overflowscroll");
+
+									// TempCurrentLocationTabs.addStyleName("overflowscroll");
+									TempCurrentLocationTabs
+											.setHeight(Story_Text_Height + "px"); //$NON-NLS-1$
+									TempCurrentLocationTabs
+											.setWidth((Story_Text_Width - 2)
+													+ "px"); //$NON-NLS-1$
+
+									TempCurrentLocationTabs.setSize(
+											"100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+
+									// TempCurrentLocationTabs.setHeight(TempCurrentLocationTabs.getOffsetHeight()+"px");
+
+									Label Tab = new Label();
+									Tab.setText(NewMessageURL.substring(0,
+											NewMessageURL.length() - 5));
+
+									// if current location is the active one,
+									// then we add to the lists;
+
+									if (TempCurrentLocationTabs
+											.equals(CurrentLocationTabs)) {
+										// add opened chapter name to list
+										openPages.add(NewMessageURL);
+										// set chapter name to match
+										locationpuzzlesActive.add(chapter);
+										AnswerBox.setEnabled(true);
+										AnswerBox.setFocus(true);
+										AnswerBox.setText(""); //$NON-NLS-1$
+									}
+									TempCurrentLocationTabs
+											.add(StoryScroller, (NewMessageURL
+													.substring(0, NewMessageURL
+															.length() - 5)));
+									TempCurrentLocationTabs
+											.selectTab(TempCurrentLocationTabs
+													.getWidgetIndex(StoryScroller));
+
+									StoryText
+											.setSize(
+													Story_Text_Width - 30
+															+ "px", Story_Text_Height - 50 + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+
+								}
+							});
+		} catch (RequestException ex) {
+			System.out.println("cant load message text"); //$NON-NLS-1$
+			AnswerBox.setEnabled(true);
+
+			AnswerBox.setText(""); //$NON-NLS-1$
+		}
+	}
+
+	static public String RemoveCartReturns(String input_string) {
+		input_string = input_string.replaceAll("\n", " "); //$NON-NLS-1$ //$NON-NLS-2$
+		input_string = input_string.replaceAll("\r", " "); //$NON-NLS-1$ //$NON-NLS-2$
+		input_string = input_string.replaceAll("\r\n", " "); //$NON-NLS-1$ //$NON-NLS-2$
+		return input_string;
+	}
+
+	static public String SwapCustomWords(String input_string) {
+		if (Username.length()>2){
+			System.out.print("username=="+Username);
+		input_string = input_string.replaceAll("<USERNAME>", Username); //$NON-NLS-1$
+		}
+		input_string = input_string.replaceAll("<ORGANISATION>", Organisation); //$NON-NLS-1$
+		// bookshelf link swap
+		// <bookshelf="www.blah.com">
+		// <a class="bookshelf" href="www.blah.com"></a>
+		// get location
+		int starthere = 0;
+		int BookShelfNum = 0; // change to global later
+		while (input_string.indexOf("<bookshelf=\"", starthere) > 0) { //$NON-NLS-1$
+
+			starthere = starthere + 1;
+			int bookshelfloc = input_string.indexOf("<bookshelf=\""); //$NON-NLS-1$
+			int bookshelfendloc = input_string.indexOf("\">", bookshelfloc); //$NON-NLS-1$
+			String stringbefore = input_string.substring(0, bookshelfloc);
+			String stringurl = input_string.substring(bookshelfloc + 12,
+					bookshelfendloc);
+			String stringafter = input_string.substring(bookshelfendloc + 2);
+
+			// input_string =
+			// stringbefore+"<a class=\"bookshelf\" href=\""+stringurl+"\" target=\"_blank\"><img border=\"0\" src=\"blank.gif\" width=\"30\" height=\"29\"></a>"
+			// +stringafter;
+
+			input_string = stringbefore
+					+ "<a style=\"height:32px\" href=\"" + stringurl + "\" target=\"_blank\"><img height=\"29\" width=\"32\" border=\"0\" class=\"bookshelf\" src=\"blank.gif\"/></a>" + stringafter; //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		return input_string;
+	}
+
+	public void test_for_logged_in_user() {
+
+		RequestBuilder requestBuilder2 = new RequestBuilder(RequestBuilder.GET,
+				"Login_System/TestIfUserIsLoggedIn.php"); //$NON-NLS-1$
+		try {
+			requestBuilder2.sendRequest("", new RequestCallback() { //$NON-NLS-1$
+						public void onError(Request request, Throwable exception) {
+							System.out.println("error in user logged in test"); //$NON-NLS-1$
+						}
+
+						public void onResponseReceived(Request request,
+								Response response) {
+
+							if (response.getText().compareTo("NO") == 0) { //$NON-NLS-1$
+								// display login box
+								System.out.println("response"); //$NON-NLS-1$
+
+							//	RootPanel.get().add(
+								//		MyApplication.loginbackground, 0, 0);
+
+								DOM.setStyleAttribute(fadeback.getElement(),
+										"z-Index", "" + (z_depth_max + 1)); //$NON-NLS-1$ //$NON-NLS-2$
+								z_depth_max = z_depth_max + 1;
+								user_login.show();
+								user_login.center();
+								DOM.setStyleAttribute(user_login.getElement(),
+										"z-Index", "" + (z_depth_max + 1)); //$NON-NLS-1$ //$NON-NLS-2$
+								z_depth_max = z_depth_max + 1;
+
+								// set user as not logged in
+								Username = "not logged in"; //$NON-NLS-1$
+
+							} else if (response.getText().startsWith("NOLOGIN") == true) {
+								
+								Organisation = response
+								.getText()
+								.substring(
+										response.getText().indexOf(
+												"organisation:") + 13, response.getText().indexOf("~", response.getText().indexOf("organisation:") + 13)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						Client = response
+								.getText()
+								.substring(
+										response.getText().indexOf(
+												"client:") + 7, response.getText().indexOf("~", response.getText().indexOf("client:") + 7)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					
+								
+								DOM.setStyleAttribute(DOM
+										.getElementById("tempback"),
+										"visibility", "hidden");
+								Window
+										.setTitle(LoadGamesText.MainGame_Welcome_Back);
+								Window.setStatus(Client);
+								DebugWindow.addText("client="+Client);
+								DebugWindow.addText("response text="+response.getText());
+								//Feedback.setText("response text="+response.getText());
+								// now we wait for the controll script to load
+								// before starting
+								if (controllscript.length() > 5) {
+									start_of_game_script();
+								} else {
+
+									Timer startgamedelay = new Timer() {
+
+										@Override
+										public void run() {
+											if (controllscript.length() > 5) {
+												start_of_game_script();
+												this.cancel();
+											}
+										}
+
+									};
+
+									startgamedelay.scheduleRepeating(100);
+
+								}
+
+							} else {
+								Username = response
+										.getText()
+										.substring(
+												response.getText().indexOf(
+														"username:") + 9, response.getText().indexOf("~", response.getText().indexOf("username:") + 9)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+								Organisation = response
+										.getText()
+										.substring(
+												response.getText().indexOf(
+														"organisation:") + 13, response.getText().indexOf("~", response.getText().indexOf("organisation:") + 13)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+								Client = response
+										.getText()
+										.substring(
+												response.getText().indexOf(
+														"client:") + 7, response.getText().indexOf("~", response.getText().indexOf("client:") + 7)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+								// we set the username, and log him in.
+
+								Window
+										.setTitle(LoadGamesText.MainGame_Welcome_Back
+												+ Username);
+								Window.setStatus(Client);
+								DebugWindow.addText("client-"+Client);
+								user_login.LoginUser();
+							}
+							//now we know is the user is logged in or not, we start the preloader;
+						//// then the preloader
+							RequestBuilder requestBuilder3 = new RequestBuilder(
+									RequestBuilder.POST, textfetcher_url);
+
+							try {
+								requestBuilder3.sendRequest(
+										"FileURL=" + "Preloadlist.txt", new RequestCallback() { //$NON-NLS-1$ //$NON-NLS-2$
+											public void onError(Request request, Throwable exception) {
+
+												MyApplication.DebugWindow
+														.setText("\n preloader failed exception" + exception.getLocalizedMessage()); //$NON-NLS-1$
+											}
+
+											public void onResponseReceived(Request request,
+													Response response) {
+
+												// MyApplication.DebugWindow.setText("\n preloading"+response.getText());
+												Preloader = new Preloader(response.getText());
+
+											}
+										});
+							} catch (RequestException ex) {
+								MyApplication.DebugWindow.setText("\n preloader failed"); //$NON-NLS-1$
+							}
+						}
+						
+						
+
+					});
+
+		} catch (RequestException ex) {
+			System.out.println(" cant check login, assume new user"); //$NON-NLS-1$
+		}
+
+	}
+
+	public void onHistoryChanged(String PostString) {
+
+		System.out
+				.print("_____________________________________----------------------------------------"); //$NON-NLS-1$
+
+		PostString = URL.decode(PostString);
+		if (PostString.startsWith("DEBUG")) { //$NON-NLS-1$
+
+			processInstructions("- AddItem = newspaper \n - AddItem = TextScrollTest \n - AddItem = whokilledhans \n - AddItem = magnifyingglass \n - AddItem = TigDemo2 \n - AddProfile = Pierre J H Cuypers.html \n "); //$NON-NLS-1$
+		}
+
+		if (PostString.startsWith("LoadGameData=")) { //$NON-NLS-1$
+
+			final String GameData = PostString.substring(13);
+
+			// de-encrypt string and load the data
+			loadGameData(GameData);
+			// ------
+
+		} else {
+			// AnswerGiven(PostString);
+		}
+
+	}
+
+	static public void resizeStoryBox() {
+
+		RootPanel.get().add(MessageHistoryButton,
+				Feedback.getAbsoluteLeft() + Feedback.getOffsetWidth(),
+				Feedback.getAbsoluteTop());
+		
+		RootPanel.get().add(MessageForwardButton,
+				MessageHistoryButton.getAbsoluteLeft() - 29,
+				Feedback.getAbsoluteTop());
+
+		RootPanel.get().add(MessageBackButton,
+				MessageHistoryButton.getAbsoluteLeft() - 48,
+				Feedback.getAbsoluteTop());
+	
+		
+		RootPanel.get().add(closeallwindows, Window.getClientWidth() - 100, 0);
+
+		// set animation for all except firefox3 (has some glitch)
+		//Feedback.setTitle(Client);
+		if (Client.indexOf("firefox") > -1) { //$NON-NLS-1$
+			StoryTabs.getDeckPanel().setAnimationEnabled(false);
+			StoryTabs.setAnimationEnabled(false);
+
+		} else {
+			StoryTabs.getDeckPanel().setAnimationEnabled(true);
+
+		}
+
+		Timer Blah = new Timer() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				// Store screen settings
+				Story_Text_Height = RootPanel
+						.get("bigtextbox").getOffsetHeight() - 2; //$NON-NLS-1$
+				Story_Text_Width = RootPanel.get("bigtextbox").getOffsetWidth() - 5; //$NON-NLS-1$
+
+				DebugWindow.addText("" + Story_Text_Height); //$NON-NLS-1$
+
+				RootPanel.get("bigtextbox").add(StoryTabs); //$NON-NLS-1$
+				// fix text window to right size
+				// StoryTabs.setWidth(Story_Text_Width+"px");
+				StoryTabs.getDeckPanel().setSize(
+						Story_Text_Width + "px", Story_Text_Height + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+
+				CurrentLocationTabs.getDeckPanel().setSize(
+						Story_Text_Width + "px", Story_Text_Height + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+				CurrentLocationTabs.setWidth(Story_Text_Width + "px"); //$NON-NLS-1$
+
+				// fix all the stoytex to the right size
+				for (Iterator<LocationTabSet> currentlocation = (AllLocationTabSets
+						.iterator()); currentlocation.hasNext();) {
+
+					LocationTabSet These = currentlocation.next();
+					These.setWidth(Story_Text_Width + "px"); //$NON-NLS-1$
+					These.getDeckPanel().setWidth(Story_Text_Width + "px"); //$NON-NLS-1$
+					These.setHeight("100%"); //$NON-NLS-1$
+					These.getDeckPanel().setHeight("100%"); //$NON-NLS-1$
+
+					int x = 0;
+					for (Iterator<Widget> it = (These.iterator()); it.hasNext();) {
+
+						x++;
+						// we set the scrollpanel containter to the correct
+						// width and height;
+
+						// then we set the with of the contents;
+						ScrollPanel scrollybit = ((ScrollPanel) (it.next()));
+
+						scrollybit.setSize("100%", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
+						scrollybit.getWidget().setSize(
+								"100%", (Story_Text_Height - 80) + "px"); //$NON-NLS-1$ //$NON-NLS-2$
+
+						DOM.setStyleAttribute(scrollybit.getElement(), "zIndex", "150");
+						// ((ScrollPanel)(it.next())).setSize((Story_Text_Width-10)+"px",(Story_Text_Height-50)+"px");
+						// Window.setTitle( "x="+x+" set to="+Story_Text_Width
+						// );
+					}
+
+				}
+
+			}
+		};
+		// deattach the Storytext stuff
+		RootPanel.get("bigtextbox").remove(StoryTabs); //$NON-NLS-1$
+
+		// wait a mo for the browser to catch up (if its IE that is, Opera works
+		// just dandy)
+		if (Client.indexOf("msie") > -1) { //$NON-NLS-1$
+			Blah.schedule(900);
+		} else if (Client.indexOf("firefox") > -1) { //$NON-NLS-1$
+			Blah.schedule(900);
+		} else {
+			Blah.run();
+		}
+		// reposition clock
+		RootPanel.get().remove(gwt_clock);
+		RootPanel
+				.get("clocklady").add(gwt_clock, (int) (StatueHead.getOffsetWidth() * 0.305), (int) (StatueHead.getOffsetHeight() * 0.35)); //$NON-NLS-1$
+
+		gwt_clock.setRadius((int) (StatueHead.getOffsetWidth() / 2.2));
+
+	}
+
+	public static void loadGameData(final String GameData) {
+
+		// Feedback.setText("new user-"+GameData);
+
+		if ((GameData.compareTo("newuser") == 0) || (GameData.compareTo("") == 0)) { //$NON-NLS-1$
+			DebugWindow.addText("start game script");
+			start_of_game_script();
+
+		} else {
+
+			RequestBuilder requestBuilder2 = new RequestBuilder(
+					RequestBuilder.POST, "DencrpytString.php"); //$NON-NLS-1$
+			try {
+				requestBuilder2
+						.sendRequest(
+								"Encode=" + URL.encodeComponent(GameData), new RequestCallback() { //$NON-NLS-1$
+									public void onError(Request request,
+											Throwable exception) {
+										System.out.println("encode url failed"); //$NON-NLS-1$
+									}
+
+									public void onResponseReceived(
+											Request request, Response response) {
+
+									     if (response.getText().length()<5){
+									    	 return;
+									     }
+										
+										String responsetext = response
+												.getText().replaceAll(
+														"<br />", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+										responsetext = responsetext.replaceAll(
+												"<br>", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+										responsetext = responsetext
+												.substring(0, responsetext
+														.indexOf(":end")); //$NON-NLS-1$
+
+										// Feedback.setText(responsetext);
+										// update widgets HTML field
+										System.out
+												.println("\n Instructions-:" + GameData); //$NON-NLS-1$
+										processInstructions(responsetext);
+									}
+								});
+			} catch (RequestException ex) {
+				String responsetext = "can not process save file"; //$NON-NLS-1$
+				System.out.print(responsetext + "   " + ex.getMessage()); //$NON-NLS-1$
+			}
+
+		}
+
+	}
+
+}

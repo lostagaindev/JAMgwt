@@ -1,0 +1,36 @@
+
+JAM Core (pure Java. Handles no visual side whatesoever) 
+
+- handles global script parsing
+- handles scene script parsing
+- handles SceneObject/SceneObjectData classes
+- handles Scene/SceneData class (Generic Scene will have to be seperated from SceneWidget in GWTWeb version)
+- handles movement paths and pathfindin
+- handles game text database
+- process's actions (instructionprocessor)
+- generic usefull utilities
+- handles save string creation
+- handles inventory actions and mangement, but not visuals (needs thinking about)
+- imports supersimplesemantics (which is already pure java)
+
+
+JAM Core (pure Java) >>imported by>>> JAM GWTWeb Specific >>> Makes 2d Game
+
+JAM Core (pure Java) >>imported by>>> JAM GWTWeb Specific >>> Calls functions to other 3d engine which it then just embeds in div >> Makes 3d game
+           
+JAM Core (pure Java) >>imported by>>> Some desktop Java engine
+
+
+
+
+
+AR/Hololens/etc adventure game?
+
+- Start simple (another Meryll game)
+- One room
+- Like "wants a cookie" use a simple concept
+- Take advantage of perspective with AR. Make the player have to "look around" to find things hidden under things.
+- Posssibly a "floor is lava" scanario. Somehow Meryll has caused litteral lava to envolope the room. Maybe make fun that this is never
+explained how it happens. She just mentioned "the accident" "a small mistake"
+- Her sister, still watching tv, is completely oblivious to the floor now being litteral lava.
+- You have to drain the lava somehow? or solidify it? 

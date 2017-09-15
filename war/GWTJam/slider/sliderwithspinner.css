@@ -1,0 +1,12 @@
+.sph-SliderWithSpinner-Button {
+	width:16px;
+	height:16px;
+}
+
+.sph-SliderWithSpinner-Button-incr {
+	background-image: url(list-add.gif);
+}
+
+.sph-SliderWithSpinner-Button-decr {
+	background-image: url(list-remove.gif);
+}

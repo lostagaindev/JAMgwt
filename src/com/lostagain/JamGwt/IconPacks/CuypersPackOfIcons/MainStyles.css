@@ -1,0 +1,172 @@
+<!--
+ /*
+  This next line magicaly makes IE6 support transparent pngs!
+ */
+img, div, input { behavior: url("iepngfix.htc") }
+
+/* this style needs to be supplied to anything using PNGs */
+
+.pngfix {  behavior: url("iepngfix.htc"); }
+
+.inventory {   background-color: #996650; background-image: url(../GameTextures/cclbrownback.jpg) }			
+.greencolumn
+{
+position:relative;
+background-image: url(../GameTextures/greencolumn.jpg);
+background-repeat: repeat-y;
+background-position:center 0; 
+}
+.greencolumnb
+{background-image: url(../GameTextures/greencolumnb.jpg);
+background-repeat: repeat-y;
+background-position:center center; 
+}
+
+.picturePopUp {   background-color: #663300; }
+.popup_border { border: ridge thick #999}
+
+.image80per   { position: absolute;  width: 100%; height: auto }
+.Feedback  { color: #3c9; font-size: 17; background-color: #000 }
+.DefaultTopBar  {   background-image: url(../GameTextures/NotepadBackground.jpg)}
+.notepadback  {  background-image: url(../GameTextures/NotepadBackground.jpg) }
+
+.strike_blue { background-color: #8691ca }
+.strike_white { background-color: #dff3ff }
+.strike_purple { background-color: #6d6288 }
+
+.ShadowLower  { background-image: url(../GameTextures/shadows/Shadow_grad.png); background-repeat: repeat-x }
+.ShadowCorner { background-image: url(../GameTextures/shadows/Shadow_grad_corner.png); background-repeat: no-repeat }
+.ShadowLeft  { background-image: url(../GameTextures/shadows/Shadow_grad_rot.png); background-repeat: repeat-y }
+.ShadowTopLeft  { background-image: url(../GameTextures/shadows/Shadow_grad_topleft.png); background-repeat: no-repeat; background-position: 0 100% }
+.ShadowBottomRight  { background-image: url(../GameTextures/shadows/Shadow_grad_bottomright.png); background-repeat: no-repeat; background-position: 0 0% }
+
+
+.chapterlist_tab   { background: #c27676; text-align: left; margin: 3px 3px 3px 0; padding: 5px 10px 5px 0; left: 3px }
+.chapterlist_tab_selected   { background: #800000; text-align: left; margin: 3px 3px 3px 0; padding: 5px 10px 5px 0; left: 3px }
+
+.chapterlist_tab_tr    { background: url(../images/corner.png) no-repeat -6px -55px; margin-left: -6px; width: 12px; height: 67px; overflow: hidden }
+  
+.chapterlist_tab_br   { background-image: url(../images/corner.png) }
+
+.standard_message    { background-color: #fc9; background-image: url(../yellowback.jpg); background-repeat: repeat; background-position: 0 100%; width: 100%; height: 100% }
+.standard_message_back     { background-color: #fc9; background-image: url(../yellowback.jpg); background-repeat: repeat; background-position: 0 100%; text-align: center   }
+
+.gwt-DecoratedTabBar .gwt-TabBarRest {
+}
+.gwt-DecoratedTabBar .gwt-TabBarItem {
+  border-collapse: collapse;
+  margin-left: 6px;
+}
+
+.gwt-DecoratedTabBar .tabTopCenter  { background-image: url(../bup.png); padding: 0;  height: 15px; }
+.gwt-DecoratedTabBar .tabTopLeft,
+.gwt-DecoratedTabBar .tabTopRight {
+  padding: 0px;
+  zoom: 1;
+}
+.gwt-DecoratedTabBar .tabTopLeftInner{
+ background-image: url(../upleft.png);
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+}
+.gwt-DecoratedTabBar .tabTopRightInner {
+  background-image: url(../upright.png);
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+}
+.gwt-DecoratedTabBar .tabMiddleLeft{
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  background-image: url(../left.png);
+}
+.gwt-DecoratedTabBar .tabMiddleRight {
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  background-image: url(../bright.png);
+}
+.gwt-DecoratedTabBar .tabMiddleLeftInner,
+.gwt-DecoratedTabBar .tabMiddleRightInner {
+  width: 15px;
+  height: 15px;
+}
+.gwt-DecoratedTabBar .tabMiddleCenter {
+  padding: 1px 1px 1px 1px;
+  background-image: url(../yellowback.png);
+  cursor: pointer;
+  cursor: hand;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+}
+.gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabTopCenter {
+  background-image: url(../bupf.png);
+}
+.gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabMiddleLeft{
+  background-image: url(../leftf.png);
+}
+.gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabMiddleRight {
+  background-image: url(../brightf.png);
+}
+.gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabMiddleCenter {
+  cursor: default;
+  background: #fbf7e0;
+}
+
+* html .gwt-DecoratedTabBar .tabTopLeftInner {
+  width: 15px;
+  height: 15px;
+  background-image: url(../upleft.png);
+}
+
+* html .gwt-DecoratedTabBar .tabTopRightInner {
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  background-image: url(../upright.png);
+}
+}
+* html .gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabTopLeftInner {
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  background-image: url(../upleftf.png);
+}
+* html .gwt-DecoratedTabBar .gwt-TabBarItem-selected .tabTopRightInner {
+  width: 15px;
+  height: 15px;
+  background-image: url(../uprightf.png);
+}
+.gwt-TabPanel {
+}
+.gwt-TabPanelBottom {
+  border-color: #466954;
+  border-style: solid;
+  border-width: 2px 2px 2px;
+  overflow: hidden;
+  padding: 0px;
+  
+  
+}
+.fader { z-Index: 1010; background-color: #171d18; width: 100%; height: 100%; filter: alpha(opacity=65); opacity: 0.65}
+.overlay { background-color: black; }
+
+.backgroundtexture1 {  background-image: url(../GameTextures/backtexture1.jpg); padding: 9px; font-size: 17}
+.backgroundtexture2 {  background-image: url(../GameTextures/backtexture2.jpg); padding: 9px; font-size: 17}
+.backgroundtexture3 {  background-image: url(../GameTextures/backtexture3.jpg); padding: 9px; font-size: 17}
+
+
+html, body { 
+height: 100%; 
+
+scrollbar-3dlight-color:;
+                scrollbar-arrow-color: #2F4B39;
+                scrollbar-track-color: #FDF0CE;
+                scrollbar-darkshadow-color:black;
+                scrollbar-face-color:#466954;
+                scrollbar-highlight-color:#609374;
+                scrollbar-shadow-color:#2F4B39;
+}

@@ -1,0 +1,28 @@
+
+.townup { position:relative; top: 2%; left: 10%; width: 80%; height: 5%; }
+
+.containerbox {position: relative; top: 8%; left: 10%; width: 80%; height: 79%; background-image: url(../ccgreenback.jpg);}
+
+.Iconbox { position: absolute; top: 0%; left: 0%; width: 13%; height: 100%; background-image: url(../GameTextures/greencolumn.jpg); background-repeat: repeat-y;
+background-position:center 0 }
+.InventoryContainer { position: absolute; top: 23%; width: 127px; text-align: center; }
+.NotebookContainer { position: absolute; top: 50%; width: 89px; text-align: center;}
+.ControllPanelContainer { position: absolute; top: 70%; width: 131px;  text-align: center; }
+.FeetContainer { position: absolute; bottom: 0%; width: 100%;  text-align: center; }
+
+.GameBox { position: absolute; top: 0%; left: 13%; width: 65%; height: 100%;  }
+.titlecontainer { position: absolute; top: 0%; left: 0%; width: 100%; height: 5%; text-align: center}
+.bigtextboxcontainer { position: absolute; top: 5%; left: 0%; width: 100%; height: 80%;}
+.feedbackcontainer { position: absolute; bottom: 4%; width: 100%; height: 11%; background: black;}
+.ansbarcontainer { position: absolute; left: 3%; bottom: 0%; width: 100%;  height: 4%;  }
+
+
+.ChapterBox { position: absolute; top: 0%; left: 78%; width: 22%; height: 100%;  }
+
+.chapterlistcontainer { position: absolute; top: 6%; left: 0%; width: 100%; height: 60%; }
+.musicControllcontainer { position: absolute; top: 67%; left: 0%; width: 100%; height: 5%; }
+.ForumLinkcontainer { position: absolute; top: 70%; left: 30%; width: 62px; height: 15%; }
+
+.soldierContainer { position: absolute; bottom: 0%; right: 0%; z-index: 30;}
+.soldier { position: relative; top: 10px; left: 3px;}
+
