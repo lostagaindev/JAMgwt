@@ -21,7 +21,7 @@ public class FrameControlls extends HorizontalPanel {
 	Button lastFrame = new Button(">|");
 	Button playForward = new Button("(PForward)");
 
-	public FrameControlls(SceneSpriteObject objectToControl) {
+	public FrameControlls(final SceneSpriteObject objectToControl) {
 		super();
 
 		//animation frames-------

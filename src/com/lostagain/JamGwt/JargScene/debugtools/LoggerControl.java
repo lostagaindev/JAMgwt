@@ -98,7 +98,7 @@ public class LoggerControl extends VerticalPanel {
 	
 	class logLevelListBox extends ListBox {
 		Logger controllsLog;
-		public logLevelListBox(Logger logToSet) {
+		public logLevelListBox(final Logger logToSet) {
 			super();
 			controllsLog = logToSet;
 			
@@ -159,7 +159,7 @@ public class LoggerControl extends VerticalPanel {
 	class logLevelChangeAll extends ListBox {
 
 		
-		public logLevelChangeAll(ArrayList<LogsControl> controls) {
+		public logLevelChangeAll(final ArrayList<LogsControl> controls) {
 		
 			addItem(Level.ALL.getName());
 			addItem(Level.FINEST.getName());

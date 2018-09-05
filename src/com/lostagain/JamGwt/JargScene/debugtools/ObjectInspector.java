@@ -73,8 +73,8 @@ import com.lostagain.JamGwt.JargScene.SceneVectorObject;
 import com.lostagain.JamGwt.JargScene.SceneWidgetVisual;
 import com.lostagain.JamGwt.JargScene.CollisionMap.CollisionDebugBox;
 
-
-import lostagain.nl.spiffyresources.client.IsSpiffyGenericLogBox;
+import lostagain.nl.spiffyresources.interfaces.IsSpiffyGenericLogBox;
+import lostagain.nl.spiffyresources.interfaces.IsSpiffyGenericLogger;
 import lostagain.nl.spiffyresources.client.spiffygwt.SpiffyWormhole;
 import lostagain.nl.spiffyresources.client.spiffygwt.SpiffyWormhole.IncomingMessageHandler;
 

@@ -40,7 +40,7 @@ import com.lostagain.JamGwt.JargScene.debugtools.GameDataBox;
 import com.lostagain.JamGwt.JargScene.debugtools.ObjectInspector;
 import com.lostagain.JamGwt.audio.GwtAudioController;
 
-import lostagain.nl.spiffyresources.client.IsSpiffyGenericLogger;
+import lostagain.nl.spiffyresources.interfaces.IsSpiffyGenericLogger;
 import lostagain.nl.spiffyresources.client.spiffygwt.SpiffyLogBox;
 
 import java.util.HashSet;

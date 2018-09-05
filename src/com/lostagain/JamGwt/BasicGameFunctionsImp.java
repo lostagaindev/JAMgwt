@@ -7,7 +7,7 @@ import com.google.gwt.user.client.Window;
 import com.lostagain.Jam.BasicGameFunctions;
 import com.lostagain.Jam.RequiredImplementations;
 
-import lostagain.nl.spiffyresources.client.IsSpiffyGenericLogger;
+import lostagain.nl.spiffyresources.interfaces.IsSpiffyGenericLogger;
 import lostagain.nl.spiffyresources.client.spiffygwt.SpiffyLogBox;
 
 public class BasicGameFunctionsImp implements BasicGameFunctions {

@@ -332,7 +332,7 @@ public class SpecialEffectOverlays extends AbsolutePanel implements HasDeltaUpda
 	}
 
 
-	public void startCSSFadeOnOverlayWithPostActions(final Style overlayStyle, final double targetOpacity, double duration,CommandList postActions ){
+	public void startCSSFadeOnOverlayWithPostActions(final Style overlayStyle, final double targetOpacity, double duration,final CommandList postActions ){
 
 		Runnable runAfterRunnable = null;
 
@@ -518,7 +518,7 @@ public class SpecialEffectOverlays extends AbsolutePanel implements HasDeltaUpda
 		FadeIn(Over,"0,0,0","",false,null);
 	}
 
-	public void FadeIn(final double OverInMs, final String colourSpecified,final String imageURL,final boolean centerImage, CommandList runAfter) {
+	public void FadeIn(final double OverInMs, final String colourSpecified,final String imageURL,final boolean centerImage, final CommandList runAfter) {
 
 		final String colour = colourSpecified.replaceAll("\"", ""); //remove any quotes from colourSpecified 
 
@@ -600,7 +600,7 @@ public class SpecialEffectOverlays extends AbsolutePanel implements HasDeltaUpda
 	 * @param Over
 	 * @param colour  comma separated RGB
 	 */
-	public void FadeOut(final double OverInMs,String colourSpecified,final String imageURL,final boolean centerImage, CommandList runAfter) {
+	public void FadeOut(final double OverInMs,String colourSpecified,final String imageURL,final boolean centerImage, final CommandList runAfter) {
 
 		final String colour = colourSpecified.replaceAll("\"", ""); //remove any quotes from colourSpecified 
 

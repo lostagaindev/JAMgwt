@@ -67,7 +67,9 @@ import com.lostagain.JamGwt.JargScene.SceneTextObject;
 import com.lostagain.JamGwt.JargScene.SceneVectorObject;
 import com.lostagain.JamGwt.audio.GwtAudioController;
 import com.lostagain.JamGwt.audio.Track;
-import lostagain.nl.spiffyresources.client.IsSpiffyGenericLogBox;
+
+import lostagain.nl.spiffyresources.interfaces.IsSpiffyGenericLogBox;
+import lostagain.nl.spiffyresources.interfaces.IsSpiffyGenericLogger;
 import lostagain.nl.spiffyresources.client.SliderBar;
 import lostagain.nl.spiffyresources.client.spiffycore.DeltaTimerController.DeltaRunnable;
 import lostagain.nl.spiffyresources.client.spiffycore.HasDeltaUpdate;
@@ -1182,7 +1184,7 @@ public class GameDataBox extends VerticalPanel implements HasDeltaUpdate,GameSta
 			VerticalPanel expirementlist = new VerticalPanel();
 			
 			
-			Label lab_deltatime = new Label("multiply delta time:");
+			final Label lab_deltatime = new Label("multiply delta time:");
 			
 			SliderBar deltatimeadjustment = new SliderBar(0.0,2.0);
 			deltatimeadjustment.setWidth("300px");

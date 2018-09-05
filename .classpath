@@ -1,53 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-<<<<<<< .mine
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry excluding="com/lostagain/JamGwt/JargScene/SceneObjectDatabase_old.java|com/lostagain/JamGwt/JargScene/SceneObjectDatabase_oldcore.java|com/lostagain/JamGwt/InventoryIcon_bak.java" kind="src" path="src"/>
-||||||| .r573
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/gwt-2.6.1"/>
-=======
-	<classpathentry excluding="com/darkflame/client/JargScene/SceneObjectDatabase_old.java|com/darkflame/client/JargScene/SceneObjectDatabase_oldcore.java|com/lostagain/JamGwt/InventoryIcon_bak.java|com/lostagain/JamGwt/JargScene/SceneObjectDatabase_old.java|com/lostagain/JamGwt/JargScene/SceneObjectDatabase_oldcore.java" kind="src" path="src"/>
->>>>>>> .r628
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SpiffyResources"/>
 	<classpathentry kind="lib" path="/SpiffyResources/src"/>
 	<classpathentry kind="lib" path="C:/Work/Libraries/gwt-lzma-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Work/Libraries/gwt-voices-3.3.2.jar"/>
 	<classpathentry kind="lib" path="C:/Work/Libraries/gwt-dnd-3.3.2.jar"/>
 	<classpathentry kind="lib" path="JARS/sph-gwt-widgets-1.0.0.jar"/>
-<<<<<<< .mine
 	<classpathentry combineaccessrules="false" kind="src" path="/supersimplesemantics"/>
-	<classpathentry kind="lib" path="C:/Work/Libraries/guava-18.0.jar"/>
-	<classpathentry kind="lib" path="C:/Work/Libraries/guava-gwt-18.0.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JAMcore"/>
-||||||| .r573
-	<classpathentry kind="lib" path="E:/Game projects/workspace/gwt-lzma-1.2.zip"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SuperSimpleSemantics"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/guava-16.0.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/guava-gwt-16.0.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/gwt-voices-3.3.2.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/gwt-dnd-3.3.2.jar"/>
-=======
-	<classpathentry kind="lib" path="E:/Game projects/workspace/gwt-lzma-1.2.zip"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/gwt-voices-3.3.2.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/gwt-dnd-3.3.2.jar"/>
->>>>>>> .r628
-	<classpathentry kind="lib" path="/SpiffyResources/src"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/gwt-2.8.0.zip"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/JAMcore"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/supersimplesemantics"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/error_prone_annotation-2.0.14.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/error_prone_annotations-2.0.12.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/error_prone_annotations-2.0.14-sources.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/j2objc-annotations-1.1.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/j2objc-annotations-1.1-sources.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/jsr305-1.3.9.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/jsr305-3.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/guava-20.0.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/guava-20.0-javadoc.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/guava-gwt-20.0.jar"/>
-	<classpathentry kind="lib" path="E:/Game projects/workspace/dependencies/guava-gwt-20.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Work/Libraries/guava-20.0.jar"/>
+	<classpathentry kind="lib" path="C:/Work/Libraries/guava-20.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Work/Libraries/guava-gwt-20.0.jar"/>
+	<classpathentry kind="lib" path="C:/Work/Libraries/guava-gwt-20.0-javadoc.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SpiffyResources"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

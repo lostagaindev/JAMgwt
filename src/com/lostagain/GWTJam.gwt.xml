@@ -11,7 +11,10 @@
 	<inherits name='com.lostagain.Jam.Jam' /> 
 	
 	<!--  spiffyresources   -->	
-    <inherits name='com.darkflame.SpiffyResources'/>
+    <inherits name='lostagain.nl.spiffyresources.SpiffyResources'/>
+    
+    	<!--  supersimplesemantics   -->	
+    <inherits name='com.darkflame.SuperSimpleSemantics'/>
  
 	
 	<!-- css -->

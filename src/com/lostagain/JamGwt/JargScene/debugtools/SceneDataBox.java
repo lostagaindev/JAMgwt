@@ -50,7 +50,8 @@ import com.lostagain.JamGwt.JargScene.SceneSpriteObject;
 import com.lostagain.JamGwt.JargScene.SceneTextObject;
 import com.lostagain.JamGwt.JargScene.SceneWidgetVisual;
 
-import lostagain.nl.spiffyresources.client.IsSpiffyGenericLogBox;
+import lostagain.nl.spiffyresources.interfaces.IsSpiffyGenericLogBox;
+
 
 /** for displaying/debugging data global to the scene and not any one specific object
  * **/

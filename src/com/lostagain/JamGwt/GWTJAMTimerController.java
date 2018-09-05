@@ -205,7 +205,7 @@ public class GWTJAMTimerController extends JAMTimerController {
 	    * @param cmd
 	    */
 	   @Override
-	   public void scheduleIncremental_impl(IsIncrementalCommand cmd){
+	   public void scheduleIncremental_impl(final IsIncrementalCommand cmd){
 
 		   Scheduler.get().scheduleIncremental(new RepeatingCommand() {			
 			@Override
@@ -223,7 +223,7 @@ public class GWTJAMTimerController extends JAMTimerController {
 	    * @param cmd
 	    */
 	   @Override
-	   public void scheduleDefered_impl(Runnable cmd){
+	   public void scheduleDefered_impl(final Runnable cmd){
 		   
 		   Scheduler.get().scheduleDeferred(new ScheduledCommand() {			
 			@Override

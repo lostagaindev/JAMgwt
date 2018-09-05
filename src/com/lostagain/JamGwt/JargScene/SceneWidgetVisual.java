@@ -47,14 +47,11 @@ import com.lostagain.JamGwt.JargScene.debugtools.ObjectInspector;
 import com.lostagain.JamGwt.Sprites.InternalAnimations;
 
 
-import lostagain.nl.spiffyresources.client.IsSpiffyGenericLogger;
 import lostagain.nl.spiffyresources.client.spiffycore.Simple2DPoint;
 import lostagain.nl.spiffyresources.client.spiffygwt.SpiffyDragPanel;
 import lostagain.nl.spiffyresources.client.spiffygwt.SpiffyDragPanel.animationSpeedInterpretationMode;
 import lostagain.nl.spiffyresources.client.spiffygwt.SpiffyLogBox;
-
-
-import lostagain.nl.spiffyresources.client.IsSpiffyGenericLogger;
+import lostagain.nl.spiffyresources.interfaces.IsSpiffyGenericLogger;
 import lostagain.nl.spiffyresources.client.spiffycore.Simple3DPoint;
 import lostagain.nl.spiffyresources.client.spiffygwt.SpiffyLogBox;
 

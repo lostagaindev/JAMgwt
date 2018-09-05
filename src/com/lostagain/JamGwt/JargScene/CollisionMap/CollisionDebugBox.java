@@ -21,12 +21,9 @@ import com.lostagain.Jam.SceneObjects.SceneObjectDatabase;
 import com.lostagain.JamGwt.TitledPopUpWithShadow;
 import com.lostagain.JamGwt.JargScene.debugtools.ObjectInspector;
 
-
-import lostagain.nl.spiffyresources.client.IsSpiffyGenericLogBox;
+import lostagain.nl.spiffyresources.interfaces.IsSpiffyGenericLogBox;
 import lostagain.nl.spiffyresources.client.spiffygwt.SpiffyLogBox;
 
-
-import lostagain.nl.spiffyresources.client.spiffygwt.SpiffyLogBox;
 
 
 /**  a popup to help debug the games collisions and pathfinding **/

@@ -28,6 +28,7 @@ import com.lostagain.JamGwt.JAM;
 import com.lostagain.JamGwt.GwtSaveGameManager;
 import com.lostagain.JamGwt.JargScene.SceneObjectVisual;
 
+
 /**
  * Implementation of basic screen management systems for the JAM.
  * Basically lets it place objects on the screen directly rather then on a scene.

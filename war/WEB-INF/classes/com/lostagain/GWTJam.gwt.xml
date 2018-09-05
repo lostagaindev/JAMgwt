@@ -11,7 +11,10 @@
 	<inherits name='com.lostagain.Jam.Jam' /> 
 	
 	<!--  spiffyresources   -->	
-    <inherits name='com.darkflame.SpiffyResources'/>
+    <inherits name='lostagain.nl.spiffyresources.SpiffyResources'/>
+    
+    	<!--  supersimplesemantics   -->	
+    <inherits name='com.darkflame.SuperSimpleSemantics'/>
  
 	
 	<!-- css -->
@@ -32,6 +35,11 @@
 	<!-- for array/arraylist functions (also used in the semantic project) -->
 
      <inherits name="com.google.common.collect.Collect"/>
+     
+     
+     <!-- <inherits name="com.google.code.findbugs"/>  -->
+     <!-- <inherits name="com.google.code.errorprone"/>-->
+     <!-- <inherits name="com.google.code.j2objc"/>     -->
      
 		
 	<!--  for compression of save strings (apache 2.0 lisence) -->
@@ -68,6 +76,9 @@
 	<!-- test for profiling 
 	<set-property name="compiler.useSourceMaps" value="true"></set-property>
 	-->
+
+<inherits name="com.google.errorprone.annotations.Annotations" />
+<inherits name="com.google.j2objc.annotations.Annotations" />
 
 	<!-- Inherit sound support -->
 	<inherits name='com.allen_sauer.gwt.voices.gwt-voices' />
