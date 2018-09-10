@@ -32,5 +32,12 @@ As of now, the JAM has been primarily designed with browser use in mind. We are 
 
 You will need the following:
 
-JAMCore ()
-GWT 2.8 ()
+* Java 7
+* JAMCore 
+* GWT 2.7+
+* Guava 18+
+And these smaller libraries
+* GWT lzma (https://github.com/archiecobbs/gwt-lzma)
+* gwt-dnd (https://github.com/fredsa/gwt-dnd)
+* gwt-voices (https://github.com/fredsa/gwt-voices)
+* sph-gwt-widget (https://download.osgeo.org/webdav/geotools/sph-gwt-widgets/sph-gwt-widgets/)
