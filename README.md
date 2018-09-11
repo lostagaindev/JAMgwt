@@ -28,15 +28,18 @@ The scripting language has been designed to be intuitive and flexible. It allows
 
 As of now, the JAM has been primarily designed with browser use in mind. We are in the process of pulling apart the core engine from the browser specific code, allowing use for various Java graphics engines such as libGDX.
 
-## How do I install this?
+## What do I need to build this?
 
 You will need the following:
 
 * Java 7
 * JAMCore 
+* Spiffy Resources
 * GWT 2.7+
 * Guava 18+
+
 And these smaller libraries
+* Super Simple Semantics (https://bitbucket.org/lostagain/supersimplesemantics)
 * GWT lzma (https://github.com/archiecobbs/gwt-lzma)
 * gwt-dnd (https://github.com/fredsa/gwt-dnd)
 * gwt-voices (https://github.com/fredsa/gwt-voices)
